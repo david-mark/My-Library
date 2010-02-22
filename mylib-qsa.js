@@ -2,8 +2,8 @@
 var global = this;
 if (this.API && this.API.getEBCS && this.API.isHostMethod(this.document, 'querySelectorAll')) {
 	(function() {
-		var api = global.API, oldGetEBCS = api.getEBCS;
-		var toArray, qsaEmptyInadequate, qsaOptionSelectedBroken;
+		var api = global.API, oldGetEBCS = api.getEBCS, documentReady = api.documentReady;
+		var toArray, qsaEmptyInadequate, qsaOptionSelectedBroken, qsaClassNamesCaseInsensitive;
 
                 var testEmpty = function(s, d, qsaCount) {
                         var adequate, result = oldGetEBCS(s, d);
@@ -39,6 +39,14 @@ if (this.API && this.API.getEBCS && this.API.isHostMethod(this.document, 'queryS
 			return result;
 		};
 
+                var testClassNameCase = function(s, d, qsaCount) {
+			var doc = global.document, el = api.createElement('div'), body = api.getBodyElement();
+			el.className = 'MyLibraryAPITest';
+			body.appendChild(el);
+			qsaClassNamesCaseInsensitive = !!(doc.querySelectorAll('div.mylibraryapitest').length);
+			body.removeChild(el);
+		};
+
 		try {
 			(Array.prototype.slice.call(global.document.querySelectorAll('html'), 0));
 			toArray = function(a) {
@@ -48,30 +56,42 @@ if (this.API && this.API.getEBCS && this.API.isHostMethod(this.document, 'queryS
 			toArray = api.toArray;
 		}
 
-		this.API.getEBCS = function(s, d) {
+		global.API.getEBCS = function(s, d) {
 			var result, newResult;
 
-			if (qsaEmptyInadequate && s.indexOf(':empty') != -1 || (qsaOptionSelectedBroken && s.indexOf('[selected]') != -1)) {
+			// TODO: Tokenize special characters before checks
+
+			if (qsaClassNamesCaseInsensitive || (qsaEmptyInadequate && s.indexOf(':empty') != -1 || (qsaOptionSelectedBroken && s.indexOf('[selected]') != -1))) {
 				return oldGetEBCS(s, d);
 			}
 
 			try {
 				result = toArray((d || global.document).querySelectorAll(s));
-				if (typeof qsaEmptyInadequate == 'undefined' && s.indexOf(':empty') != -1) {
-					newResult = testEmpty(s, d, result.length);
-					return qsaEmptyInadequate ? newResult : result;
+
+				// NOTE: QSA workarounds do not take effect until the document is ready
+				// Querying before the document is ready is not recommended (getEBCS method should really be deferred)
+
+				if (api.getBodyElement) {
+					if (typeof qsaClassNamesCaseInsensitive == 'undefined') {
+						testClassNameCase();
+					}
+					if (typeof qsaEmptyInadequate == 'undefined' && s.indexOf(':empty') != -1) {
+						newResult = testEmpty(s, d, result.length);
+						return qsaEmptyInadequate ? newResult : result;
+					}
+					if (typeof qsaOptionSelectedBroken == 'undefined' && s.indexOf('[selected]') != -1) {
+						newResult = testOptionSelected(s, d, result.length);
+						return qsaOptionSelectedBroken ? newResult : result;
+					}
 				}
-				if (typeof qsaOptionSelectedBroken == 'undefined' && s.indexOf('[selected]') != -1) {
-					newResult = testOptionSelected(s, d, result.length);
-					return qsaOptionSelectedBroken ? newResult : result;
-				}
-				return result;
+
+				return qsaClassNamesCaseInsensitive ? oldGetEBCS(s, d) : result;
 			} catch(e) {
 				return oldGetEBCS(s, d);
 			}
 		};
-		if (typeof $ == 'function') {
-			$ = this.API.getEBCS;
+		if (global['$'] == oldGetEBCS) {
+			$ = global.API.getEBCS;
 		}
 	})();
 }
