@@ -86,7 +86,7 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 		}
 
 		function updateSizeHandle(el, b) {
-			el.style.visibility = (b)?'hidden':'visible';
+			el.style.visibility = (b)?'hidden':'';
 		}
 
 		// Called after maximize/restore
@@ -444,12 +444,13 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 						(el.offsetHeight);
 						el.style.height = '';
 						// Start of hack for Opera 8, but it already works :)
-						// (Harmless) mystical incantation causes that browser to adjust the offsetHeight/Width properties
+						// (Harmless) mystical incantation causes the browser to adjust the offsetHeight/Width properties
+						// Assignment would likely work as well
 						if (el.clientLeft) {
 						}
 					}
 
-					dim = getElementSizeStyle(el);
+					var dim = getElementSizeStyle(el);
 					if (dim) {
 						sizeElement(el, dim[0], dim[1]);
 					}

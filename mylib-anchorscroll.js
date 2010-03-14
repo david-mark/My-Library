@@ -55,7 +55,7 @@ if (this.API && typeof(this.API) == 'object' && this.API.attachDocumentReadyList
 		})();
 
 		api.attachLinkScrollEvents = function(options, links, doc) {
-			var body, el, elAnchor, href, i, win;
+			var body, el, elAnchor, href, i, win, loc;
 
 			if (links) {
 				i = links.length;
