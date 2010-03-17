@@ -261,7 +261,7 @@ if (API && API.getAnElement) {
                   targetTransform[operation] = 1;
                   break;
                 case 'rotate':
-                  transform.rotate = 45;
+                  transform.rotate = 90;
                   targetTransform.rotate = 0;
                   break;
                 case 'skew':
@@ -334,7 +334,7 @@ if (API && API.getAnElement) {
               el.style.visibility = 'visible';
               break;
           case 3:
-              oldSetTransformMatrix(el, scratch.targetMatrix);
+              oldSetTransformMatrix(el, scratch.targetMatrix, true);
               return;
           }
           matrix = [];
@@ -435,12 +435,12 @@ if (API && API.getAnElement) {
             el.style.visibility = 'visible';
             break;
           case 3:
-            oldSetTransformMatrix(el, scratch.matrix);
+            oldSetTransformMatrix(el, scratch.matrix, true);
             return;
           }
           sourceSpin = scratch.spin;
           targetSpin = scratch.targetSpin;
-          oldSetTransformMatrix(el, matrixMultiply(scratch.matrix, rotate(sourceSpin + (targetSpin - sourceSpin) * p)));
+          oldSetTransformMatrix(el, matrixMultiply(scratch.matrix, rotate(sourceSpin + (targetSpin - sourceSpin) * p)), true);
         };
       })();
 
