@@ -439,10 +439,12 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 				if (sizeElement) {
 					// NOTE: So called shrink-wrapping cross-browser is a bad proposition
 					if (options.shrinkWrap !== false) {
-						// Hack for FF1
-						el.style.height = '1px';
-						(el.offsetHeight);
-						el.style.height = '';
+						if (!bMaximized) {
+							// Hack for FF1
+							el.style.height = '1px';
+							(el.offsetHeight);
+							el.style.height = '';
+						}
 						// Start of hack for Opera 8, but it already works :)
 						// (Harmless) mystical incantation causes the browser to adjust the offsetHeight/Width properties
 						// Assignment would likely work as well
