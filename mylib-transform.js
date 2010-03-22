@@ -26,7 +26,7 @@ if (API && API.getAnElement) {
       }
       return null;
     }
-    return style.toLowerCase();
+    return style;
   };
 
   API.findProprietaryStyle = findProprietaryStyle;
@@ -158,11 +158,10 @@ if (API && API.getAnElement) {
         el.style.zoom = '1';
       }
       var filter = el.style.filter;
-
       if (!filter) {
         el.style.filter = transform;
       } else if (reMatrix.test(filter)) {
-        el.style.filter = el.style.filter.replace(reMatrix, transform);
+        el.style.filter = filter.replace(reMatrix, transform);
       } else {
         el.style.filter += ' ' + transform;
       }
@@ -363,23 +362,39 @@ if (API && API.getAnElement) {
         setTransformOrigin.async = true;
       }
 
-      API.effects.flip = function(el, p, scratch, endCode) {
+      var flipEffect = function(el, p, scratch, endCode) {
         if (endCode == 1) {
           switch (scratch.axes) {
           case 1:
             scratch.transformOperations = ['flipV'];
             break;
-          case 3:
-            scratch.transformOperations = ['flip'];
+          case 2:
+            scratch.transformOperations = ['flipH'];
             break;
           default:
-            scratch.transformOperations = ['flipH'];
+            scratch.transformOperations = ['flip'];
           }
         }
         transformEffect(el, p, scratch, endCode);
       };
 
-      API.effects.scale = function(el, p, scratch, endCode) {
+      API.effects.flip = flipEffect;
+
+      API.effects.flipH = function(el, p, scratch, endCode) {
+        if (endCode == 1) {
+          scratch.axes = 2;
+        }
+        flipEffect(el, p, scratch, endCode);
+      };
+
+      API.effects.flipV = function(el, p, scratch, endCode) {
+        if (endCode == 1) {
+          scratch.axes = 1;
+        }
+        flipEffect(el, p, scratch, endCode);
+      };
+
+      var scaleEffect = function(el, p, scratch, endCode) {
         if (endCode == 1) {
           switch (scratch.axes) {
           case 1:
@@ -395,7 +410,23 @@ if (API && API.getAnElement) {
         transformEffect(el, p, scratch, endCode);
       };
 
-      API.effects.skew = function(el, p, scratch, endCode) {
+      API.effects.scale = scaleEffect;
+
+      API.effects.scaleX = function(el, p, scratch, endCode) {
+        if (endCode == 1) {
+          scratch.axes = 2;
+        }
+        scaleEffect(el, p, scratch, endCode);
+      };
+
+      API.effects.scaleY = function(el, p, scratch, endCode) {
+        if (endCode == 1) {
+          scratch.axes = 1;
+        }
+        scaleEffect(el, p, scratch, endCode);
+      };
+
+      var skewEffect = function(el, p, scratch, endCode) {
         if (endCode == 1) {
           switch (scratch.axes) {
           case 1:
@@ -409,6 +440,22 @@ if (API && API.getAnElement) {
           }
         }
         transformEffect(el, p, scratch, endCode);
+      };
+
+      API.effects.skew = skewEffect;
+
+      API.effects.skewX = function(el, p, scratch, endCode) {
+        if (endCode == 1) {
+          scratch.axes = 2;
+        }
+        skewEffect(el, p, scratch, endCode);
+      };
+
+      API.effects.skewY = function(el, p, scratch, endCode) {
+        if (endCode == 1) {
+          scratch.axes = 1;
+        }
+        skewEffect(el, p, scratch, endCode);
       };
 
       API.effects.rotate = function(el, p, scratch, endCode) {
@@ -444,7 +491,7 @@ if (API && API.getAnElement) {
         };
       })();
 
-      var i, transition, revealTransitions = ['flip', 'skew', 'scale', 'rotate', 'spin', 'transform'];
+      var i, transition, revealTransitions = ['flip', 'flipH', 'flipV', 'skew', 'skewX', 'skewY', 'scale', 'scaleX', 'scaleY', 'rotate', 'spin', 'transform'];
       var showElement = API.showElement, effects = API.effects;
 
       var transitionFactory = function(transition, show) {

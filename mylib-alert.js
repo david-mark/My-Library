@@ -160,9 +160,8 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 		function restore() {
 			if (elLabel.style.display == 'none') {
 				minimize(false);
-			}
-			else {
-		 		maximize(!bMaximized);
+			} else {
+				maximize(!bMaximized);
 			}
 		}
 
@@ -199,7 +198,7 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 				elApplyButton.disabled = !!b;
 			}		
 			bDirty = !b;
-		}
+		};
 
 		// Need getScrollPosition as centerElement only works for fixed positioned elements without it.
 
@@ -246,10 +245,13 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 					if (elCloseButton) {
 						elCloseButton.className = 'closebutton';
 						elCloseButton.title = 'Close';
-						api.attachListener(elCloseButton, 'click', function() { dismiss(false); });
+						api.attachListener(elCloseButton, 'click', function() {
+							if (this.className.indexOf('disabled') == -1) {
+								dismiss(false);
+							}
+						});
 						el.appendChild(elCloseButton);
 					}
-
 					if (getChildren && api.canAdjustStyle && api.canAdjustStyle('display') && addClass && api.maximizeElement) {
 						elMinimizeButton = api.createElement('div');
 						if (elMinimizeButton) {
@@ -356,7 +358,7 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 			body.appendChild(el);
 
 			if (api.attachDocumentListener && api.getKeyboardKey) {
-				api.attachDocumentListener('keyup', function(e) { if (shown && api.getKeyboardKey(e) == 27) { dismiss(false); return api.cancelDefault(e); } } );
+				api.attachDocumentListener('keyup', function(e) { if (shown && api.getKeyboardKey(e) == 27) { if (!elCloseButton || elCloseButton.className.indexOf('disabled') == -1) { dismiss(false); return api.cancelDefault(e); } } } );
 			}
 
 			if (elHelpButton) {
@@ -380,8 +382,8 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 				showOptions = options;
 				dimOptions = { duration:options.duration,ease:options.ease };
 
+				// TODO: add and remove from DOM instead of using display style
 
-				// *** add and remove from DOM instead of using display style
 				if (elHelpButton) {
 					onhelp = options.onhelp;
 					elHelpButton.style.display = (onhelp)?'':'none';
@@ -397,6 +399,10 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 					elNoButton.style.display = (options.decision == 'yesno' || options.decision == 'yesnocancel')?'':'none';
 				}
 
+				if (elCloseButton) {
+					disableControl(elCloseButton, !!options.decision);
+				}
+
 				bDirty = false;
 
 				if (elApplyButton) {
@@ -409,10 +415,10 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 				elButton.value = (options.decision)?((options.decision.indexOf('yes') != -1)?'Yes':options.buttonCaption || 'OK'):'Close';
 
 				if (elCaption) {
-					title = options.title || 'Alert';
+					var title = options.title || 'Alert';
 					setElementText(elCaption, title);
 				}
-				onclose = fnHide;
+				onclose = fnHide || options.onclose;
 				showElement(el, false);
 				if (!bMaximized && options.shrinkWrap !== false) {
 					el.style.height = '';
@@ -439,17 +445,17 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 				if (sizeElement) {
 					// NOTE: So called shrink-wrapping cross-browser is a bad proposition
 					if (options.shrinkWrap !== false) {
+						var dummy;
+
 						if (!bMaximized) {
 							// Hack for FF1
 							el.style.height = '1px';
-							(el.offsetHeight);
+							dummy = el.offsetHeight;
 							el.style.height = '';
 						}
-						// Start of hack for Opera 8, but it already works :)
 						// (Harmless) mystical incantation causes the browser to adjust the offsetHeight/Width properties
 						// Assignment would likely work as well
-						if (el.clientLeft) {
-						}
+						dummy = el.clientLeft;
 					}
 
 					var dim = getElementSizeStyle(el);
