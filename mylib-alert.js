@@ -237,8 +237,7 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 					elIconButton = api.createElement('div');
 					if (elIconButton) {
 						elIconButton.className = 'icon';
-						elIconButton.title = 'Double-click to close';
-						api.attachListener(elIconButton, 'dblclick',  function() { dismiss(false); });
+						api.attachListener(elIconButton, 'dblclick',  function() { if (!elCloseButton || elCloseButton.className.indexOf('disabled') == -1) { dismiss(false); } });
 						el.appendChild(elIconButton);
 					}
 					elCloseButton = api.createElement('div');
@@ -401,6 +400,10 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 
 				if (elCloseButton) {
 					disableControl(elCloseButton, !!options.decision);
+				}
+
+				if (elIconButton) {
+					elIconButton.title = options.decision ? '' : 'Double-click to close';
 				}
 
 				bDirty = false;
