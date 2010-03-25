@@ -353,7 +353,7 @@ if (API && API.getAnElement) {
       setTransformMatrix.async = true;
 
       oldSetTransform = setTransform;
-      API.setElementTransform = transformerFactory('', setTransform);
+      API.setElementTransform = setTransform = transformerFactory('', setTransform);
       setTransform.async = true;
 
       if (setTransformOrigin) {
