@@ -51,14 +51,12 @@ if (API && API.attachDocumentReadyListener) {
 
     if (selectionToRange) {
       clearDocumentSelection = function(doc) {
-        var range, selection = getSelection(doc);
+        var selection = getSelection(doc);
+
         if (isHostMethod(selection, 'empty')) {
           selection.empty();
-        } else {
-          range = selectionToRange(selection);
-          if (range && isHostMethod(range, 'collapse')) {
-            range.collapse();
-          }
+        } else if (isHostMethod(selection, 'collapseToStart')) {
+          selection.collapseToStart();
         }
       };
     }
