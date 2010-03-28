@@ -29,12 +29,12 @@ if (API && API.attachDocumentReadyListener) {
 
     if (getSelection) {
       getSelectionText = function(selection) {
-        if (isHostMethod(selection, 'toString')) {
-          return selection.toString();
-        }
         var range = selectionToRange(selection);
         if (range) {
           return rangeText(range);
+        }
+        if (isHostMethod(selection, 'toString')) {
+          return selection.toString();
         }
         return '';
       };
@@ -57,6 +57,11 @@ if (API && API.attachDocumentReadyListener) {
           selection.empty();
         } else if (isHostMethod(selection, 'collapseToStart')) {
           selection.collapseToStart();
+        }
+        var range = selectionToRange(selection);
+        if (range && isHostMethod(range, 'collapse')) {
+          range.collapse(true);
+          range.select();
         }
       };
     }
@@ -120,7 +125,8 @@ if (API && API.attachDocumentReadyListener) {
             range.select();
             selection = getControlSelection(el);
             if (selection[0] != start) {
-              range.move('character', start - selection[0]);
+              range.moveStart('character', start - selection[0]);
+              range.moveEnd('character', start - selection[0]);
               range.select();
             }
           };
