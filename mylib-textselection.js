@@ -2,10 +2,10 @@
 
 var global = this, API, D, C;
 
-if (API) {
+if (API && API.attachDocumentReadyListener) {
   API.attachDocumentReadyListener(function() {
     var isHostMethod = API.isHostMethod, isHostObjectProperty = API.isHostObjectProperty, getDocumentWindow = API.getDocumentWindow;
-    var getSelection, setSelection, clearSelection, selectionToRange, getControlSelection, setControlSelection, getSelectionText;
+    var getSelection, clearDocumentSelection, selectionToRange, getControlSelection, setControlSelection, clearControlSelection, getSelectionText;
     var body, el, doc = global.document;
 
     if (isHostMethod(global, 'getSelection') && getDocumentWindow) {
@@ -50,7 +50,7 @@ if (API) {
     }
 
     if (selectionToRange) {
-      clearSelection = function(doc) {
+      clearDocumentSelection = function(doc) {
         var range, selection = getSelection(doc);
         if (isHostMethod(selection, 'empty')) {
           selection.empty();
@@ -63,9 +63,9 @@ if (API) {
       };
     }
 
-    if (clearSelection) {
+    if (clearDocumentSelection) {
       API.clearDocumentSelection = function(doc) {
-        clearSelection(doc);
+        clearDocumentSelection(doc);
       };      
     }
 
@@ -136,28 +136,36 @@ if (API) {
     API.setControlSelection = setControlSelection;
 
     if (setControlSelection) {
-      API.clearControlSelection = function(el) {
+      clearControlSelection = API.clearControlSelection = function(el) {
         setControlSelection(el, 0, 0);
       };
     }
 
-    if (C && C.prototype) {
-      C.prototype.setSelection = function(el, start, end) {
-        setSelection(el, start, end);
-        return this;
-      };
-      C.prototype.getSelection = function(el) {
-        return getSelection(el);
-      };
+    if (C && C.prototype && getControlSelection) {
+      if (setControlSelection) {
+        C.prototype.getSelection = function() {
+          return getControlSelection(this.element());
+        };
+        C.prototype.setSelection = function(start, end) {
+          setControlSelection(this.element(), start, end);
+          return this;
+        };
+        C.prototype.clearSelection = function() {
+          clearControlSelection(this.element());
+          return this;
+        };
+      }
     }
-    if (D && D.prototype) {
-      D.prototype.clearSelection = function() {
-        clearSelection(this.node());
-        return this;
-      };
+    if (D && D.prototype && getSelectionText) {
       D.prototype.getSelectionText = function() {
-        return getSelectionText(this.node());
+        return getSelectionText(getSelection(this.node()));
       };
+      if (clearDocumentSelection) {
+        D.prototype.clearSelection = function() {
+          clearDocumentSelection(this.node());
+          return this;
+        };
+      }
     }
     doc = el = null;
   });
