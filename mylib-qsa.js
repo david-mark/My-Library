@@ -2,7 +2,7 @@
 var global = this;
 if (this.API && this.API.getEBCS && this.API.isHostMethod(this.document, 'querySelectorAll')) {
 	(function() {
-		var api = global.API, oldGetEBCS = api.getEBCS, documentReady = api.documentReady;
+		var api = global.API, oldGetEBCS = api.getEBCS;
 		var toArray, qsaEmptyInadequate, qsaOptionSelectedBroken, qsaClassNamesCaseInsensitive;
 
                 var testEmpty = function(s, d, qsaCount) {
@@ -61,7 +61,8 @@ if (this.API && this.API.getEBCS && this.API.isHostMethod(this.document, 'queryS
 
 			// TODO: Tokenize special characters before checks
 
-			if (qsaClassNamesCaseInsensitive || (qsaEmptyInadequate && s.indexOf(':empty') != -1 || (qsaOptionSelectedBroken && s.indexOf('[selected]') != -1))) {
+			if (qsaClassNamesCaseInsensitive || (qsaEmptyInadequate && s.indexOf(':empty') != -1 || (qsaOptionSelectedBroken && s.indexOf('[selected]') != -1)) ||                           
+			(d && (typeof d.nodeType != 'number' || d.nodeType != 9))) {
 				return oldGetEBCS(s, d);
 			}
 
@@ -70,6 +71,7 @@ if (this.API && this.API.getEBCS && this.API.isHostMethod(this.document, 'queryS
 
 				// NOTE: QSA workarounds do not take effect until the document is ready
 				// Querying before the document is ready is not recommended (getEBCS method should really be deferred)
+                                // TODO: Change feature tests to use orphan elements
 
 				if (api.getBodyElement) {
 					if (typeof qsaClassNamesCaseInsensitive == 'undefined') {
@@ -91,7 +93,7 @@ if (this.API && this.API.getEBCS && this.API.isHostMethod(this.document, 'queryS
 			}
 		};
 		if (global['$'] == oldGetEBCS) {
-			$ = global.API.getEBCS;
+			global['$'] = global.API.getEBCS;
 		}
 	})();
 }
