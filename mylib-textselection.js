@@ -40,7 +40,7 @@ if (API && API.attachDocumentReadyListener) {
       };
       selectionToRange = function(selection) {
         if (isHostMethod(selection, 'getRangeAt')) {
-          return selection.rangeCount ? null : selection.getRangeAt(0);
+          return selection.rangeCount ? selection.getRangeAt(0) : null;
         }
         if (isHostMethod(selection, 'createRange')) {
            return selection.createRange();
