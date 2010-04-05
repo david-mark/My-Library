@@ -1,11 +1,12 @@
-// My Library Alert add-on
-// Requires Event, Center, Scroll, Show and Size modules
-// Optionally uses DOM, HTML, Class, Opacity, Drag, Maximize and Full Screen modules and/or the Fix Element add-on
+/* My Library Alert add-on
+   Requires Widgets add-on
+   Requires Event, Center, Scroll, Show and Size modules
+   Optionally uses DOM, HTML, Class, Opacity, Drag, Maximize and Full Screen modules and/or the Fix Element add-on */
 
-var global = this;
-if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.areFeatures('attachListener', 'createElement', 'setElementText')) {
-	this.API.attachDocumentReadyListener(function() {
-		var api = global.API;
+var API, global = this;
+if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachListener', 'createElement', 'setElementText', 'setControlState')) {
+	API.attachDocumentReadyListener(function() {
+		var api = API;
 		var isHostMethod = api.isHostMethod;
 		var canAdjustStyle = api.canAdjustStyle;
 		var cancelDefault = api.cancelDefault;
@@ -13,6 +14,7 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 		var showElement = api.showElement;
 		var attachListener = api.attachListener;
 		var attachDocumentListener = api.attachDocumentListener;
+		var getEventTarget = api.getEventTarget;
 		var getKeyboardKey = api.getKeyboardKey;
 		var attachDrag = api.attachDrag;
 		var detachDrag = api.detachDrag;
@@ -23,7 +25,6 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 		var setElementText = api.setElementText;
 		var setElementHtml = api.setElementHtml;
 		var setElementNodes = api.setElementNodes;
-		var setOpacity = api.setOpacity;
 		var positionElement = api.positionElement;
 		var sizeElement = api.sizeElement;
 		var fixElement = api.fixElement;
@@ -33,6 +34,7 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 		var hasClass = api.hasClass;
 		var getElementPositionStyle = api.getElementPositionStyle;
 		var getElementSizeStyle = api.getElementSizeStyle;
+		var getElementParentElement = api.getElementParentElement;
 		var elCaption, elSizeHandle, elSizeHandleH, elSizeHandleV;
 		var el = createElement('div');
 		var elLabel = createElement('div');
@@ -42,38 +44,54 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 		var body = api.getBodyElement();
 		var bMaximized, showOptions, dimOptions, shown;
 		var preMinimizedDimensions = {};
-		var onhelp, onpositive, onnegative, onindeterminate, onsave, onclose, onbeforeclose;
-		var bDirty, disableControl, updateSizeHandle, updateSizeHandles, updateMin, updateMaxCaption, updateMaxButton, updateDrag, update, minimize, maximize, restore, sizable, decision;
+		var onhelp, onpositive, onnegative, onindeterminate, onsave, onclose;
+		var bDirty, focusAlert, isCaptionButton, presentControls, updateSizeHandle, updateSizeHandles, updateMin, updateMaxCaption, updateMaxButton, updateDrag, update, minimize, maximize, restore, sizable, maximizable, minimizable, decision, showButtons;
+		var setRole = api.setControlRole, setProperty = api.setWaiProperty, removeProperty = api.removeWaiProperty;
+		var disableControl = api.disableControl, isDisabled = api.isControlDisabled, checkControl = api.checkControl, isChecked = api.isControlChecked;
 
+		var captionButtonTitle = function(title, accelerator) {
+			return title + (accelerator ? ' [Ctrl+' + accelerator + ']' : '');
+		};
+
+		var appendCaptionButton = function(title, accelerator) {
+			var elButton = createElement('div'); 
+			if (elButton) {
+				elButton.title = captionButtonTitle(title, accelerator);
+				elButton.className = title.toLowerCase() + ' captionbutton';
+
+				if (setRole) {
+					setRole(elButton, 'button');
+				}
+
+				el.appendChild(elButton);
+			}
+			return elButton;
+		};
+
+		var appendCommandButton = function(name) {
+			var elButton = createElement('input');
+			if (elButton) {
+				elButton.type = 'button';
+				elButton.value = name;
+				elFieldset.appendChild(elButton);
+			}
+			return elButton;
+		};
+		
 		if (attachDrag) {
 			updateDrag = function(b) {
 				((b)?detachDrag:attachDrag)(el, elCaption);
 			};
-		}
+		}		
 
-		if (addClass) {
-			disableControl = function(el, b) {
-				if (arguments.length == 1) { b = true; }
-				if (b) {
-					addClass(el, 'disabled');
-				}
-				else {
-					removeClass(el, 'disabled');
-				}
-				if (setOpacity) {
-					setOpacity(el, (b)?0.6:1);
-				}
-			};
-		}
+		updateMaxCaption = function(b) {
+			if (elCaption) {
+				elCaption.title = "Double-click to " + (b ? 'restore' : 'maximize');
+			}
+		};
 
-		if (disableControl) {
-			updateMaxCaption = function(b) {
-				if (elCaption) {
-					elCaption.title = "Double-click to " + ((b)?'restore':'maximize');
-				}
-			};
-
-			updateMaxButton = function(b) {
+		updateMaxButton = function(b) {
+			if (addClass) {
 				if (b) {
 					removeClass(elMaximizeButton, 'maximizebutton');
 					addClass(elMaximizeButton, 'restorebutton');
@@ -81,87 +99,101 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 					removeClass(elMaximizeButton, 'restorebutton');
 					addClass(elMaximizeButton, 'maximizebutton');
 				}
-				elMaximizeButton.title = (!b)?'Maximize':'Restore';
-			};
+			}
+			elMaximizeButton.title = captionButtonTitle(!b ? 'Maximize' : 'Restore', '.');
+		};
 
-			updateMin = function(b) {
-				if (elMinimizeButton) {
-					disableControl(elMinimizeButton, elLabel.style.display == 'none');
-				}
+		updateMin = function(b) {
+			if (elMinimizeButton) {
+				disableControl(elMinimizeButton, b);
+			}
 
-				if (elMaximizeButton) {
-					if (b) {
-						updateMaxButton(!bMaximized);
-						if (sizable && elCaption) { updateMaxCaption(!bMaximized); }
-					} else {
-						updateMaxButton(bMaximized);
-						if (sizable && elCaption) { updateMaxCaption(bMaximized); }
-					}
-				}
-			};
-
-			updateSizeHandle = function(el, b) {
-				el.style.visibility = (b)?'hidden':'';
-			};
-
-			updateSizeHandles = function(b) {
-				if (elSizeHandle) { updateSizeHandle(elSizeHandle, b); }
-				if (elSizeHandleH) { updateSizeHandle(elSizeHandleH, b); }
-				if (elSizeHandleV) { updateSizeHandle(elSizeHandleV, b); }
-			};
-
-			// Called after maximize/restore
-
-			update = function(b) {
-				if (sizable) {
-					updateSizeHandles(b);
-				}
-				if (elCaption) {
-					if (sizable) {
-						updateMaxCaption(b);
-					}
-					updateDrag(b);
-				}
-
-				if (elMaximizeButton) {
-					updateMaxButton(b);
-				}
-
-				if (elFixButton) {
-					disableControl(elFixButton, b);
-				}
-			};
-		}
-
-		function presentControls(b) {
-			var i, c, children = getChildren(el);
-			i = children.length;
-
-			while (i--) {
-				c = children[i];
-				if (c != elCloseButton && c != elMinimizeButton && c != elCaption && c != elIconButton && c != elFixButton && c != elMaximizeButton) {
-					c.style.display = b ? 'none' : '';
+			if (elMaximizeButton) {
+				if (b) {
+					updateMaxButton(!bMaximized);
+					if (sizable && elCaption) { updateMaxCaption(!bMaximized); }
+				} else {
+					updateMaxButton(bMaximized);
+					if (sizable && elCaption) { updateMaxCaption(bMaximized); }
 				}
 			}
-		}
+		};
 
-		if (update && maximizeElement) {
+		updateSizeHandle = function(el, b) {
+			el.style.visibility = (b)?'hidden':'';
+		};
+
+		updateSizeHandles = function(b) {
+			if (elSizeHandle) { updateSizeHandle(elSizeHandle, b); }
+			if (elSizeHandleH) { updateSizeHandle(elSizeHandleH, b); }
+			if (elSizeHandleV) { updateSizeHandle(elSizeHandleV, b); }
+		};
+
+		// Called after maximize/restore
+
+		update = function(b) {
+			if (sizable) {
+				updateSizeHandles(b);
+			}
+			if (elCaption) {
+				if (sizable) {
+					updateMaxCaption(b);
+				}
+				updateDrag(b);
+			}
+
+			if (elMaximizeButton) {
+				updateMaxButton(b);
+			}
+
+			if (elFixButton) {
+				disableControl(elFixButton, b);
+			}
+		};
+
+		if (maximizeElement) {
+			if (hasClass) {
+				isCaptionButton = function(el) {
+				  return hasClass(el, 'captionbutton');
+				};
+			} else {
+				isCaptionButton = function(el) {
+					return el == elMinimizeButton || el == elMaximizeButton || el == elCloseButton || el == elFixButton;
+				};
+			}
+
+			presentControls = function(b) {
+				var i, c, children = getChildren(el);
+				i = children.length;
+
+				while (i--) {
+					c = children[i];
+					if (!isCaptionButton(c) && c != elCaption && c != elIconButton) {
+						c.style.display = (b || (c == elFieldset && !showButtons)) ? 'none' : '';
+					}
+				}
+			};
+
 			minimize = function(b, bEffects) {
 				if (b) {
 					preMinimizedDimensions.pos = getElementPositionStyle(el);
 					preMinimizedDimensions.dim = getElementSizeStyle(el);
-					removeClass(el, 'maximized');
-					addClass(el, 'minimized');
+					if (addClass) {
+						removeClass(el, 'maximized');
+						addClass(el, 'minimized');
+					}
 					updateDrag(false);
 				} else {
 					if (!bMaximized) {
-						if (elFixButton && hasClass(elFixButton, 'selected') && el.style.position != 'fixed') {
+						if (elFixButton && isChecked(elFixButton) && el.style.position != 'fixed') {
 							constrainPositionToViewport(preMinimizedDimensions.pos);
 						}
 						positionElement(el, preMinimizedDimensions.pos[0], preMinimizedDimensions.pos[1], dimOptions);
 						sizeElement(el, preMinimizedDimensions.dim[0], preMinimizedDimensions.dim[1], dimOptions);
 					}
-					removeClass(el, 'minimized');
+					if (removeClass) {
+						removeClass(el, 'minimized');
+					}
 					updateDrag(bMaximized);
 				}
 
@@ -187,7 +219,7 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 			};
 
 			restore = function() {
-				if (elLabel.style.display == 'none') {
+				if (elMinimizeButton && minimizable && isDisabled(elMinimizeButton)) {
 					minimize(false);
 				} else {
 					maximize(!bMaximized);
@@ -228,12 +260,7 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 						return false;
 					}
 				}
-				if (bDirty) {
-					if (onbeforeclose && onbeforeclose())  {
-						return false;
-					}
-				}				
-
+				
 				if (!onclose || !onclose(el, showOptions)) {
 					showElement(el, false, showOptions);
 				}
@@ -249,16 +276,38 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 			return el;
 		};
 
-		api.setAlertDirty = function(b) {
-			if (elApplyButton) {
-				elApplyButton.disabled = !b;
-			}		
-			bDirty = !!b;
+		api.isAlertOpen = function() {
+			return shown;
+		};
+
+		api.focusAlert = focusAlert = function() {
+			if (el.style.visibility == 'visible' && elFieldset.style.display != 'none') {
+				elButton.focus();
+			}
+		};
+
+		api.setAlertDirty = function(b, external) {
+			if (decision == 'dialog') {
+				if (typeof external == 'boolean') {
+					elButton.value = b ? 'Close' : 'OK';
+					if (elCancelButton) {
+						elCancelButton.disabled = b;
+					}
+				} else if (elApplyButton) {
+					elApplyButton.disabled = !b;
+				}
+				bDirty = b;
+			}
 		};
 
 		// Need getScrollPosition as centerElement only works for fixed positioned elements without it.
 
 		if (showElement && centerElement && sizeElement && api.getScrollPosition && el && elButton && elFieldset && elLabel && body && isHostMethod(global, 'setTimeout')) {
+
+			if (setProperty) {
+				elLabel.id = 'mylibalertcontent';			
+			}
+
 			if (updateDrag) {
 				elCaption = createElement('div');
 				if (elCaption) {
@@ -271,20 +320,16 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 					updateDrag(false);
 
 					if (maximize) {
-						elMaximizeButton = createElement('div'); 
+						elMaximizeButton = appendCaptionButton('Maximize', '.'); 
 						if (elMaximizeButton) {
-							elMaximizeButton.title = 'Maximize';
-							elMaximizeButton.className = 'maximize captionbutton';
-							el.appendChild(elMaximizeButton);
-
 							attachListener(elMaximizeButton, 'click', function(e) {
-								if (!hasClass(this, 'disabled')) {
+								if (!isDisabled(this)) {
 									restore();
 								}
 							});
 						}
 						attachListener(elCaption, 'dblclick', function(e) {
-							if (sizable) {
+							if (maximizable) {
 								restore();
 								return cancelDefault(e);
 							}
@@ -294,53 +339,52 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 					elIconButton = createElement('div');
 					if (elIconButton) {
 						elIconButton.className = 'icon';
+						if (setRole) {
+							setRole(elIconButton, 'button');
+						}
 						attachListener(elIconButton, 'dblclick', function() {
-							if (!elCloseButton || !hasClass || !hasClass(elCloseButton, 'disabled')) {
+							if (!elCloseButton || !isDisabled(elCloseButton)) {
 								dismiss(false);
 							}
 						});
 						el.appendChild(elIconButton);
 					}
-					elCloseButton = createElement('div');
+					elCloseButton = appendCaptionButton('Close');
 					if (elCloseButton) {
-						elCloseButton.className = 'close captionbutton';
-						elCloseButton.title = 'Close';
 						attachListener(elCloseButton, 'click', function() {
-							if (!hasClass || !hasClass(this, 'disabled')) {
+							if (!isDisabled(this)) {
 								dismiss(false);
 							}
 						});
-						el.appendChild(elCloseButton);
 					}
 					if (getChildren && canAdjustStyle && canAdjustStyle('display') && minimize) {
-						elMinimizeButton = createElement('div');
+						elMinimizeButton = appendCaptionButton('Minimize', ',');
 						if (elMinimizeButton) {
-							elMinimizeButton.className = 'minimize captionbutton';
-							elMinimizeButton.title = 'Minimize';
 							attachListener(elMinimizeButton, 'click', function() {
-								if (!hasClass(this, 'disabled')) {
+								if (!isDisabled(this)) {
 									minimize(true);
 								}
 							});
-							el.appendChild(elMinimizeButton);
 						}
-
 					}
 					
-					if (fixElement && disableControl) {
-						elFixButton = createElement('div');
+					if (fixElement) {
+						elFixButton = appendCaptionButton('Fix');
 						if (elFixButton) {
-							elFixButton.title = 'Fix';
-							elFixButton.className = 'fix captionbutton';
-							el.appendChild(elFixButton);
 							attachListener(elFixButton, 'click', function(e) {
-								if (!hasClass(this, 'disabled')) {
-									if (!hasClass(this, 'selected')) {
-										addClass(this, 'selected');
+								if (!isDisabled(this)) {
+									if (!isChecked(this)) {
+										checkControl(this);
+										if (addClass) {
+											addClass(el, 'fixed');
+										}
 										this.title = 'Detach';
 										fixElement(el, true, dimOptions);
 									} else {
-										removeClass(this, 'selected');
+										checkControl(this, false);
+										if (removeClass) {
+											removeClass(el, 'fixed');
+										}
 										this.title = 'Fix';
 										fixElement(el, false, dimOptions);
 									}
@@ -377,35 +421,13 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 
 			elButton.type = 'button';
 			elButton.value = 'Close';
+			elButton.className = 'commandbutton';
 			elFieldset.appendChild(elButton);
 
-			elNoButton = createElement('input');
-			if (elNoButton) {
-				elNoButton.type = 'button';
-				elNoButton.value = 'No';
-				elFieldset.appendChild(elNoButton);
-			}
-
-			elCancelButton = createElement('input');
-			if (elCancelButton) {
-				elCancelButton.type = 'button';
-				elCancelButton.value = 'Cancel';
-				elFieldset.appendChild(elCancelButton);
-			}
-
-			elApplyButton = createElement('input');
-			if (elApplyButton) {
-				elApplyButton.type = 'button';
-				elApplyButton.value = 'Apply';
-				elFieldset.appendChild(elApplyButton);
-			}
-
-			elHelpButton = createElement('input');
-			if (elHelpButton) {
-				elHelpButton.type = 'button';
-				elHelpButton.value = 'Help';
-				elFieldset.appendChild(elHelpButton);
-			}
+			elNoButton = appendCommandButton('No');
+			elCancelButton = appendCommandButton('Cancel');
+			elApplyButton = appendCommandButton('Apply');
+			elHelpButton = appendCommandButton('Help');
 
 			el.appendChild(elFieldset);
 
@@ -421,18 +443,47 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 
 			if (attachDocumentListener && getKeyboardKey) {
 				attachDocumentListener('keyup', function(e) {
-					if (shown) {
-						switch(getKeyboardKey(e)) {
+					var el, key;
+
+					if (shown && !e.shiftKey && !e.metaKey) {
+						key = getKeyboardKey(e);
+						switch(key) {
 						case 27:
-							if (!elCloseButton || !hasClass || !hasClass(elCloseButton, 'disabled') || makeDecision()) {
-								dismiss(false);
-								return cancelDefault(e);
+							if (!e.ctrlKey) {
+								if (!elCloseButton || !isDisabled(elCloseButton) || makeDecision()) {
+									dismiss(false);
+									return cancelDefault(e);
+								}
 							}
 							break;
 						case 13:
-							if (!decision || makeDecision(true)) {
-								dismiss(bDirty);
-								return cancelDefault(e);
+							if (!e.ctrlKey) {
+								el = getEventTarget(e);
+
+								while (el && el != elFieldset) {
+									el = getElementParentElement(el);
+								}
+								if (el && !(/^textarea$/i).test(el.tagName) && !(/^commandbutton$/).test(el.className) && (!decision || makeDecision(true))) {
+									dismiss(bDirty);
+									return cancelDefault(e);
+								}
+							}
+							break;
+						default:
+							if (maximize && sizable && e.ctrlKey) {
+								switch(key) {
+								case 190:
+									if (minimizable && elMinimizeButton && isDisabled(elMinimizeButton)) {
+										restore();
+									} else {
+										maximize(!bMaximized);
+									}
+									break;
+								case 188:
+									if (minimizable && elMinimizeButton && !isDisabled(elMinimizeButton)) {
+										minimize(true);
+									}
+								}
 							}
 						}
 					}
@@ -466,17 +517,35 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 					if (!onsave || !onsave()) {
 						bDirty = false;
 						this.disabled = true;
+						if (elButton.value == 'Close') {
+							elButton.value = 'OK';
+							if (elCancelButton) {
+								elCancelButton.disabled = false;
+							}
+						}
 					}
 				});
 			}
 			
 			api.alert = function(sText, options, fnShow, fnHide) {
-				var dummy, title, hasTitle;
+				var dummy, captionButtons, icon, title, hasTitle;
 
 				options = options || {};
 				showOptions = options;
 				dimOptions = { duration:options.duration,ease:options.ease };
 				decision = options.decision;
+				showButtons = options.buttons !== false;
+				captionButtons = options.captionButtons !== false;
+				icon = options.icon !== false;
+
+				if (setRole) {
+					setRole(el, decision == 'dialog' ? 'dialog' : 'alertdialog');
+					if (decision == 'dialog') {
+						removeProperty(el, 'described-by');
+					} else {
+						setProperty(el, 'described-by', 'mylibalertcontent');
+					}
+				}
 
 				// TODO: Should add/remove extra buttons, not set display style
 
@@ -486,19 +555,25 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 				}
 
 				if (elCancelButton) {
-					elCancelButton.style.display = (options.decision && options.decision != 'yesno')? '' : 'none';
+					elCancelButton.style.display = (decision && decision != 'yesno')? '' : 'none';
 				}
 
 				if (elNoButton) {
-					elNoButton.style.display = (options.decision == 'yesno' || options.decision == 'yesnocancel')? '' : 'none';
+					elNoButton.style.display = (decision == 'yesno' || decision == 'yesnocancel')? '' : 'none';
 				}
 
-				if (elCloseButton && disableControl) {
-					disableControl(elCloseButton, options.decision && options.decision != 'dialog');
+				if (elCloseButton) {
+					disableControl(elCloseButton, !!decision || decision == 'dialog');
 				}
 
 				if (elIconButton) {
-					elIconButton.title = options.decision ? '' : 'Double-click to close';
+					elIconButton.title = decision ? '' : 'Double-click to close';
+
+					if (setRole) {
+						setRole(elIconButton, decision ? '' : 'button');
+					}
+
+					elIconButton.style.visibility = (!captionButtons || !icon || !addClass) ? 'hidden' : '';
 				}
 
 				onpositive = options.onpositive;
@@ -507,14 +582,15 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 
 				bDirty = false;
 
+				elButton.value = 'OK';
+
 				if (elApplyButton) {
-					elApplyButton.disabled = !bDirty;
+					elApplyButton.disabled = true;
 					onsave = options.onsave;
-					onbeforeclose = options.onbeforeclose;
-					elApplyButton.style.display = (options.onsave && options.decision == 'dialog')?'':'none';
+					elApplyButton.style.display = (options.onsave && decision == 'dialog') ? '' : 'none';
 				}				
 
-				elButton.value = (options.decision)?((options.decision.indexOf('yes') != -1)?'Yes':options.buttonCaption || 'OK'):'Close';
+				elButton.value = decision ? ((decision.indexOf('yes') != -1) ? 'Yes' : 'OK') : 'Close';
 
 				if (elCaption) {
 					title = options.title;
@@ -526,7 +602,15 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 						elCaption.style.display = 'none';
 					}
 				}
+
+				if (elFieldset) {
+					elFieldset.style.display = showButtons ? '' : 'none';
+				}
+
 				onclose = fnHide || options.onclose;
+				if (!fnShow) {
+					fnShow = options.onopen;
+				}
 				showElement(el, false);
 				if (!bMaximized && options.shrinkWrap !== false) {
 					el.style.height = '';
@@ -537,55 +621,97 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 				} else if (setElementNodes && options.nodes) {
 					setElementNodes(elLabel, options.nodes);
 				} else {
-					if (sText !== null) { setElementText(elLabel, sText); }
+					setElementText(elLabel, sText || '');
 				}
 
 				el.className = options.className || 'alert';
 
 				sizable = options.sizable !== false;
-
-				if (addClass) {
-					(options.decision ? addClass : removeClass)(el, 'decision');
-					if (maximize) {
-						if (!sizable) {
-							if (elCaption) {
-								elCaption.title = '';
-							}
-							removeClass(el, 'maximizable');
-						} else {
-							updateMaxCaption(bMaximized);
-							addClass(el, 'maximizable');
-						}
-					}
+				if (sizable) {
+					maximizable = options.maximizable !== false;
 				}
 
+				if (addClass) {
+					if (maximize) {
+						if (!sizable) {							
+							removeClass(el, 'maxminbuttons');
+						} else {
+							addClass(el, 'maxminbuttons');
+						}
+					}
+					if (captionButtons) {
+						(icon ? addClass : removeClass)(el, 'icon');
+						removeClass(el, 'nocaptionbuttons');
+					} else {
+						addClass(el, 'nocaptionbuttons');
+					}
+
+					if (fixElement) {
+						addClass(el, 'fixable');
+					}
+				}
+				
 				el.style.display = 'block';
 
-				if (elLabel.style.display == 'none') {
+				if (presentControls && minimizable && isDisabled(elMinimizeButton)) {
 					presentControls(false);
 					if (bMaximized) {
 						restoreElement(el);
-						maximizeElement(el, null, function() {
-							addClass(el, 'maximized');
-						});
+						if (maximizable) {
+							maximizeElement(el, null, function() {
+								if (addClass) {
+									addClass(el, 'maximized');
+								}
+							});
+						} else {
+							bMaximized = false;
+						}
+						update(bMaximized);
 					}
 					updateMin(false);
 				}
 
-				if (updateSizeHandles) {
-					updateSizeHandles(!sizable);
+				if (sizable && maximize && maximizable) {
+					disableControl(elMaximizeButton, false);
+					updateMaxCaption(bMaximized);
+				} else {
+					disableControl(elMaximizeButton);
+					if (elCaption) {
+						elCaption.title = '';
+					}
+					if (bMaximized) {
+						restoreElement(el);
+						bMaximized = false;
+						update(false);
+					}
 				}
 
-				if (elMaximizeButton) {
-					elMaximizeButton.style.visibility = (sizable && hasTitle) ? '' : 'hidden';
+				if (sizable) {
+					minimizable = options.minimizable !== false;
 				}
 
 				if (elMinimizeButton) {
-					elMinimizeButton.style.visibility = (sizable && hasTitle) ? '' : 'hidden';
+					if (sizable && minimize && minimizable) {
+						disableControl(elMinimizeButton, false);
+					} else {
+						disableControl(elMinimizeButton);
+					}
+				}
+
+				if (updateSizeHandles) {
+					updateSizeHandles(!sizable || bMaximized);
+				}
+
+				if (elMaximizeButton) {
+					elMaximizeButton.style.visibility = (sizable && hasTitle && captionButtons) ? '' : 'hidden';
+				}
+
+				if (elMinimizeButton) {
+					elMinimizeButton.style.visibility = (sizable && hasTitle && captionButtons) ? '' : 'hidden';
 				}
 
 				if (elCloseButton) {
-					elCloseButton.style.visibility = hasTitle ? '' : 'hidden';
+					elCloseButton.style.visibility = (hasTitle && captionButtons) ? '' : 'hidden';
 				}
 
 				if (sizeElement) {
@@ -599,8 +725,10 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 							dummy = el.offsetHeight;
 							el.style.height = '';
 						}
+
 						// (Harmless) mystical incantation causes the browser to adjust the offsetHeight/Width properties
 						// Assignment would likely work as well
+
 						dummy = el.clientLeft;
 					}
 
@@ -611,23 +739,31 @@ if (this.API && typeof this.API == 'object' && this.API.areFeatures && this.API.
 				}
 				if (shown || !fnShow || !fnShow(el, options, bMaximized)) {
 					if (shown) {
-						if (!elFixButton || elFixButton.className.indexOf('selected') == -1) { global.setTimeout(function() { centerElement(el, { duration:options.duration, ease:options.ease, fps:options.fps }); }, 10); } // FireFox issue with resize/center animation
+						if (!elFixButton || !isChecked(elFixButton)) {
+							global.setTimeout(function() {
+								centerElement(el, { duration:options.duration, ease:options.ease, fps:options.fps });
+							}, 10);
+						}
 						showElement(el);
 					} else {
 						if (!bMaximized) {
 							centerElement(el);
 						} else {
 							maximizeElement(el, null, function() {
-								addClass(el, 'maximized');
+								if (addClass) {
+									addClass(el, 'maximized');
+								}
 							});
 						}
 						showElement(el, true, options);
 					}
 				}
-				if (!shown && elButton && isHostMethod(elButton, 'focus')) { global.setTimeout(function() { if (el.style.visibility == 'visible' && elLabel.style.display != 'none') { elButton.focus(); } }, options.duration || 0); }
+				if (!shown && elButton && isHostMethod(elButton, 'focus')) {
+					global.setTimeout(focusAlert, options.duration || 0);
+				}
 				shown = true;
 			};
 		}
-		elFieldset = body = api = null;
+		body = api = null;
 	});
 }
