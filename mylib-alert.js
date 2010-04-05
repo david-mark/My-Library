@@ -293,7 +293,8 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					if (elCancelButton) {
 						elCancelButton.disabled = b;
 					}
-				} else if (elApplyButton) {
+				}
+				if (elApplyButton) {
 					elApplyButton.disabled = !b;
 				}
 				bDirty = b;
@@ -563,7 +564,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				}
 
 				if (elCloseButton) {
-					disableControl(elCloseButton, !!decision || decision == 'dialog');
+					disableControl(elCloseButton, !!decision && decision != 'dialog');
 				}
 
 				if (elIconButton) {
@@ -583,6 +584,10 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				bDirty = false;
 
 				elButton.value = 'OK';
+
+				if (elCancelButton) {
+					elCancelButton.disabled = false;
+				}
 
 				if (elApplyButton) {
 					elApplyButton.disabled = true;
