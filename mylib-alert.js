@@ -1,7 +1,7 @@
 /* My Library Alert add-on
    Requires Widgets add-on
    Requires Event, Center, Scroll, Show and Size modules
-   Optionally uses DOM, HTML, Class, Opacity, Drag, Maximize and Full Screen modules and/or the Fix Element add-on */
+   Optionally uses DOM, HTML, Class, Drag, Maximize and Full Screen modules and/or the Fix Element extension */
 
 var API, global = this;
 if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachListener', 'createElement', 'setElementText', 'setControlState')) {
@@ -629,7 +629,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					setElementText(elLabel, sText || '');
 				}
 
-				el.className = options.className || 'alert';
+				el.className = (options.className || 'alert') + ' popup window';
 
 				sizable = options.sizable !== false;
 				if (sizable) {
@@ -645,7 +645,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 						}
 					}
 					if (captionButtons) {
-						(icon ? addClass : removeClass)(el, 'icon');
+						(icon ? addClass : removeClass)(el, 'iconic');
 						removeClass(el, 'nocaptionbuttons');
 					} else {
 						addClass(el, 'nocaptionbuttons');
