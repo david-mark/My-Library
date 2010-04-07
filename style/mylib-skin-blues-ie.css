@@ -1,0 +1,4 @@
+div.disabled, div.curtain {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=60)
+}
