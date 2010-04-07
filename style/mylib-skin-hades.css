@@ -4,7 +4,6 @@ div.rounded {
 	-moz-border-radius:.3em;
 	-webkit-border-radius:.3em;
 }
-
 div.shadowed {
 	box-shadow:3px 3px 0 #CCCC99;
 	-moz-box-shadow:3px 3px 0 #CCCC99
@@ -65,7 +64,12 @@ div.captionbutton {
 	background-repeat:no-repeat;
 	background-color:#FFF;
 	color:inherit;
-	background-position:center;
+	background-position:center
+}
+div.captionbutton:active {
+	border-style:inset;
+}
+div.rounded div.captionbutton {
 	border-radius:.3em;
 	-khtml-border-radius:.3em;
 	-moz-border-radius:.3em;
