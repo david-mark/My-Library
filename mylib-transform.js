@@ -525,8 +525,8 @@ if (API && API.getAnElement) {
         if (Q && Q.prototype) {
           for (i = revealTransitions.length; i--;) {
             transition = revealTransitions[i];
-            E.prototype[transition + 'In'] = queryTransitionFactory(transition, true);
-            E.prototype[transition + 'Out'] = queryTransitionFactory(transition, false);
+            Q.prototype[transition + 'In'] = queryTransitionFactory(transition, true);
+            Q.prototype[transition + 'Out'] = queryTransitionFactory(transition, false);
           }
         }
       }
