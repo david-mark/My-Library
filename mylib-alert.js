@@ -54,6 +54,17 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			return title + (accelerator ? ' [Ctrl+' + accelerator + ']' : '');
 		};
 
+		var disableAlertControl = function(el, b) {
+			disableControl(el, b);
+			if (typeof el.title == 'string' && el.title) {
+				el.title = el.title.replace(/\s+\(disabled\)/, '');
+
+				if (b) {
+					el.title += ' (disabled)';
+				}
+			}
+		};
+
 		var appendCaptionButton = function(title, accelerator) {
 			var elButton = createElement('div'); 
 			if (elButton) {
@@ -126,15 +137,18 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				}
 			}
 			elMaximizeButton.title = captionButtonTitle(!b ? 'Maximize' : 'Restore', '.');
+			if (isDisabled(elMaximizeButton)) {
+				elMaximizeButton.title += ' (disabled)';
+			}
 		};
 
 		updateMin = function(b) {
 			if (elMinimizeButton) {
-				disableControl(elMinimizeButton, b);
+				disableAlertControl(elMinimizeButton, b);
 			}
 
 			if (elMaximizeButton) {
-				disableControl(elMaximizeButton, !b && !maximizable);
+				disableAlertControl(elMaximizeButton, !b && !maximizable);
 			}
 
 			if (elMaximizeButton) {
@@ -176,7 +190,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			}
 
 			if (elFixButton) {
-				disableControl(elFixButton, b);
+				disableAlertControl(elFixButton, b);
 			}
 		};
 
@@ -413,6 +427,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					
 					if (fixElement) {
 						elFixButton = appendCaptionButton('Fix');
+						checkControl(elFixButton, false);
 						if (elFixButton) {
 							attachListener(elFixButton, 'click', function(e) {
 								if (!isDisabled(this)) {
@@ -579,7 +594,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			}
 			
 			api.alert = function(sText, options, fnShow, fnHide) {
-				var dummy, captionButtons, icon, title, hasTitle;
+				var dummy, captionButtons, icon, title, hasTitle, oldLeft, oldTop;
 
 				options = options || {};
 				showOptions = options;
@@ -614,7 +629,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				}
 
 				if (elCloseButton) {
-					disableControl(elCloseButton, !!decision && decision != 'dialog');
+					disableAlertControl(elCloseButton, !!decision && decision != 'dialog');
 				}
 
 				if (elIconButton) {
@@ -678,6 +693,12 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 				el.className = (options.className || 'alert') + ' popup window';
 
+				if (!shown) {
+					oldLeft = el.style.left;
+					oldTop = el.style.top;
+					el.style.left = el.style.top = '0';
+				}
+
 				if (setElementHtml && options.html) {
 					setElementHtml(elLabel, options.html);
 				} else if (setElementNodes && options.nodes) {
@@ -732,19 +753,15 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 				if (elMaximizeButton) {
 					if (sizable && maximize && maximizable) {
-						disableControl(elMaximizeButton, false);
-						updateMaxCaption(bMaximized);
+						disableAlertControl(elMaximizeButton, false);
 					} else {
-						disableControl(elMaximizeButton);
-						if (elCaption) {
-							elCaption.title = '';
-						}
+						disableAlertControl(elMaximizeButton);
 						if (bMaximized) {
 							restoreElement(el);
 							bMaximized = false;
-							update(false);
-						}
+						}						
 					}
+					update(!!bMaximized);
 				}
 
 				if (sizable) {
@@ -753,9 +770,9 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 				if (elMinimizeButton) {
 					if (sizable && minimize && minimizable) {
-						disableControl(elMinimizeButton, false);
+						disableAlertControl(elMinimizeButton, false);
 					} else {
-						disableControl(elMinimizeButton);
+						disableAlertControl(elMinimizeButton);
 					}
 				}
 
@@ -797,6 +814,10 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					if (dim) {
 						sizeElement(el, dim[0], dim[1]);
 					}
+				}
+				if (!shown) {
+					el.style.left = oldLeft;
+					el.style.top = oldTop;
 				}
 				if (shown || !fnShow || !fnShow(el, options, bMaximized)) {					
 					if (shown) {
