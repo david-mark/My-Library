@@ -107,7 +107,11 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 		updateMaxCaption = function(b) {
 			if (elCaption) {
-				elCaption.title = "Double-click to " + (b ? 'restore' : 'maximize');
+				if (maximizable) {
+					elCaption.title = "Double-click to " + (b ? 'restore' : 'maximize');
+				} else if (elMinimizeButton) {
+					elCaption.title = b ? 'Double-click to restore' : '';	
+				}
 			}
 		};
 
@@ -127,6 +131,10 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		updateMin = function(b) {
 			if (elMinimizeButton) {
 				disableControl(elMinimizeButton, b);
+			}
+
+			if (elMaximizeButton) {
+				disableControl(elMaximizeButton, !b && !maximizable);
 			}
 
 			if (elMaximizeButton) {
@@ -364,7 +372,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 							});
 						}
 						attachListener(elCaption, 'dblclick', function(e) {
-							if (maximizable) {
+							if (maximizable || !isDisabled(elMaximizeButton)) {
 								restore();
 								return cancelDefault(e);
 							}
@@ -517,7 +525,9 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 									if (minimizable && elMinimizeButton && isDisabled(elMinimizeButton)) {
 										restore();
 									} else {
-										maximize(!bMaximized);
+										if (maximizable) {
+											maximize(!bMaximized);
+										}
 									}
 									break;
 								case 188:
