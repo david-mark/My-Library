@@ -2,22 +2,24 @@ div.rounded {
 	border-radius:.3em;
 	-khtml-border-radius:.3em;
 	-moz-border-radius:.3em;
-	-webkit-border-radius:.3em;
+	-webkit-border-radius:.3em
 }
 
 div.shadowed {
-	box-shadow:3px 3px 0 #CCCC99;
-	-moz-box-shadow:3px 3px 0 #CCCC99
+	box-shadow:3px 3px 0 #33CC66;
+	-moz-box-shadow:3px 3px 0 #33CC66
 }
 
 div.popup {
-	border-color:#666699 #000033 #000033 #666699;
+	border-color:#FFF;
 	border:solid 2px;
-	overflow:hidden	
+	overflow:hidden
 }
 div.window {
-	color:#000033;
-	background-color:#FFF
+	color:#003300;
+	background-color:#FFF;
+	font-family:arial, sans-serif;
+	font-weight:bold;
 }
 
 div.wrap div.content {
@@ -27,7 +29,7 @@ div.wrap {
 	width:15em;
 }
 div.movehandle {
-	background-color:#00FF00;
+	background-color:#00CC00;
 	color:#FFF;
 	text-align:left;
 	margin:0;
@@ -127,7 +129,7 @@ div.curtain {
 	transition: opacity .4s cubic-bezier(0.42, 0, 1.0, 1.0);
 	-webkit-transition: opacity .4s cubic-bezier(0.42, 0, 1.0, 1.0);
 	opacity: 0;
-	background-color:#FFF;
+	background-color:#009900;
 	color:inherit;
 	z-index:1;
 	height:0px;
