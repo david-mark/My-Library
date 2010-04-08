@@ -20,7 +20,11 @@ div.alert fieldset {
 	white-space:nowrap
 }
 div.alert input.commandbutton {
-	width:5em
+	width:5em;
+	margin-left:.25em	
+}
+div.alert input.close {
+	margin-left:0
 }
 div.alert div.icon {
 	position:absolute;

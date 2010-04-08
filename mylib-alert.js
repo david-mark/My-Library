@@ -479,7 +479,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 			elButton.type = 'button';
 			elButton.value = 'Close';
-			elButton.className = 'commandbutton';
+			elButton.className = 'commandbutton close';
 			elFieldset.appendChild(elButton);
 
 			elNoButton = appendCommandButton('No');
