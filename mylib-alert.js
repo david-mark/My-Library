@@ -59,7 +59,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			if (typeof el.title == 'string' && el.title) {
 				el.title = el.title.replace(/\s+\(disabled\)/, '');
 
-				if (b) {
+				if (b || typeof b == 'undefined') {
 					el.title += ' (disabled)';
 				}
 			}
