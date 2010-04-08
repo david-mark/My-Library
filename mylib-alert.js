@@ -808,6 +808,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 						if (!bMaximized) {
 							centerElement(el);
 						} else {
+							restoreElement(el);
 							maximizeElement(el, null, function() {
 								if (addClass) {
 									addClass(el, 'maximized');
