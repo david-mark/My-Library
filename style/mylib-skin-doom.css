@@ -5,8 +5,8 @@ div.rounded {
 	-webkit-border-radius:.3em;
 }
 div.shadowed {
-	box-shadow:3px 3px 0 #CCC;
-	-moz-box-shadow:3px 3px 0 #CCC
+	box-shadow:3px 3px 0 #333;
+	-moz-box-shadow:3px 3px 0 #333
 }
 div.popup {
 	border-color:#666699 #000033 #000033 #666699;
