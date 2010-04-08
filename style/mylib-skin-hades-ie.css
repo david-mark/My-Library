@@ -1,4 +1,9 @@
-div.disabled, div.curtain {
+div.curtain {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0)
+}
+
+div.disabled, div.drawn {
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
 	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=60)
 }

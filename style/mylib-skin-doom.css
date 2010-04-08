@@ -114,11 +114,17 @@ div.icon {
 	color:inherit;
 }
 div.curtain {
-	background-color:#FFF;
+	transition: opacity .4s cubic-bezier(0.42, 0, 1.0, 1.0);
+	-webkit-transition: opacity .4s cubic-bezier(0.42, 0, 1.0, 1.0);
+	opacity: 0;
+	background-color:#000;
 	color:inherit;
-	z-index:1
+	z-index:1;
+	height:0px;
+	width:0px;
+	overflow:hidden;
 }
-div.disabled, div.curtain {
+div.disabled, div.curtain.drawn {
 	opacity:.6;
 	-moz-opacity:.6;
 	-khtml-opacity:.6;

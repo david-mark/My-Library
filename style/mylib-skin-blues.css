@@ -4,12 +4,10 @@ div.rounded {
 	-moz-border-radius:.3em;
 	-webkit-border-radius:.3em;
 }
-
 div.shadowed {
 	box-shadow:3px 3px 0 #CCCC99;
 	-moz-box-shadow:3px 3px 0 #CCCC99
 }
-
 div.popup {
 	border-color:#666699 #000033 #000033 #666699;
 	border:solid 2px;
@@ -19,8 +17,6 @@ div.window {
 	color:#000033;
 	background-color:#FFF
 }
-
-
 div.movehandle {
 	background-color:#0000FF;
 	color:#FFF;
@@ -119,11 +115,17 @@ div.icon {
 	color:inherit;
 }
 div.curtain {
+	transition: opacity .4s cubic-bezier(0.42, 0, 1.0, 1.0);
+	-webkit-transition: opacity .4s cubic-bezier(0.42, 0, 1.0, 1.0);
+	opacity: 0;
 	background-color:#FFF;
 	color:inherit;
-	z-index:1
+	z-index:1;
+	height:0px;
+	width:0px;
+	overflow:hidden;
 }
-div.disabled, div.curtain {
+div.disabled, div.curtain.drawn {
 	opacity:.6;
 	-moz-opacity:.6;
 	-khtml-opacity:.6;
