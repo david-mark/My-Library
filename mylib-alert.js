@@ -712,7 +712,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				
 				el.style.display = 'block';
 
-				if (presentControls && minimizable && isDisabled(elMinimizeButton)) {
+				if (presentControls && minimizable && elMinimizeButton && isDisabled(elMinimizeButton)) {
 					presentControls(false);
 					if (bMaximized) {
 						restoreElement(el);
@@ -730,18 +730,20 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					updateMin(false);
 				}
 
-				if (sizable && maximize && maximizable) {
-					disableControl(elMaximizeButton, false);
-					updateMaxCaption(bMaximized);
-				} else {
-					disableControl(elMaximizeButton);
-					if (elCaption) {
-						elCaption.title = '';
-					}
-					if (bMaximized) {
-						restoreElement(el);
-						bMaximized = false;
-						update(false);
+				if (elMaximizeButton) {
+					if (sizable && maximize && maximizable) {
+						disableControl(elMaximizeButton, false);
+						updateMaxCaption(bMaximized);
+					} else {
+						disableControl(elMaximizeButton);
+						if (elCaption) {
+							elCaption.title = '';
+						}
+						if (bMaximized) {
+							restoreElement(el);
+							bMaximized = false;
+							update(false);
+						}
 					}
 				}
 
