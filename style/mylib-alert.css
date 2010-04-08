@@ -41,7 +41,7 @@ div.maxminbuttons div.movehandle {
 	padding-right:60px
 }
 div.fixable div.movehandle {
-	padding-right:20px
+	padding-right:42px
 }
 div.fixable.maxminbuttons div.movehandle {
 	padding-right:82px
@@ -59,7 +59,7 @@ div.alert div.fix {
 	right:62px
 }
 div.nomaxminbuttons div.fix {
-	right:20px
+	right:22px
 }
 div.alert div.minimize {
 	right:40px
