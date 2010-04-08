@@ -677,9 +677,8 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				}
 
 				sizable = options.sizable !== false;
-				if (sizable) {
-					maximizable = options.maximizable !== false;
-				}
+
+				maximizable = sizable && options.maximizable !== false;
 
 				if (addClass) {
 					if (maximize) {
