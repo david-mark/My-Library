@@ -1,7 +1,7 @@
 /* My Library Alert add-on
    Requires Widgets add-on
    Requires Event, Center, Scroll, Show and Size modules
-   Optionally uses DOM, HTML, Class, Drag, Maximize and Full Screen modules and/or the Fix Element extension */
+   Optionally uses DOM, HTML, Class, Cover Document, Drag, Maximize and Full Screen modules and/or the Fix Element extension */
 
 var API, global = this;
 if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachListener', 'createElement', 'setElementText', 'setControlState')) {
@@ -19,6 +19,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var attachDrag = api.attachDrag;
 		var detachDrag = api.detachDrag;
 		var centerElement = api.centerElement;
+		var coverDocument = api.coverDocument;
                 var constrainPositionToViewport = api.constrainPositionToViewport;
 		var maximizeElement = api.maximizeElement;
 		var restoreElement = api.restoreElement;
@@ -36,7 +37,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var getElementSizeStyle = api.getElementSizeStyle;
 		var getElementParentElement = api.getElementParentElement;
 		var elCaption, elSizeHandle, elSizeHandleH, elSizeHandleV;
-		var el = createElement('div');
+		var elCurtain, el = createElement('div');
 		var elLabel = createElement('div');
 		var elButton = createElement('input');
 		var elFieldset = createElement('fieldset');
@@ -71,6 +72,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var appendCommandButton = function(name) {
 			var elButton = createElement('input');
 			if (elButton) {
+				elButton.className = 'commandbutton';
 				elButton.type = 'button';
 				elButton.value = name;
 				elFieldset.appendChild(elButton);
@@ -82,7 +84,26 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			updateDrag = function(b) {
 				((b)?detachDrag:attachDrag)(el, elCaption);
 			};
-		}		
+		}
+	
+		var showCurtain = function(b) {
+			if (b) {
+				elCurtain.style.display = 'block';
+				coverDocument(elCurtain);
+
+				elCurtain.style.visibility = 'visible';
+				if (addClass) {
+					addClass(elCurtain, 'drawn');
+				}
+
+				showElement(elCurtain);
+			} else {
+				if (removeClass) {
+					removeClass(elCurtain, 'drawn');
+				}
+				showElement(elCurtain, false, { removeOnHide:true });
+			}
+		};
 
 		updateMaxCaption = function(b) {
 			if (elCaption) {
@@ -253,7 +274,11 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			}
 		}
 
-		function dismiss(bSave) {			
+		function dismiss(bSave) {
+			if (elCurtain) {
+				showCurtain(false);
+			}
+
 			if (shown) {
 				if (bSave) {
 					if (onsave && onsave()) {
@@ -263,9 +288,9 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				
 				if (!onclose || !onclose(el, showOptions)) {
 					showElement(el, false, showOptions);
-				}
-				shown = false;
-				return true;
+					shown = false;
+					return true;
+				}				
 			}
 			return false;
 		}
@@ -304,6 +329,14 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		// Need getScrollPosition as centerElement only works for fixed positioned elements without it.
 
 		if (showElement && centerElement && sizeElement && api.getScrollPosition && el && elButton && elFieldset && elLabel && body && isHostMethod(global, 'setTimeout')) {
+
+			if (coverDocument) {
+				elCurtain = createElement('div');
+				elCurtain.className = 'curtain';
+				elCurtain.style.display = 'none';
+				elCurtain.style.visibility = 'hidden';
+			}
+
 
 			if (setProperty) {
 				elLabel.id = 'mylibalertcontent';			
@@ -440,6 +473,12 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					dismiss(bDirty);
 				}
 			});
+			if (elCurtain) {
+				body.appendChild(elCurtain);
+				attachListener(elCurtain, 'click', function() {
+					focusAlert();
+				});
+			}
 			body.appendChild(el);
 
 			if (attachDocumentListener && getKeyboardKey) {
@@ -743,13 +782,16 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					}
 				}
 				if (shown || !fnShow || !fnShow(el, options, bMaximized)) {
+					if (elCurtain) {
+						showCurtain(options.modal);
+					}
 					if (shown) {
 						if (!elFixButton || !isChecked(elFixButton)) {
 							global.setTimeout(function() {
 								centerElement(el, { duration:options.duration, ease:options.ease, fps:options.fps });
 							}, 10);
 						}
-						showElement(el);
+						showElement(el);						
 					} else {
 						if (!bMaximized) {
 							centerElement(el);
@@ -759,7 +801,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 									addClass(el, 'maximized');
 								}
 							});
-						}
+						}						
 						showElement(el, true, options);
 					}
 				}
