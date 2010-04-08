@@ -661,6 +661,13 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					el.style.height = '';
 					el.style.width = '';
 				}
+
+				if (elCurtain) {
+					showCurtain(options.modal);
+				}
+
+				el.className = (options.className || 'alert') + ' popup window';
+
 				if (setElementHtml && options.html) {
 					setElementHtml(elLabel, options.html);
 				} else if (setElementNodes && options.nodes) {
@@ -668,8 +675,6 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				} else {
 					setElementText(elLabel, sText || '');
 				}
-
-				el.className = (options.className || 'alert') + ' popup window';
 
 				sizable = options.sizable !== false;
 				if (sizable) {
@@ -757,7 +762,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 				if (elCloseButton) {
 					elCloseButton.style.visibility = (hasTitle && captionButtons) ? '' : 'hidden';
-				}
+				}				
 
 				if (sizeElement) {
 
@@ -782,10 +787,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 						sizeElement(el, dim[0], dim[1]);
 					}
 				}
-				if (shown || !fnShow || !fnShow(el, options, bMaximized)) {
-					if (elCurtain) {
-						showCurtain(options.modal);
-					}
+				if (shown || !fnShow || !fnShow(el, options, bMaximized)) {					
 					if (shown) {
 						if (!elFixButton || !isChecked(elFixButton)) {
 							global.setTimeout(function() {
