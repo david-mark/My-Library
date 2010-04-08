@@ -689,15 +689,15 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				sizable = options.sizable !== false;
 
 				maximizable = sizable && options.maximizable !== false;
-
+					
 				if (addClass) {
 					if (maximize) {
-						if (!sizable) {							
-							removeClass(el, 'maxminbuttons');
-						} else {
-							addClass(el, 'maxminbuttons');
-						}
+						removeClass(el, 'nomaxminbuttons');
+						(sizable ? addClass : removeClass)(el, 'maxminbuttons');
+					} else {
+						addClass(el, 'nomaxminbuttons');
 					}
+
 					if (captionButtons) {
 						(icon ? addClass : removeClass)(el, 'iconic');
 						removeClass(el, 'nocaptionbuttons');

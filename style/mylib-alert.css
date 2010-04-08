@@ -58,6 +58,9 @@ div.alert div.maximize {
 div.alert div.fix {
 	right:62px
 }
+div.nomaxminbuttons div.fix {
+	right:20px
+}
 div.alert div.minimize {
 	right:40px
 }
