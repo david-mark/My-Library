@@ -17,6 +17,12 @@ div.window {
 	color:#000033;
 	background-color:#FFF
 }
+div.wrap div.content {
+	white-space:normal;
+}
+div.wrap {
+	width:15em;
+}
 div.movehandle {
 	background-color:#FF0000;
 	color:#FFF;
@@ -27,7 +33,6 @@ div.movehandle {
 	font-weight:bold;
 	padding:2px 2px 2px 2px
 }
-
 div.sizehandle {
 	position:absolute;
 	height:12px;
