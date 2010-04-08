@@ -288,9 +288,10 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				
 				if (!onclose || !onclose(el, showOptions)) {
 					showElement(el, false, showOptions);
-					shown = false;
-					return true;
-				}				
+				}
+				shown = false;
+				return true;
+				
 			}
 			return false;
 		}
