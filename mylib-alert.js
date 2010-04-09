@@ -45,7 +45,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var body = api.getBodyElement();
 		var bMaximized, showOptions, dimOptions, shown;
 		var preMinimizedDimensions = {};
-		var onhelp, onpositive, onnegative, onindeterminate, onsave, onclose;
+		var onhelp, onpositive, onnegative, onindeterminate, onsave, onclose, oniconclick;
 		var bDirty, focusAlert, isCaptionButton, presentControls, updateSizeHandle, updateSizeHandles, updateMin, updateMaxCaption, updateMaxButton, updateDrag, update, minimize, maximize, restore, sizable, maximizable, minimizable, decision, showButtons;
 		var setRole = api.setControlRole, setProperty = api.setWaiProperty, removeProperty = api.removeWaiProperty;
 		var disableControl = api.disableControl, isDisabled = api.isControlDisabled, checkControl = api.checkControl, isChecked = api.isControlChecked;
@@ -296,24 +296,45 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			}
 		}
 
-		function dismiss(bSave) {
+		function hideAlert() {
 			if (elCurtain) {
 				showCurtain(false);
 			}
+			showElement(el, false, showOptions);
+		}
+
+		/*
+		Return true from onclose to take responsibility for close action
+		Return false from onclose or onsave to stop the dismissal
+		Returns boolean result
+		*/
+
+		function dismiss(bSave) {
+			var good, result;
 
 			if (shown) {
 				if (bSave) {
-					if (onsave && onsave()) {
+					if (onsave && onsave() === false) {
 						return false;
 					}
 				}
-				
-				if (!onclose || !onclose(el, showOptions)) {
-					showElement(el, false, showOptions);
+
+				if (!onclose) {
+					hideAlert();
+					good = true;					
+				} else {
+					result = onclose(el, showOptions);
+					if (typeof result == 'undefined') {
+						hideAlert();
+						good = true;
+					} else {
+						good = result;
+					}
 				}
-				shown = false;
-				return true;
-				
+				if (good) {
+					shown = false;
+				}
+				return !shown;				
 			}
 			return false;
 		}
@@ -402,6 +423,11 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 						attachListener(elIconButton, 'dblclick', function() {
 							if (!elCloseButton || !isDisabled(elCloseButton)) {
 								dismiss(false);
+							}
+						});
+						attachListener(elIconButton, 'click', function() {
+							if (oniconclick) {
+								oniconclick();
 							}
 						});
 						el.appendChild(elIconButton);
@@ -645,6 +671,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				onpositive = options.onpositive;
 				onindeterminate = options.onindeterminate;
 				onnegative = options.onnegative;
+				oniconclick = options.oniconclick;
 
 				bDirty = false;
 
