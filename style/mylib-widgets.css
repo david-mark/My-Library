@@ -3,11 +3,18 @@ div.popup, div.sidebar, div.curtain {
 }
 div.popup, div.sidebar {
 	border-style:solid;
-	border-width:2px;
+	border-width:2px
 }
-div.button {
+div.button, div.toolbar {
 	border-style:outset;
-	border-width:2px;
+	border-width:2px
+}
+div.toolbar {
+	padding:.5em 0
+}
+div.commandbutton {
+	padding:.25em .5em;
+	display:inline
 }
 div.animated {
 	transition-duration:.4s;
@@ -61,6 +68,12 @@ div.disabled, div.drawn, div.dragging {
 	-khtml-opacity:.6;
 	-webkit-opacity:.6
 }
+div.shown {
+	opacity:1;
+	-moz-opacity:1;
+	-khtml-opacity:1;
+	-webkit-opacity:1	
+}
 div.popup, div.sidebar {
 	z-index:2
 }
@@ -82,8 +95,18 @@ div.movehandle {
 	cursor:default;
 	position:relative;
 	font-weight:bold;
-	padding:2px
+	padding:2px;
 }
+
+div.movehandle, div.toolbar div.button {
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	-webkit-text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+	overflow:hidden;
+	cursor:default
+}
+
 div.mini div.movehandle {
 	font-size:80%;
 }
@@ -129,13 +152,14 @@ div.button {
 	-webkit-transition:background-color .4s;
 	-o-transition:background-color .4s
 }
-div.button:active {
-	border-style:inset;
-	border-width:2px
+div.button:active, div.checked {
+	border-style:inset
 }
 div.button.disabled:active {
-	border-style:outset;
-	border-width:2px
+	border-style:outset
+}
+div.button.checked.disabled:active {
+	border-style:outset
 }
 div.icon {
 	height:16px;
@@ -143,9 +167,6 @@ div.icon {
 	background-repeat:no-repeat;
 	background-color:transparent;
 	color:inherit
-}
-div.checked {
-	border:inset 2px
 }
 div.disabled {
 	background-color:#CCC;
