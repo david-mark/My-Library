@@ -106,12 +106,15 @@ div.movehandle, div.toolbar div.button {
 	overflow:hidden;
 	cursor:default
 }
+div.toolbar div.iconic {
+	padding-left:1.5em;
+	background-image:../images/logo.gif;
+	background-repeat:no-repeat;
+	background-position:left
+}
 
 div.mini div.movehandle {
-	font-size:80%;
-}
-div.mini div.captionbutton {
-	visibility:hidden
+	font-size:80%
 }
 div.sizehandle {
 	position:absolute;
