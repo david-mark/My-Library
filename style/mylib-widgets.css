@@ -145,6 +145,12 @@ div.toolbar div.iconic {
 	background-position:left
 }
 
+div.toolbar div.nocaption {
+	padding-left:.75em;
+	padding-right:.75em;
+	background-position:center
+}
+
 div.mini div.movehandle {
 	font-size:80%
 }

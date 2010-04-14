@@ -54,7 +54,11 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 		var appendButtonAnchor = function(div, caption, doc) {
 			var a = createElement('a', doc);
 			if (a) {
-				a.appendChild(doc.createTextNode(caption));
+				if (caption) {
+					a.appendChild(doc.createTextNode(caption));
+				} else if (API.addClass) {
+					API.addClass(div, 'nocaption');
+				}
 				a.tabIndex = 0;
 				a.href= '#';
 				emptyNode(div);
@@ -119,7 +123,6 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 
 				attachListener(el, 'click', function(e) {
 					var i, divs, result, el = getEventTarget(e), elRelated;
-
 
 					if (options.radio) {
 						var buttons = getToolbarButtons(this);
@@ -210,15 +213,15 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 					doc = global.document;
 				}
 				var elButton = createElement('div', doc);
+				elButton.className = options.className || 'button';
 				var a = appendButtonAnchor(elButton, options.text || '', doc);
 				attachAnchorListeners(a, elButton, options.onfocus, options.callbackContext);
 
-				elButton.className = options.className || 'button';
 				if (options.title) {
-					el.title = options.title;
+					elButton.title = options.title;
 				}
 				if (options.id) {
-					el.id = options.id;
+					elButton.id = options.id;
 				}
 				enhanceButton(elButton);
 				el.appendChild(elButton);
