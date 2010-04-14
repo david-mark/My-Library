@@ -204,6 +204,9 @@ div.button.disabled:active {
 div.button.checked.disabled:active {
 	border-style:inset
 }
+div.button.pressed.disabled:active {
+	border-style:inset
+}
 div.icon {
 	height:16px;
 	width:16px;

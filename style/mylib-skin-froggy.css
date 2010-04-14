@@ -26,7 +26,7 @@ div.button.disabled:active {
 	border-style:solid;
 	border-color:#EEFFEE #336633 #336633 #EEFFEE
 }
-div.button.checked.disabled:active {
+div.button.checked.disabled:active, div.button.disabled.pressed:active {
 	border-style:solid;
 	border-color:#336633 #EEFFEE #EEFFEE #336633
 }
