@@ -101,7 +101,7 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 					if (getElementNodeName(el) == 'a') {
 						el = getElementParentElement(el);
 					}
-					if (getElementParentElement(el) == this) {
+					if (getElementParentElement(el) == this && !isControlDisabled(el)) {
 						pressControl(el);
 					}
 				});
@@ -112,7 +112,7 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 					if (getElementNodeName(el) == 'a') {
 						el = getElementParentElement(el);
 					}
-					if (getElementParentElement(el) == this) {
+					if (getElementParentElement(el) == this && !isControlDisabled(el)) {
 						pressControl(el, false);
 					}
 				});
