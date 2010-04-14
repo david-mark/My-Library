@@ -13,7 +13,6 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 		var setControlRole = api.setControlRole, checkControl = api.checkControl, disableControl = api.disableControl, pressControl = api.pressControl;
 		var attachListener = api.attachListener, detachListener = api.detachListener, cancelDefault = api.cancelDefault, cancelPropagation = api.cancelPropagation, getEventTarget = api.getEventTarget, getEventTargetRelated = api.getEventTargetRelated;
 		var emptyNode = api.emptyNode, getElementNodeName = api.getElementNodeName, getElementParentElement = api.getElementParentElement, getElementDocument = api.getElementDocument, getElementText = api.getElementText;
-		var attachDragToControl = api.attachDragToControl, detachDragFromControl = api.detachDragFromControl;
 		var toArray = api.toArray;
 		var getToolbarButtons;
 
@@ -182,22 +181,26 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 			return cancelPropagation(e);
 		};
 
+		api.attachDocumentReadyListener(function() {
+		var api = global.API, attachDragToControl = api.attachDragToControl, detachDragFromControl = api.detachDragFromControl;
 		if (attachDragToControl) {
 			api.attachDragToToolbar = function(el, elHandle, options) {
 				attachDragToControl(el, elHandle);
-				var divs = getEBTN(el, 'div');
+				var divs = getEBTN('div', el);
 				for (var i = divs.length; i--;) {
                                   attachListener(divs[i], 'mousedown', cancelDrag);
                                 }
 			};
 			api.detachDragFromToolbar = function(el, elHandle) {
 				detachDragFromControl(el, elHandle);
-				var divs = getEBTN(el, 'div');
+				var divs = getEBTN('div', el);
 				for (var i = divs.length; i--;) {
                                   detachListener(divs[i], 'mousedown', cancelDrag);
                                 }
 			};
 		}
+		api = null;
+		});
 
 		var addToolbarButton;
 

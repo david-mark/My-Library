@@ -251,6 +251,9 @@ if (API) {
 				};
 
 				api.attachDragToControl = function(el, elHandle, options) {
+					if (!options) {
+						options = {};
+					}
 					attachDrag(el, elHandle, {
 						ghost:false,
 						ondragstart:controlDragStartFactory(el, options.ondragstart, options.callbackContext || API),
