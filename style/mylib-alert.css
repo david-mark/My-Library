@@ -1,13 +1,8 @@
-div.alert {
-	padding:0;
-	font-size:100%;
-	z-index:2
-}
 div.alert div.content {
 	text-align:center;
 	padding:1em
 }
-div.alert div {
+div.alert .content {
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	-webkit-text-overflow:ellipsis;
@@ -29,14 +24,7 @@ div.alert input.close {
 div.alert div.icon {
 	position:absolute;
 	left:2px;
-	top:.2em;
-	background-image:url(../images/info.gif)
-}
-div.stop div.icon {
-	background-image:url(../images/error.gif)
-}
-div.caution div.icon {
-	background-image:url(../images/alert.gif)
+	top:.2em
 }
 div.alert div.movehandle {
 	padding-right:20px

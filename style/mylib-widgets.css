@@ -9,8 +9,30 @@ div.button, div.toolbar {
 	border-style:outset;
 	border-width:2px
 }
+div.tabstrip div.checked {
+	position:relative;
+	top:2px;
+	border-bottom-width:0
+}
 div.toolbar {
 	padding:.5em 0
+}
+div.toolbar div.button {
+	margin-left:.25em
+}
+div.toolbar div.button a {
+	text-decoration:none;
+	cursor:default
+}
+div.tabstrip {
+	padding:0 0 0 2px;
+	border:none
+}
+div.tabstrip div.button {
+	margin-left:0
+}
+div.propertysheet {
+	padding:1em
 }
 div.commandbutton {
 	padding:.25em .5em;
@@ -43,11 +65,21 @@ div.captionbutton {
 	background-repeat:no-repeat;
 	background-position:center
 }
-div.rounded div.captionbutton {
+div.rounded div.captionbutton, div.rounded.toolbar div.button {
 	border-radius:.3em;
 	-khtml-border-radius:.3em;
 	-moz-border-radius:.3em;
 	-webkit-border-radius:.3em
+}
+div.rounded.tabstrip div.button {
+	border-bottom-left-radius:0 0;
+	border-bottom-right-radius:0 0;
+	-khtml-border-bottom-left-radius:0 0;
+	-khtml-border-bottom-right-radius:0 0;
+	-moz-border-bottom-left-radius:0 0;
+	-moz-border-bottom-right-radius:0 0;
+	-webkit-border-bottom-left-radius:0 0;
+	-webkit-border-bottom-right-radius:0 0
 }
 div.curtain {
 	z-index:1;
@@ -108,7 +140,7 @@ div.movehandle, div.toolbar div.button {
 }
 div.toolbar div.iconic {
 	padding-left:1.5em;
-	background-image:../images/logo.gif;
+	background-image:url(../images/logo.gif);
 	background-repeat:no-repeat;
 	background-position:left
 }
@@ -150,13 +182,21 @@ div.top div.sizehandlev {
 	top:0;
 	bottom:auto
 }
-div.button, div.movehandle {
-	transition:background-color .4s, border-color .4s;
-	-webkit-transition:background-color .4s, border-color .4s;
-	-o-transition:background-color .4s, border-color .4s
+div.button, div.button a, div.movehandle, div.toolbar {
+	transition:background-color .4s, border-color .4s, font-weight .4s;
+	-webkit-transition:background-color .4s, border-color .4s, font-weight .4s;
+	-o-transition:background-color .4s, border-color .4s, font-weight .4s;
+	user-select:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none
 }
-div.button:active, div.checked {
+div.button:active, div.checked, div.pressed {
 	border-style:inset
+}
+div.tabstrip div.checked:active, div.tabstrip div.pressed {
+	border-style:outset
 }
 div.button.disabled:active {
 	border-style:outset

@@ -6,3 +6,6 @@ div.disabled, div.drawn, div.dragging {
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
 	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=60)
 }
+div.disabled {
+	zoom:1
+}

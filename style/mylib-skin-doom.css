@@ -1,88 +1,91 @@
-div.rounded {
-	border-radius:.3em;
-	-khtml-border-radius:.3em;
-	-moz-border-radius:.3em;
-	-webkit-border-radius:.3em;
+div.popup, div.sidebar, div.toolbar, div.button {
+	border-style:solid;
+	border-color:#EEE #333 #333 #EEE
 }
-div.shadowed {
-	box-shadow:3px 3px 0 #333;
-	-moz-box-shadow:3px 3px 0 #333
+div.tabstrip {
+	border-style:none;
 }
-div.popup {
-	border-color:#666699 #000033 #000033 #666699;
-	border:solid 2px;
-	overflow:hidden	
+div.button:active, div.checked, div.pressed {
+	border-style:solid;
+	border-color:#333 #EEE #EEE #333
+}
+div.tabstrip div.button {
+	border-style:solid;
+	border-color:#EEE #333 #EEE #EEE
+}
+
+div.tabstrip div.button:active, div.tabstrip div.pressed {
+	border-style:solid;
+	border-color:#EEE #333 #EEE #EEE
+}
+div.tabstrip div.checked {
+	border-style:solid;
+	border-color:#EEE #333 #333 #EEE
+}
+div.button.disabled:active {
+	border-style:solid;
+	border-color:#EEE #333 #333 #EEE
+}
+div.button.checked.disabled:active {
+	border-style:solid;
+	border-color:#333 #EEE #EEE #333
+}
+div.tabstrip div.button.checked.disabled:active {
+	border-style:solid;
+	border-color:#EEE #333 #333 #EEE
 }
 div.window {
-	color:#000033;
+	color:#330000;
 	background-color:#FFF
 }
-div.wrap div.content {
-	white-space:normal;
-}
-div.wrap {
-	width:15em;
-}
-div.movehandle {
+div.movehandle, div.selected {
 	background-color:#000000;
 	color:#FFF;
-	text-align:left;
-	margin:0;
-	cursor:default;
-	position:relative;
-	font-weight:bold;
-	padding:2px 2px 2px 2px
+}
+div.background div.movehandle {
+	background-color:#CCCCCC;
+	color:#FFF;
 }
 div.sizehandle {
-	position:absolute;
-	height:12px;
-	width:12px;
-	right:0;
-	bottom:0;
-	cursor:se-resize;
-	font-size:1px;
-	background-image:url(../images/sizehandle.gif);
-	background-repeat:no-repeat
+	background-image:url(../images/sizehandle.gif)
 }
-div.sizehandleh {
-	position:absolute;
-	height:100%;
-	width:2px;
-	right:0;
-	top:0;
-	cursor:e-resize
-}
-div.sizehandlev {
-	position:absolute;
-	width:100%;
-	height:2px;
-	bottom:0;
-	left:0;
-	cursor:s-resize
-}
-div.captionbutton {
-	position:absolute;
-	top:2px;
-	height:1em;
-	width:16px;
-	border:outset 2px;
-	background-repeat:no-repeat;
-	background-color:#FFF;
+div.button, div.button a, div.button a:link, div.button a:visited, div.toolbar, div.sidebar {
 	color:inherit;
-	background-position:center
+	background-color:#CCCCCC
 }
-div.captionbutton:active {
-	border-style:inset;
+div.button:hover, div.button:hover a {
+	color:inherit;
+	background-color:#FFF
 }
-div.captionbutton.disabled:active {
-	border-style:outset;
+div.button.disabled:hover, div.button.disabled:hover a {
+	color:inherit;
+	background-color:#CCCCCC
 }
-div.rounded div.captionbutton {
-	border-radius:.3em;
-	-khtml-border-radius:.3em;
-	-moz-border-radius:.3em;
-	-webkit-border-radius:.3em
+div.checked, div.checked a, div.checked a:link, div.checked a:visited, div.button.disabled.checked:hover {
+	background-color:#EEE;
+	color:inherit;
 }
+div.tabstrip div.button.disabled:hover, div.tabstrip div.button.disabled:hover a {
+	color:inherit;
+	background-color:#EEE
+}
+div.tabstrip div.button.checked.disabled:hover, div.tabstrip div.button.checked.disabled:hover a {
+	color:inherit;
+	background-color:#CCCCCC
+}
+div.tabstrip div.button, div.tabstrip div.button a {
+	color:inherit;
+	background-color:#EEE
+}
+div.tabstrip div.checked, div.tabstrip div.checked a {
+	color:inherit;
+	background-color:#CCCCCC
+}
+div.tabstrip {
+	color:inherit;
+	background-color:transparent
+}
+
 div.maximize {
 	background-image:url(../images/maximize.gif)
 }
@@ -98,41 +101,26 @@ div.minimize {
 div.close {
 	background-image:url(../images/closex.gif)
 }
-div.checked {
-	border:inset 2px
+div.icon {
+	background-image:url(../images/info.gif)
 }
-div.disabled {
-	background-color:#CCC;
+div.stop div.icon {
+	background-image:url(../images/error.gif)
+}
+div.caution div.icon {
+	background-image:url(../images/alert.gif)
+}
+div.drawn {
+	background-color:#FFF;
 	color:inherit
 }
-div.minimized {
-	width:10em
-}
-div.maximized {
-	box-shadow:none;
-	-moz-box-shadow:none
-}
-div.icon {
-	height:16px;
-	width:16px;
-	background-repeat:no-repeat;
-	background-color:transparent;
+#skindoom {
+	background-color:#EEE;
 	color:inherit;
+	border-color:#333 #EEE #EEE #333;
+	border-style:solid
 }
-div.curtain {
-	transition: opacity .4s cubic-bezier(0.42, 0, 1.0, 1.0);
-	-webkit-transition: opacity .4s cubic-bezier(0.42, 0, 1.0, 1.0);
-	opacity: 0;
-	background-color:#000;
-	color:inherit;
-	z-index:1;
-	height:0px;
-	width:0px;
-	overflow:hidden;
-}
-div.disabled, div.curtain.drawn {
-	opacity:.6;
-	-moz-opacity:.6;
-	-khtml-opacity:.6;
-	-webkit-opacity:.6
+#skindoom a {
+	background-color:#EEE;
+	color:inherit
 }
