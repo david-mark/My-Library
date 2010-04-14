@@ -124,3 +124,6 @@ div.drawn {
 	background-color:#EEE;
 	color:inherit
 }
+div.toolbar div.skin {
+	background-image:url(../images/skull.png);
+}

@@ -125,3 +125,6 @@ div.drawn {
 	background-color:#EEFFEE;
 	color:inherit
 }
+div.toolbar div.skin {
+	background-image:url(../images/frog.png);
+}
