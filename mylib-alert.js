@@ -744,10 +744,14 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			body.appendChild(el);
 
 			if (attachDocumentListener && getKeyboardKey) {
+				var nextKeyCounts;
+				attachDocumentListener('keydown', function(e) {
+					nextKeyCounts = (shown && !isInBackground);
+				});
 				attachDocumentListener('keyup', function(e) {
-					var elTarget, key, targetTagName ;
+					var elTarget, key, targetTagName;
 
-					if (shown && !e.shiftKey && !e.metaKey && !isInBackground) {
+					if (shown && !e.shiftKey && !e.metaKey && (!isInBackground || nextKeyCounts)) {
 						key = getKeyboardKey(e);
 						switch(key) {
 						case 27:
@@ -790,6 +794,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 								}
 							}
 						}
+						nextKeyCounts = false;
 					}
 				});
 			}
@@ -1114,7 +1119,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					}
 				}
 				if (!shown && elButton && isHostMethod(elButton, 'focus')) {
-					global.setTimeout(focusAlert, options.duration || 0);
+					global.setTimeout(focusAlert, options.duration || 1);
 				}
 				shown = true;
 			};
