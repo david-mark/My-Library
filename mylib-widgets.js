@@ -232,9 +232,9 @@ if (API) {
 					return function() {
 						if (addClass) {
 							addClass(el, 'dragging');
-							if (callback) {
-								callInContext(callback, context, el);
-							}
+						}
+						if (callback) {
+							callInContext(callback, context, el);
 						}
 					};
 				};
@@ -259,9 +259,15 @@ if (API) {
 						ondragstart:controlDragStartFactory(el, options.ondragstart, options.callbackContext || API),
 						ondrop:controlDropFactory(el, options.ondragstart, options.callbackContext || API)
 					});
+					if (addClass) {
+						addClass(elHandle || el, 'draggable');
+					}
 				};
 				api.detachDragFromControl = function(el, elHandle) {
 					detachDrag(el, elHandle);
+					if (removeClass) {
+						removeClass(elHandle || el, 'draggable');
+					}
 				};
 			}
 			api = null;

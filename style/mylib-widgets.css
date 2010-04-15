@@ -100,6 +100,12 @@ div.disabled, div.drawn, div.dragging {
 	-khtml-opacity:.6;
 	-webkit-opacity:.6
 }
+div.draggable {
+	cursor:url("../images/draggable.ico"), move;
+}
+div.dragging, div.dragging div.movehandle {
+	cursor:url("../images/dragging.ico"), move;	
+}
 div.shown {
 	opacity:1;
 	-moz-opacity:1;
@@ -124,10 +130,9 @@ div.vertical {
 div.movehandle {
 	text-align:left;
 	margin:0;
-	cursor:default;
 	position:relative;
 	font-weight:bold;
-	padding:2px;
+	padding:2px
 }
 
 div.movehandle, div.toolbar div.button {
@@ -136,8 +141,12 @@ div.movehandle, div.toolbar div.button {
 	-webkit-text-overflow:ellipsis;
 	-o-text-overflow:ellipsis;
 	overflow:hidden;
+}
+
+div.toolbar div.button {
 	cursor:default
 }
+
 div.toolbar div.iconic {
 	padding-left:1.5em;
 	background-image:url(../images/logo.gif);
@@ -188,10 +197,12 @@ div.top div.sizehandlev {
 	top:0;
 	bottom:auto
 }
-div.button, div.button a, div.movehandle, div.toolbar {
+div.button, div.button a, div.movehandle, div.toolbar, span.highlighted, span.lowlighted {
 	transition:background-color .4s, border-color .4s, font-weight .4s;
 	-webkit-transition:background-color .4s, border-color .4s, font-weight .4s;
-	-o-transition:background-color .4s, border-color .4s, font-weight .4s;
+	-o-transition:background-color .4s, border-color .4s, font-weight .4s
+}
+div.button, div.button a, div.movehandle, div.toolbar {
 	user-select:none;
 	-webkit-user-select:none;
 	-khtml-user-select:none;
