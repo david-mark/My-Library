@@ -112,11 +112,17 @@ div.shown {
 	-khtml-opacity:1;
 	-webkit-opacity:1	
 }
-div.popup, div.sidebar {
+div.sidebar {
 	z-index:2
 }
-div.autohide {
+div.popup {
 	z-index:3
+}
+div.autohide {
+	z-index:4
+}
+div.alwaysontop {
+	z-index:5
 }
 div.wrap div.content {
 	white-space:normal

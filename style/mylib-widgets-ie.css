@@ -9,3 +9,6 @@ div.disabled, div.drawn, div.dragging {
 div.disabled {
 	zoom:1
 }
+div.toolbar div.button a:link, div.toolbar div.button a:visited {
+	background-color:transparent
+}

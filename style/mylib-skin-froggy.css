@@ -55,15 +55,15 @@ div.sizehandle {
 	background-image:url(../images/sizehandle.gif)
 }
 div.button, div.button a, div.button a:link, div.button a:visited, div.toolbar, div.sidebar {
-	color:inherit;
+	color:#003300;
 	background-color:#CCFFCC
 }
 div.button:hover, div.button:hover a {
-	color:inherit;
+	color:#003300;
 	background-color:#FFF
 }
 div.button.disabled:hover, div.button.disabled:hover a {
-	color:inherit;
+	color:#003300;
 	background-color:#CCFFCC
 }
 div.checked, div.checked a, div.checked a:link, div.checked a:visited, div.button.disabled.checked:hover {
@@ -71,19 +71,19 @@ div.checked, div.checked a, div.checked a:link, div.checked a:visited, div.butto
 	color:inherit;
 }
 div.tabstrip div.button.disabled:hover, div.tabstrip div.button.disabled:hover a {
-	color:inherit;
+	color:#003300;
 	background-color:#EEFFEE
 }
 div.tabstrip div.button.checked.disabled:hover, div.tabstrip div.button.checked.disabled:hover a {
-	color:inherit;
+	color:#003300;
 	background-color:#CCFFCC
 }
 div.tabstrip div.button, div.tabstrip div.button a {
-	color:inherit;
+	color:#003300;
 	background-color:#EEFFEE
 }
 div.tabstrip div.checked, div.tabstrip div.checked a {
-	color:inherit;
+	color:#003300;
 	background-color:#CCFFCC
 }
 div.tabstrip {
