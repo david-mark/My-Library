@@ -254,14 +254,16 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					}
 					if (elCaption) {
 						updateDrag(false);
-					}
+					}					
 					if (b && onminimize) {
 						callback(onminimize);
 					}
 				} else {
 					if (!isMaximized) {
-						if (elFixButton && isChecked(elFixButton) && el.style.position != 'fixed') {
-							constrainPositionToViewport(preMinimizedDimensions.pos);
+						if (elFixButton && isChecked(elFixButton)) {
+							if (el.style.position != 'fixed') {
+								constrainPositionToViewport(preMinimizedDimensions.pos);
+							}
 						}
 						positionElement(el, preMinimizedDimensions.pos[0], preMinimizedDimensions.pos[1], dimOptions);
 						sizeElement(el, preMinimizedDimensions.dim[0], preMinimizedDimensions.dim[1], dimOptions, minimizeCallback);
@@ -678,6 +680,9 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 										}
 										this.title = 'Fix';
 										fixElement(el, false, dimOptions);
+									}
+									if (minimizable && elMinimizeButton && isDisabled(elMinimizeButton) && preMinimizedDimensions.pos) {
+										preMinimizedDimensions.pos = getElementPositionStyle(el);
 									}
 									if (focusAlert) {
 										global.setTimeout(focusAlert, 10);
