@@ -46,7 +46,7 @@ if (API && API.areFeatures && API.areFeatures('createElement', 'attachDocumentRe
 			if (showElement) {
 				var oldShowSideBar = api.showSideBar;
 
-				api.showSideBar = function(el, b, options, callback) {
+				api.showSideBar = function(el, b, options) {
 					if (options && options.side && options.effects && options.effects == API.effects.slide && !options.effectParams) {
 						options.effectParams = { side:oppositeSides[options.side] };
 					}

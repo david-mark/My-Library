@@ -4,7 +4,7 @@
    Optionally uses DOM, HTML, Class, Cover Document, Drag, Maximize and Full Screen modules and/or the Fix Element extension */
 
 var API, global = this;
-if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachListener', 'createElement', 'setControlContent', 'setControlState')) {
+if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachListener', 'createElement', 'setElementText', 'setControlState')) {
 	API.attachDocumentReadyListener(function() {
 		var api = API;
 		var isHostMethod = api.isHostMethod;
@@ -49,7 +49,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var preMinimizedDimensions = {};
 		var onhelp, onpositive, onnegative, onindeterminate, onsave, onclose, onhide, oniconclick, onactivate, ondeactivate, onfocus, onblur, ondragstart, ondrop, onmaximize, onminimize, onrestore, callbackContext;
 		var isDirty, isInBackground, isModal, focusAlert, focusTimer, isCaptionButton, presentControls, updateSizeHandle, updateSizeHandles, updateMin, updateMaxCaption, updateMaxButton, updateDrag, update, minimize, maximize, restore, sizable, maximizable, minimizable, decision, showButtons;
-		var setRole = api.setControlRole, setProperty = api.setWaiProperty, removeProperty = api.removeWaiProperty;
+		var setRole = api.setControlRole, setProperty = api.setWaiProperty, removeProperty = api.removeWaiProperty, setControlContent = api.setControlContent;
 		var disableControl = api.disableControl, isDisabled = api.isControlDisabled, checkControl = api.checkControl, isChecked = api.isControlChecked, showControl = api.showControl;
 		var activateAlert, deactivateAlert, attachActivationListeners;
 
@@ -965,6 +965,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					el.style.left = el.style.top = '0';
 				}
 
+				options.text = sText;
 				setControlContent(elLabel, options);
 
 				sizable = options.sizable !== false;
