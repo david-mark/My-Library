@@ -169,9 +169,11 @@ div.toolbar div.iconic {
 }
 
 div.toolbar div.nocaption {
-	padding-left:.75em;
-	padding-right:.75em;
-	background-position:center
+	padding-left:.25em;
+	padding-right:.25em;
+	background-position:center;
+	height:1em;
+	width:1em
 }
 
 div.mini div.movehandle {
