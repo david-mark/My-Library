@@ -24,8 +24,6 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var maximizeElement = api.maximizeElement;
 		var restoreElement = api.restoreElement;
 		var setElementText = api.setElementText;
-		var setElementHtml = api.setElementHtml;
-		var setElementNodes = api.setElementNodes;
 		var positionElement = api.positionElement;
 		var sizeElement = api.sizeElement;
 		var fixElement = api.fixElement;
@@ -54,7 +52,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var activateAlert, deactivateAlert, attachActivationListeners;
 
 		var callback = function(fn, arg1, arg2, arg3) {
-			return callInContext(fn, callbackContext || API, arg1 || el, arg2, arg3);
+			return callInContext(fn, callbackContext || API, arg1, arg2, arg3);
 		};
 
 		var captionButtonTitle = function(title, accelerator) {
@@ -256,7 +254,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 						updateDrag(false);
 					}					
 					if (b && onminimize) {
-						callback(onminimize);
+						callback(onminimize, el);
 					}
 				} else {
 					if (!isMaximized) {
@@ -305,7 +303,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				(b ? maximizeElement : restoreElement)(el, dimOptions, maximizeCallback);
 				update(b);
 				if (b && onmaximize) {
-					callback(onmaximize);
+					callback(onmaximize, el);
 				}
 				isMaximized = b;				
 				if (!maximizeElement.async) {
@@ -325,7 +323,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					result = false;
 				}
 				if (result && onrestore) {
-					callback(onrestore);
+					callback(onrestore, el);
 				}
 				return result;
 			};
@@ -347,15 +345,15 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		}
 
 		function positiveCallback() {
-			return !onpositive || !callback(onpositive);
+			return !onpositive || !callback(onpositive, el);
 		}
 
 		function negativeCallback() {
-			return !onnegative || !callback(onnegative);
+			return !onnegative || !callback(onnegative, el);
 		}
 
 		function indeterminateCallback() {
-			return !onindeterminate || !callback(onindeterminate);
+			return !onindeterminate || !callback(onindeterminate, el);
 		}
 
 		function makeDecision(b) {
@@ -390,12 +388,12 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 			if (shown) {
 				if (isSaving) {
-					if (onsave && callback(onsave) === false) {
+					if (onsave && callback(onsave, el) === false) {
 						return false;
 					}
 				}
 
-				if (onclose && callback(onclose) === false) {
+				if (onclose && callback(onclose, el) === false) {
 					return false;
 				}
 
@@ -403,7 +401,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					hideAlert();
 					good = true;					
 				} else {
-					result = callback(onhide, showOptions);
+					result = callback(onhide, el, showOptions, isMaximized);
 					if (typeof result == 'undefined') {
 						hideAlert();
 						good = true;
@@ -443,7 +441,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					addClass(el, 'background');
 				}
 				if (ondeactivate) {
-					callback(ondeactivate);
+					callback(ondeactivate, el);
 				}
 				isInBackground = true;
 			};
@@ -452,7 +450,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					removeClass(el, 'background');
 				}
 				if (onactivate) {
-					callback(onactivate);
+					callback(onactivate, el);
 				}
 				isInBackground = false;
 			};
@@ -636,7 +634,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 						});
 						attachListener(elIconButton, 'click', function() {
 							if (oniconclick) {
-								callback(oniconclick);
+								callback(oniconclick, el);
 							}
 						});
 						el.appendChild(elIconButton);
@@ -828,7 +826,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 			if (elApplyButton) {
 				attachListener(elApplyButton, 'click', function() {
-					if (!onsave || callback(onsave) !== false) {
+					if (!onsave || callback(onsave, el) !== false) {
 						isDirty = false;
 						this.disabled = true;
 						if (elButton.value == 'Close') {
@@ -1090,7 +1088,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					el.style.top = oldTop;
 				}
 				if (onopen) {
-					callback(onopen);
+					callback(onopen, el);
 				}
 				isInBackground = options.background;
 				if (isInBackground) {
