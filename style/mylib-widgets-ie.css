@@ -1,13 +1,19 @@
-div.curtain {
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0)
-}
-div.disabled, div.drawn, div.dragging {
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=60)
-}
 div.disabled {
 	zoom:1
+}
+
+div.toolbar div.button {
+	zoom:1
+}
+
+div.curtain {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)
+}
+
+div.disabled, div.drawn, div.dragging {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=60)";
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=60)
 }
 div.toolbar div.button a:link, div.toolbar div.button a:visited {
 	background-color:transparent
