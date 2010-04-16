@@ -270,6 +270,17 @@ if (API) {
 					}
 				};
 			}
+			if (api.setElementText) {
+				api.setControlContent = function(el, options) {
+					if (API.setElementHtml && options.html) {
+						API.setElementHtml(el, options.html);
+					} else if (API.setElementNodes && options.nodes) {
+						API.setElementNodes(el, options.nodes);
+					} else {
+						API.setElementText(el, options.text || '');
+					}
+				};
+			}
 			api = null;
 		});
 		}

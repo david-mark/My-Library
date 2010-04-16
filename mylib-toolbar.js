@@ -4,11 +4,11 @@
    Optionally uses Class */
 
 var API, global = this;
-if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'checkControl', 'emptyNode', 'attachListener')) {
+if (API && API.areFeatures && API.areFeatures('getEBTN', 'getChildren', 'getElementText', 'checkControl', 'emptyNode', 'attachListener')) {
 	(function() {
 		var api = API;
 		var isHostMethod = api.isHostMethod;
-		var createElement = api.createElement, getEBTN = api.getEBTN;
+		var createElement = api.createElement, getEBTN = api.getEBTN, getChildren = api.getChildren;
 		var isControlChecked = api.isControlChecked, isControlDisabled = api.isControlDisabled, isControlPressed = api.isControlPressed, callInContext = api.callInContext;
 		var setControlRole = api.setControlRole, checkControl = api.checkControl, disableControl = api.disableControl, pressControl = api.pressControl;
 		var attachListener = api.attachListener, detachListener = api.detachListener, cancelDefault = api.cancelDefault, cancelPropagation = api.cancelPropagation, getEventTarget = api.getEventTarget, getEventTargetRelated = api.getEventTargetRelated;
@@ -83,7 +83,7 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 				if (setControlRole) {
 					setControlRole(el, 'toolbar');
 				}
-				var divs = getEBTN('div', el);
+				var divs = getChildren(el);
 				for (var i = divs.length; i--;) {
 					var div = divs[i];
 					var a, anchors = getEBTN('a', div);
@@ -142,7 +142,7 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 						}
 						if (result !== false) {
 							if (options.radio) {
-								divs = getEBTN('div', this);
+								divs = getChildren(this);
 
 								for (i = divs.length; i--;) {
 									var div = divs[i];
@@ -189,14 +189,14 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 		if (attachDragToControl) {
 			api.attachDragToToolbar = function(el, elHandle, options) {
 				attachDragToControl(el, elHandle);
-				var divs = getEBTN('div', el);
+				var divs = getChildren(el);
 				for (var i = divs.length; i--;) {
                                   attachListener(divs[i], 'mousedown', cancelDrag);
                                 }
 			};
 			api.detachDragFromToolbar = function(el, elHandle) {
 				detachDragFromControl(el, elHandle);
-				var divs = getEBTN('div', el);
+				var divs = getChildren(el);
 				for (var i = divs.length; i--;) {
                                   detachListener(divs[i], 'mousedown', cancelDrag);
                                 }
@@ -241,6 +241,9 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 				}
 				var el = createElement(options.tagName || 'div', doc);
 				el.className = options.className || 'toolbar';
+				if (options.id) {
+					el.id = options.id;
+				}
 				var buttons = options.buttons;
 				if (buttons) {
 					var l = buttons.length;
@@ -253,7 +256,7 @@ if (API && API.areFeatures && API.areFeatures('getEBTN', 'getElementText', 'chec
 			};
 
 			api.getToolbarButtons = getToolbarButtons = function(el) {
-				return toArray(el.getElementsByTagName('div'));
+				return getChildren(el);
 			};
 		}
 		api = null;

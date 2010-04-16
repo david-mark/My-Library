@@ -34,13 +34,18 @@ div.tabstrip div.button.checked.disabled:active {
 	border-style:solid;
 	border-color:#EEEEFF #333366 #333366 #EEEEFF
 }
+
 div.window {
 	color:#000033;
 	background-color:#FFF
 }
-div.movehandle, div.selected {
+div.movehandle, div.selected, .highlighted {
 	background-color:#0000FF;
 	color:#FFF;
+}
+div.background .highlighted, .lowlighted {
+	background-color:#EEEEFF;
+	color:#000033;
 }
 div.background div.movehandle {
 	background-color:#CCCCFF;

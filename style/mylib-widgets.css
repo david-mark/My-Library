@@ -125,7 +125,10 @@ div.wrap {
 	width:19em
 }
 div.vertical {
-	width:6em
+	width:5em
+}
+div.vertical .commandbutton {
+	display:block;
 }
 div.movehandle {
 	text-align:left;

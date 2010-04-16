@@ -11,16 +11,16 @@ if (API && API.areFeatures && API.areFeatures('createElement', 'attachDocumentRe
 		var oppositeSides = { left:'right', right:'left', top:'bottom', bottom:'top' };
 
 		if (body && API.isHostMethod(body, 'appendChild') && api.sideBar) {
-			api.createSideBar = function(options, doc) {
-				var el = createElement('div'), body = getBodyElement(doc);
+                        api.enhanceSideBar = function(el, options, doc) {
+				var body = getBodyElement(doc);
 
 				if (!options) {
 					options = {};
 				}
 
-				var side = options.side;
+				var side = options.side || 'left';
 
-				if (el && body) {
+				if (body) {
 					el.style.position = 'absolute';
 					el.className = options.className || 'sidebar';
 					if (side == 'left' || side == 'right') {
@@ -28,10 +28,21 @@ if (API && API.areFeatures && API.areFeatures('createElement', 'attachDocumentRe
 					}
 					el.className += ' ' + side;
 					body.appendChild(el);
+					API.sideBar(el, side, options);
 					return el;
 				}
 				return null;
 			};
+			if (createElement) {
+				api.createSideBar = function(options, doc) {
+					var el = createElement('div');
+					if (el) {
+						API.setControlContent(el, options);
+						return enhanceSideBar(el, options, doc);
+					}
+					return null;
+				};
+			}
 			if (showElement) {
 				var oldShowSideBar = api.showSideBar;
 
@@ -44,6 +55,10 @@ if (API && API.areFeatures && API.areFeatures('createElement', 'attachDocumentRe
 			}
 			api.destroySideBar = function(el) {
 				API.unSideBar(el);
+				var elParent = API.getElementParentElement(el);
+				if (elParent) {
+					elParent.removeChild(el);
+				}
 			};
 		}
 

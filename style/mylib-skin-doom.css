@@ -38,9 +38,13 @@ div.window {
 	color:#330000;
 	background-color:#FFF
 }
-div.movehandle, div.selected {
+div.movehandle, div.selected, .highlighted {
 	background-color:#000000;
 	color:#FFF;
+}
+div.background .highlighted, .lowlighted {
+	background-color:#EEEEEE;
+	color:#000000;
 }
 div.background div.movehandle {
 	background-color:#CCCCCC;

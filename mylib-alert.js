@@ -4,7 +4,7 @@
    Optionally uses DOM, HTML, Class, Cover Document, Drag, Maximize and Full Screen modules and/or the Fix Element extension */
 
 var API, global = this;
-if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachListener', 'createElement', 'setElementText', 'setControlState')) {
+if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachListener', 'createElement', 'setControlContent', 'setControlState')) {
 	API.attachDocumentReadyListener(function() {
 		var api = API;
 		var isHostMethod = api.isHostMethod;
@@ -965,13 +965,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					el.style.left = el.style.top = '0';
 				}
 
-				if (setElementHtml && options.html) {
-					setElementHtml(elLabel, options.html);
-				} else if (setElementNodes && options.nodes) {
-					setElementNodes(elLabel, options.nodes);
-				} else {
-					setElementText(elLabel, sText || '');
-				}
+				setControlContent(elLabel, options);
 
 				sizable = options.sizable !== false;
 
