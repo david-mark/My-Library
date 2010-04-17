@@ -1,0 +1,5 @@
+div.maximize, div.restore, div.minimize, div.close, div.fix {
+	height:20px;
+	width:20px;
+	top:0
+}
