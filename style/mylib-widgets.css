@@ -17,11 +17,16 @@ div.tabstrip div.checked {
 div.toolbar {
 	padding:0
 }
-div.toolbar div.button {
+div.toolbar div.separator {
 	margin-left:.25em
 }
+div.toolbar hr {
+	display:none;
+}
+div.toolbar hr.separator {
+	display:block;
+}
 div.toolbar div.commandbutton {
-	margin-left:.25em;
 	display:inline-block
 }
 div.toolbar div.button a {
@@ -129,6 +134,13 @@ div.autohide {
 div.alwaysontop {
 	z-index:6
 }
+div.content {
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	-webkit-text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+	overflow:hidden
+}
 div.wrap div.content {
 	white-space:normal
 }
@@ -161,7 +173,7 @@ div.toolbar div.button {
 	cursor:default
 }
 
-div.toolbar div.iconic {
+div.toolbar div.iconic, input.iconic {
 	padding-left:1.5em;
 	background-image:url(../images/logo.gif);
 	background-repeat:no-repeat;
@@ -169,10 +181,9 @@ div.toolbar div.iconic {
 }
 
 div.toolbar div.nocaption {
-	padding-left:.25em;
-	padding-right:.25em;
+	padding:.25em .5em;
 	background-position:center;
-	height:1em;
+	height:1.2em;
 	width:1em
 }
 
@@ -281,8 +292,8 @@ div.ease.linear {
 }
 div.ease.in {
 	transition-timing-function:cubic-bezier(0.42, 0, 1.0, 1.0);
-	-webkit-transition-timing-function:(0.42, 0, 1.0, 1.0);
-	-o-transition-timing-function:(0.42, 0, 1.0, 1.0)
+	-webkit-transition-timing-function:cubic-bezier(0.42, 0, 1.0, 1.0);
+	-o-transition-timing-function:cubic-bezier(0.42, 0, 1.0, 1.0)
 }
 
 div.ease.out {

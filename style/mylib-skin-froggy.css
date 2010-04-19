@@ -68,7 +68,11 @@ div.button.disabled:hover, div.button.disabled:hover a {
 }
 div.checked, div.checked a, div.checked a:link, div.checked a:visited, div.button.disabled.checked:hover {
 	background-color:#EEFFEE;
-	color:inherit;
+	color:#003300;
+}
+div.button.checked.disabled a {
+	background-color:#EEFFEE;
+	color:#003300;
 }
 div.tabstrip div.button.disabled:hover, div.tabstrip div.button.disabled:hover a {
 	color:#003300;
@@ -105,6 +109,24 @@ div.minimize {
 }
 div.close {
 	background-image:url(../images/closex.gif)
+}
+div.toolbar div.new {
+	background-image:url(../images/new.png)
+}
+div.toolbar div.open {
+	background-image:url(../images/open.png)
+}
+div.toolbar div.save {
+	background-image:url(../images/save.png)
+}
+div.toolbar div.cut {
+	background-image:url(../images/cut.png)
+}
+div.toolbar div.copy {
+	background-image:url(../images/copy.png)
+}
+div.toolbar div.paste {
+	background-image:url(../images/paste.png)
 }
 div.icon {
 	background-image:url(../images/info.gif)

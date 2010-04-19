@@ -1,8 +1,4 @@
-div.disabled {
-	zoom:1
-}
-
-div.toolbar div.button {
+div.disabled, div.toolbar div.button {
 	zoom:1
 }
 
