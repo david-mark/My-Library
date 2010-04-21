@@ -104,11 +104,20 @@ div.curtain {
 	-webkit-transition-property:opacity;
 	-o-transition-property:opacity
 }
+div.button {
+	opacity:1
+}
 div.disabled, div.drawn, div.dragging {
 	opacity:.6;
 	-moz-opacity:.6;
 	-khtml-opacity:.6;
 	-webkit-opacity:.6
+}
+div.dragging {
+	opacity:.6 !important;
+	-moz-opacity:.6 !important;
+	-khtml-opacity:.6 !important;
+	-webkit-opacity:.6 !important
 }
 div.draggable {
 	cursor:url("../images/draggable.ico"), move;
@@ -225,9 +234,9 @@ div.top div.sizehandlev {
 	bottom:auto
 }
 div.button, div.button a, div.movehandle, div.toolbar, span.highlighted, span.lowlighted {
-	transition:background-color .4s, border-color .4s, font-weight .4s;
-	-webkit-transition:background-color .4s, border-color .4s, font-weight .4s;
-	-o-transition:background-color .4s, border-color .4s, font-weight .4s
+	transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
+	-webkit-transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
+	-o-transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
 }
 div.button, div.button a, div.movehandle, div.toolbar {
 	user-select:none;
