@@ -18,12 +18,11 @@ if (this.API && typeof this.API == 'object' && this.API.attachDocumentReadyListe
 		var getScrollPosition = api.getScrollPosition;
 		var getStyle = api.getStyle;
 		var htmlToViewportOrigin = api.htmlToViewportOrigin;
-		var isPositionable = api.isPositionable;
 		var positionElement = api.positionElement;
 		var viewportToHTMLOrigin = api.viewportToHTMLOrigin;
 		var getElementDocument = api.getElementDocument;
 		var getDocumentWindow = api.getDocumentWindow;
-		var deltaY, deltaX, deltaScrollX, deltaScrollY, margins, posComp, sp;
+		var deltaY, deltaX, deltaScrollX, deltaScrollY, margins, posComp;
 		var elementsFixed = {}, timeouts = {}, eventCounters = {};
 
 		if (absoluteElement && getScrollPosition && positionElement) {
@@ -32,14 +31,14 @@ if (this.API && typeof this.API == 'object' && this.API.attachDocumentReadyListe
 					b = true;
 				}
 				options = options || {};
-				var elParent, o, pos, y, x;
+				var pos, y, x;
 				var docNode = getElementDocument(el);
 				var sp = getScrollPosition(docNode);
 				var win = getDocumentWindow(docNode);
 				var uid = elementUniqueId(el);
 				var o = elementsFixed[uid];
 				var bRevert = options.revert;
-				var bWasFixed, fn, fnPos, offsetX, offsetY;
+				var bWasFixed, fn, fnPos;
 
 				if (!b) {
 					if (!o) { // Not fixed yet
@@ -107,7 +106,7 @@ if (this.API && typeof this.API == 'object' && this.API.attachDocumentReadyListe
 
 				margins = getElementMarginsOrigin ? getElementMarginsOrigin(el) : [0, 0];
 
-				o = { position:el.style.position, left:el.style.left, top:el.style.top, posComp:posComp, offsetLeft:el.offsetLeft, offsetTop:el.offsetTop, pos:getElementPositionStyle(el), sp:getScrollPosition(docNode) }
+				o = { position:el.style.position, left:el.style.left, top:el.style.top, posComp:posComp, offsetLeft:el.offsetLeft, offsetTop:el.offsetTop, pos:getElementPositionStyle(el), sp:getScrollPosition(docNode) };
 
 				if (getPositionedParent(el)) {
 					pos = getElementPosition(el);
