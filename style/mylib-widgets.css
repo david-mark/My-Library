@@ -1,13 +1,17 @@
 div.popup, div.sidebar, div.curtain {
 	overflow:hidden
 }
-div.popup, div.sidebar {
-	border-style:solid;
-	border-width:2px
-}
-div.button, div.toolbar {
+div.button, div.panel, div.popup {
 	border-style:outset;
 	border-width:2px
+}
+div.tabstrip, div.toast {
+	border-style:none !important;
+}
+div.toast {
+	padding:1em;
+	text-align:center;
+	white-space:nowrap
 }
 div.tabstrip div.checked {
 	position:relative;
@@ -75,13 +79,13 @@ div.captionbutton {
 	background-repeat:no-repeat;
 	background-position:center
 }
-div.rounded div.captionbutton, div.rounded.toolbar div.button {
+div.rounded div.captionbutton, div.rounded.toolbar div.button, div.rounded.toast {
 	border-radius:.3em;
 	-khtml-border-radius:.3em;
 	-moz-border-radius:.3em;
 	-webkit-border-radius:.3em
 }
-div.rounded.tabstrip div.button {
+div.rounded.tabstrip div.button, div.rounded.toast {
 	border-bottom-left-radius:0 0;
 	border-bottom-right-radius:0 0;
 	-khtml-border-bottom-left-radius:0 0;
@@ -90,6 +94,24 @@ div.rounded.tabstrip div.button {
 	-moz-border-bottom-right-radius:0 0;
 	-webkit-border-bottom-left-radius:0 0;
 	-webkit-border-bottom-right-radius:0 0
+}
+div.rounded.tabstrip.bottom div.button, div.rounded.toast.top {
+	border-bottom-left-radius:.3em .3em;
+	border-bottom-right-radius:.3em .3em;
+	-khtml-border-bottom-left-radius:.3em .3em;
+	-khtml-border-bottom-right-radius:.3em .3em;
+	-moz-border-bottom-left-radius:.3em .3em;
+	-moz-border-bottom-right-radius:.3em .3em;
+	-webkit-border-bottom-left-radius:.3em .3em;
+	-webkit-border-bottom-right-radius:.3em .3em;
+	border-top-left-radius:0 0;
+	border-top-right-radius:0 0;
+	-khtml-border-top-left-radius:0 0;
+	-khtml-border-top-right-radius:0 0;
+	-moz-border-top-left-radius:0 0;
+	-moz-border-top-right-radius:0 0;
+	-webkit-border-top-left-radius:0 0;
+	-webkit-border-top-right-radius:0 0
 }
 div.curtain {
 	z-index:3;

@@ -1,4 +1,4 @@
-div.popup, div.sidebar, div.toolbar, div.button {
+div.popup, div.panel, div.button {
 	border-style:solid;
 	border-color:#FFEEEE #663333 #663333 #FFEEEE
 }
@@ -53,9 +53,14 @@ div.background div.movehandle {
 div.sizehandle {
 	background-image:url(../images/sizehandle.gif)
 }
-div.button, div.button a, div.button a:link, div.button a:visited, div.toolbar, div.sidebar {
+div.panel, div.button, div.button a, div.button a:link, div.button a:visited {
 	color:#330000;
 	background-color:#FFCCCC
+}
+div.translucent {
+	color:#000033;
+	background-color:#CCCCFF;
+	background-color:rgba(255, 204, 204, .8)
 }
 div.button:hover, div.button:hover a {
 	color:#330000;

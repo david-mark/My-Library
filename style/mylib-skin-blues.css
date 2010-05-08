@@ -1,9 +1,6 @@
-div.popup, div.sidebar, div.toolbar, div.button {
+div.popup, div.panel, div.button {
 	border-style:solid;
 	border-color:#EEEEFF #333366 #333366 #EEEEFF
-}
-div.tabstrip {
-	border-style:none;
 }
 div.button:active, div.checked, div.pressed {
 	border-style:solid;
@@ -13,7 +10,6 @@ div.tabstrip div.button {
 	border-style:solid;
 	border-color:#EEEEFF #333366 #EEEEFF #EEEEFF
 }
-
 div.tabstrip div.button:active, div.tabstrip div.pressed {
 	border-style:solid;
 	border-color:#EEEEFF #333366 #EEEEFF #EEEEFF
@@ -34,31 +30,34 @@ div.tabstrip div.button.checked.disabled:active {
 	border-style:solid;
 	border-color:#EEEEFF #333366 #333366 #EEEEFF
 }
-
 div.window {
 	color:#000033;
 	background-color:#FFF
 }
 div.movehandle, div.selected, .highlighted {
 	background-color:#0000FF;
-	color:#FFF;
+	color:#FFF
 }
 div.background .highlighted, .lowlighted {
 	background-color:#EEEEFF;
-	color:#000033;
+	color:#000033
 }
 div.background div.movehandle {
 	background-color:#CCCCFF;
-	color:#FFF;
+	color:#FFF
 }
 div.sizehandle {
 	background-image:url(../images/sizehandle.gif)
 }
-div.button, div.button a, div.button a:link, div.button a:visited, div.toolbar, div.sidebar {
+div.panel, div.button, div.button a, div.button a:link, div.button a:visited {
 	color:#000033;
 	background-color:#CCCCFF
 }
-
+div.translucent {
+	color:#000033;
+	background-color:#CCCCFF;
+	background-color:rgba(204, 204, 255, .8)
+}
 div.button:hover, div.button:hover a {
 	color:#000033;
 	background-color:#FFF

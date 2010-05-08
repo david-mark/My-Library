@@ -2,13 +2,6 @@ div.alert div.content {
 	text-align:center;
 	padding:1em
 }
-div.alert .content {
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	-webkit-text-overflow:ellipsis;
-	-o-text-overflow:ellipsis;
-	overflow:hidden
-}
 div.alert fieldset {
 	text-align:center;
 	border:none;
@@ -16,7 +9,8 @@ div.alert fieldset {
 }
 div.alert input.commandbutton {
 	width:5em;
-	margin-left:.25em	
+	margin-left:.25em;
+	margin-right:0
 }
 div.alert input.close {
 	margin-left:0
