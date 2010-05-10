@@ -55,16 +55,19 @@ div.commandbutton {
 div.animated {
 	transition-duration:.4s;
 	-webkit-transition-duration:.4s;
+	-moz-transition-duration:.4s;
 	-o-transition-duration:.4s
 }
 div.animated.fast {
 	transition-duration:.2s;
 	-webkit-transition-duration:.2s;
+	-moz-transition-duration:.2s;
 	-o-transition-duration:.2s
 }
 div.animated.slow {
 	transition-duration:.8s;
 	-webkit-transition-duration:.8s;
+	-moz-transition-duration:.8s;
 	-o-transition-duration:.8s
 }
 div.window {
@@ -124,6 +127,7 @@ div.curtain {
         -khtml-opacity:0;
 	transition-property:opacity;
 	-webkit-transition-property:opacity;
+	-moz-transition-property:opacity;
 	-o-transition-property:opacity
 }
 div.button {
@@ -142,10 +146,10 @@ div.dragging {
 	-webkit-opacity:.6 !important
 }
 div.draggable {
-	cursor:url("../images/draggable.ico"), move;
+	cursor:url("../images/draggable.ico"), move
 }
 div.dragging, div.dragging div.movehandle {
-	cursor:url("../images/dragging.ico"), move;	
+	cursor:url("../images/dragging.ico"), move
 }
 div.shown {
 	opacity:1;
@@ -191,10 +195,10 @@ div.movehandle {
 
 div.movehandle, div.toolbar div.button {
 	white-space:nowrap;
-	text-overflow:ellipsis;
+	text-overflow-mode:ellipsis;
 	-webkit-text-overflow:ellipsis;
 	-o-text-overflow:ellipsis;
-	overflow:hidden;
+	overflow:hidden
 }
 
 div.toolbar div.button {
@@ -252,9 +256,10 @@ div.top div.sizehandlev {
 	top:0;
 	bottom:auto
 }
-div.button, div.button a, div.movehandle, div.toolbar, span.highlighted, span.lowlighted {
+div.button, div.button a, div.movehandle, div.panel, span.highlighted, span.lowlighted {
 	transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
 	-webkit-transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
+	-moz-transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
 	-o-transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
 }
 div.button, div.button a, div.movehandle, div.toolbar {
@@ -310,28 +315,33 @@ div.minimized {
 div.ease {
 	transition-timing-function:cubic-bezier(0.25, 0.1, 0.25, 1.0);
 	-webkit-transition-timing-function:cubic-bezier(0.25, 0.1, 0.25, 1.0);
+	-moz-transition-timing-function:cubic-bezier(0.25, 0.1, 0.25, 1.0);
 	-o-transition-timing-function:cubic-bezier(0.25, 0.1, 0.25, 1.0)
 }
 
 div.ease.linear {
 	transition-timing-function:linear;
 	-webkit-transition-timing-function:linear;
+	-moz-transition-timing-function:linear;
 	-o-transition-timing-function:linear
 }
 div.ease.in {
 	transition-timing-function:cubic-bezier(0.42, 0, 1.0, 1.0);
 	-webkit-transition-timing-function:cubic-bezier(0.42, 0, 1.0, 1.0);
+	-moz-transition-timing-function:cubic-bezier(0.42, 0, 1.0, 1.0);
 	-o-transition-timing-function:cubic-bezier(0.42, 0, 1.0, 1.0)
 }
 
 div.ease.out {
 	transition-timing-function:cubic-bezier(0, 0, 0.58, 1.0);
 	-webkit-transition-timing-function:cubic-bezier(0, 0, 0.58, 1.0);
+	-moz-transition-timing-function:cubic-bezier(0, 0, 0.58, 1.0);
 	-o-transition-timing-function:cubic-bezier(0, 0, 0.58, 1.0)
 }
 
 div.ease.in.out {
 	transition-timing-function:cubic-bezier(0.42, 0, 0.58, 1.0);
 	-webkit-transition-timing-function:cubic-bezier(0.42, 0, 0.58, 1.0);
+	-moz-transition-timing-function:cubic-bezier(0.42, 0, 0.58, 1.0);
 	-o-transition-timing-function:cubic-bezier(0.42, 0, 0.58, 1.0)
 }
