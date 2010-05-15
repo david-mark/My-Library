@@ -256,11 +256,17 @@ div.top div.sizehandlev {
 	top:0;
 	bottom:auto
 }
-div.button, div.button a, div.movehandle, div.panel, span.highlighted, span.lowlighted {
+div.button, div.button a, div.movehandle, div.toolbar, span.highlighted, span.lowlighted {
 	transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
 	-webkit-transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
 	-moz-transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
 	-o-transition:background-color .4s, border-color .4s, font-weight .4s, opacity .8s;
+}
+div.panel {
+	transition:background-color .4s, border-color .4s, font-weight .4s;
+	-webkit-transition:background-color .4s, border-color .4s, font-weight .4s;
+	-moz-transition:background-color .4s, border-color .4s, font-weight .4s;
+	-o-transition:background-color .4s, border-color .4s, font-weight .4s;
 }
 div.button, div.button a, div.movehandle, div.toolbar {
 	user-select:none;
