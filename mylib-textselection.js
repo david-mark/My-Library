@@ -64,6 +64,9 @@ if (API && API.attachDocumentReadyListener) {
           range.select();
         }
       };
+      API.getHostRange = function(doc) {
+        return selectionToRange(getSelection(doc));
+      };
     }
 
     if (clearDocumentSelection) {
@@ -76,9 +79,10 @@ if (API && API.attachDocumentReadyListener) {
       return getSelectionText(getSelection(doc));
     };
 
-    if (isHostMethod(doc, 'createElement')) {
-      el = doc.createElement('input');
-      body = API.getBodyElement();
+    el = doc.createElement('input');
+    body = API.getBodyElement();
+
+    if (isHostMethod(doc, 'createElement') && body && isHostMethod(body, 'appendChild') && el) {
       body.appendChild(el);
       if (typeof el.selectionStart == 'number') {
         getControlSelection = function(el) {
@@ -132,9 +136,8 @@ if (API && API.attachDocumentReadyListener) {
           };
         }
       }
+      body.removeChild(el);
     }
-
-    body.removeChild(el);
 
     API.getControlSelection = getControlSelection;
     API.setControlSelection = setControlSelection;
