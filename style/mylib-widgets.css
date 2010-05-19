@@ -93,8 +93,8 @@ div.rounded.tabstrip div.button, div.rounded.toast {
 	border-bottom-right-radius:0 0;
 	-khtml-border-bottom-left-radius:0 0;
 	-khtml-border-bottom-right-radius:0 0;
-	-moz-border-bottom-left-radius:0 0;
-	-moz-border-bottom-right-radius:0 0;
+	-moz-border-radius-bottomleft:0 0;
+	-moz-border-radius-bottomright:0 0;
 	-webkit-border-bottom-left-radius:0 0;
 	-webkit-border-bottom-right-radius:0 0
 }
@@ -103,16 +103,16 @@ div.rounded.tabstrip.bottom div.button, div.rounded.toast.top {
 	border-bottom-right-radius:.3em .3em;
 	-khtml-border-bottom-left-radius:.3em .3em;
 	-khtml-border-bottom-right-radius:.3em .3em;
-	-moz-border-bottom-left-radius:.3em .3em;
-	-moz-border-bottom-right-radius:.3em .3em;
+	-moz-border-radius-bottomleft:.3em .3em;
+	-moz-border-radius-bottomright:.3em .3em;
 	-webkit-border-bottom-left-radius:.3em .3em;
 	-webkit-border-bottom-right-radius:.3em .3em;
 	border-top-left-radius:0 0;
 	border-top-right-radius:0 0;
 	-khtml-border-top-left-radius:0 0;
 	-khtml-border-top-right-radius:0 0;
-	-moz-border-top-left-radius:0 0;
-	-moz-border-top-right-radius:0 0;
+	-moz-border-radius-topleft:0 0;
+	-moz-border-radius-topright:0 0;
 	-webkit-border-top-left-radius:0 0;
 	-webkit-border-top-right-radius:0 0
 }
