@@ -37,7 +37,7 @@ if (this.API && typeof this.API == 'object' && this.API.attachDocumentReadyListe
 		// Multiple object inference to exclude broken MSHTML versions and modes (e.g. IE < 8)
 		// Always best to avoid such inferences, but only downside is exclusion of dead-on IE6/7 mimics from scrolling effects).
 
-		var wontWorkWithHashes = (api.isHostObjectProperty(global, 'external') && !isHostMethod(global, 'XMLHttpRequest') && isHostMethod(global, 'ActiveXObject') && isHostMethod(global, 'attachEvent'));
+		var wontWorkWithHashes = (api.isHostObjectProperty(global, 'external') && isHostMethod(global, 'ActiveXObject') && isHostMethod(global, 'attachEvent') && (typeof global.document.documentMode == 'undefined' || global.document.documentMode < 8));
 
 		var locationHash = function(win) {
 			var loc = win.location.href, index = loc.indexOf('#');
