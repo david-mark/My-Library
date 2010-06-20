@@ -195,7 +195,7 @@ div.movehandle {
 
 div.movehandle, div.toolbar div.button {
 	white-space:nowrap;
-	text-overflow-mode:ellipsis;
+	text-overflow:ellipsis;
 	-webkit-text-overflow:ellipsis;
 	-o-text-overflow:ellipsis;
 	overflow:hidden
@@ -308,12 +308,14 @@ div.rounded {
 	-webkit-border-radius:.3em;
 }
 div.shadowed {
-	box-shadow:3px 3px 0 #CCCC99;
-	-moz-box-shadow:3px 3px 0 #CCCC99
+	box-shadow: 3px 3px 0 #CCCC99;
+	-moz-box-shadow: 3px 3px 0 #CCCC99;
+	-webkit-box-shadow: 3px 3px 0 #CCCC99
 }
 div.maximized {
-	box-shadow:none;
-	-moz-box-shadow:none
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none
 }
 div.minimized {
 	width:10em
