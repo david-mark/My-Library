@@ -1,0 +1,86 @@
+// My Library Touch add-on
+// Uses mousedown/mousemove/mouseup to provide a basic simulation for non-touch browsers
+// Passes the event as the first argument and a reference to the listening element as the second
+// NOTE: Ignore event.target as it is inconsistent between touch and non-touch
+// Move listeners are passed the mouse/finger position as a third argument
+// Test page at http://www.cinsoft.net/mylib-touch.html
+
+var API;
+
+if (typeof API != 'undefined' && API.attachListener) {
+	(function() {
+		var attachListener = API.attachListener, detachListener = API.detachListener;
+		var touchEventType;
+
+		var attachTouchListeners = function(el, fnStart, fnMove, fnEnd, thisObject) {
+			var fnMoveWrapped = function(e) {
+				var touch = e.touches[0], pos = [touch.pageY, touch.pageX];
+
+				fnMove.call(thisObject || el, e, el, pos);
+			};
+
+			attachListener(el, 'touchstart', fnStart, thisObject);
+			attachListener(el, 'touchmove', fnMoveWrapped, thisObject);
+			attachListener(el, 'touchend', fnEnd, thisObject);
+		};
+
+		var attachMouseListeners = function(el, fnStart, fnMove, fnEnd, thisObject, touched) {
+			var doc = API.getElementDocument(el);
+
+			var fnStartWrapped = function(e) {
+				touched = true;
+				fnStart.call(thisObject || el, e, el);
+			};
+
+			var fnMoveWrapped = function(e) {
+				if (touched) {
+					fnMove.call(thisObject || el, e, el, API.getMousePosition(e));
+				}
+			};
+
+			var fnEndWrapped = function(e) {
+				touched = false;
+				fnEnd.call(thisObject || el, e, el);
+			};
+			
+			attachListener(el, 'mousedown', fnStartWrapped, thisObject);
+			attachListener(doc, 'mousemove', fnMoveWrapped, thisObject);
+			attachListener(doc, 'mouseup', fnEndWrapped, thisObject);
+		};
+
+		var touchDownListener = function(el, fnStart, fnMove, fnEnd, thisObject) {
+			var fnWrapped;
+
+			return (fnWrapped = function(e) {
+				var type = e.type;
+
+				detachListener(el, 'touchstart', fnWrapped);
+				detachListener(el, 'mousedown', fnWrapped);
+
+				fnStart.call(thisObject || el, e, el);
+
+				if (!type.indexOf('touch')) {
+					touchEventType = 'Touch';
+					attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject);
+				} else {
+					touchEventType = 'Mouse';
+					attachMouseListeners(el, fnStart, fnMove, fnEnd, thisObject, true);
+				}
+			});
+		};
+
+		API.attachTouchListeners = function(el, fnStart, fnMove, fnEnd, thisObject) {
+			var fnWrapped;
+
+			if (typeof touchEventType == 'undefined') {
+				fnWrapped = touchDownListener(el, fnStart, fnMove, fnEnd, thisObject);
+				attachListener(el, 'touchstart', fnWrapped, thisObject);
+				attachListener(el, 'mousedown', fnWrapped, thisObject);
+			} else if (touchEventType == 'Touch') {
+				attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject);
+			} else {
+				attachMouseListeners(el, fnStart, fnMove, fnEnd, thisObject);
+			}
+		};
+	})();
+}
