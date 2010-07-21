@@ -70,7 +70,10 @@ if (typeof API != 'undefined' && API.attachListener && Function.prototype.call) 
 				fnStart.call(thisObject || el, e, el);
 
 				if (!type.indexOf('mouse')) {
+					touchEventType = 'mouse';
 					attachTouchListeners = attachMouseListeners;
+				} else {
+					touchEventType = 'touch';
 				}
 				attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject, true);
 			});
