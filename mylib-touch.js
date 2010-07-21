@@ -5,16 +5,22 @@
 // Move listeners are passed the mouse/finger position as a third argument
 // Test page at http://www.cinsoft.net/mylib-touch.html
 
+// Also note that this is just a first draft and is largely untested!
+// Use at your own risk.
+
 var API;
 
-if (typeof API != 'undefined' && API.attachListener) {
+if (typeof API != 'undefined' && API.attachListener && Function.prototype.call) {
 	(function() {
 		var attachListener = API.attachListener, detachListener = API.detachListener;
-		var touchEventType;
+		var touchEventType, tapEventType;
 
 		var attachTouchListeners = function(el, fnStart, fnMove, fnEnd, thisObject) {
 			var fnMoveWrapped = function(e) {
-				var touch = e.touches[0], pos = [touch.pageY, touch.pageX];
+
+				// TODO: Make sure this is the right touch (store and check identifier)
+
+				var touch = e.changedTouches[0], pos = [touch.pageY, touch.pageX];
 
 				fnMove.call(thisObject || el, e, el, pos);
 			};
@@ -39,9 +45,13 @@ if (typeof API != 'undefined' && API.attachListener) {
 			};
 
 			var fnEndWrapped = function(e) {
-				touched = false;
-				fnEnd.call(thisObject || el, e, el);
+				if (touched) {
+					touched = false;
+					fnEnd.call(thisObject || el, e, el);
+				}
 			};
+
+			// TODO: Use one pair of mousemove/up listeners for all
 			
 			attachListener(el, 'mousedown', fnStartWrapped, thisObject);
 			attachListener(doc, 'mousemove', fnMoveWrapped, thisObject);
@@ -59,13 +69,10 @@ if (typeof API != 'undefined' && API.attachListener) {
 
 				fnStart.call(thisObject || el, e, el);
 
-				if (!type.indexOf('touch')) {
-					touchEventType = 'Touch';
-					attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject);
-				} else {
-					touchEventType = 'Mouse';
-					attachMouseListeners(el, fnStart, fnMove, fnEnd, thisObject, true);
+				if (!type.indexOf('mouse')) {
+					attachTouchListeners = attachMouseListeners;
 				}
+				attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject, true);
 			});
 		};
 
@@ -76,10 +83,42 @@ if (typeof API != 'undefined' && API.attachListener) {
 				fnWrapped = touchDownListener(el, fnStart, fnMove, fnEnd, thisObject);
 				attachListener(el, 'touchstart', fnWrapped, thisObject);
 				attachListener(el, 'mousedown', fnWrapped, thisObject);
-			} else if (touchEventType == 'Touch') {
-				attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject);
 			} else {
-				attachMouseListeners(el, fnStart, fnMove, fnEnd, thisObject);
+				attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject);
+			}
+		};
+
+		var tapListener = function(el, fn, thisObject) {
+			var fnWrapped;
+
+			return (fnWrapped = function(e) {
+				var type = e.type;
+
+				detachListener(el, 'tap', fnWrapped);
+				detachListener(el, 'click', fnWrapped);
+
+				fn.call(thisObject || el, e);
+
+				if (!type.indexOf('tap')) {
+					tapEventType = 'tap';
+				} else {
+					tapEventType = 'click';
+				}
+
+				attachListener(el, tapEventType, fn);
+			});
+		};
+
+
+		API.attachTapListener = function(el, fn, thisObject) {
+			var fnWrapped;
+
+			if (typeof tapEventType == 'undefined') {
+				fnWrapped = tapListener(el, fn, thisObject);
+				attachListener(el, 'tap', fnWrapped, thisObject);
+				attachListener(el, 'click', fnWrapped, thisObject);
+			} else {
+				attachListener(el, tapEventType, fn, thisObject);
 			}
 		};
 	})();
