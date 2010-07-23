@@ -1,5 +1,5 @@
-div.maximize, div.restore, div.minimize, div.close, div.fix {
-	height:20px;
+div.captionbutton {
+	height:1em;
 	width:20px;
 	top:0
 }
