@@ -97,18 +97,3 @@ body.up {
 	from { -o-transform: translateY(-100%); }
 	to { -o-transform: translateY(0); }
 }
-
-#logo {
-  display: none
-}
-
-#learnmore {
-  float: none;
-  width: 7em
-}
-
-address, address a, address a:link, address a:visited {
-  position: static;
-  color: inherit;
-  background-color: inherit
-}

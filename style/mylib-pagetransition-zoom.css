@@ -91,18 +91,3 @@ body.up {
 	from { -webkit-transform: scale(.5) translateY(-100%); }
 	to { -webkit-transform: scale(1) translateY(0); }
 }
-
-#logo {
-  display: none
-}
-
-#learnmore {
-  float: none;
-  width: 7em
-}
-
-address, address a, address a:link, address a:visited {
-  position: static;
-  color: inherit;
-  background-color: inherit
-}
