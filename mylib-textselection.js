@@ -1,4 +1,4 @@
-// My Library text selection add-on
+// My Library Text Selection add-on
 
 var global = this, API, D, C;
 
@@ -18,7 +18,9 @@ if (API && API.attachDocumentReadyListener) {
       };
     }
 
-    var rangeText = function(range) {
+    API.getHostSelection = getSelection;
+
+    var rangeText = API.getHostRangeText = function(range) {
       if (typeof range.text == 'string') {
         return range.text;
       }
@@ -38,7 +40,7 @@ if (API && API.attachDocumentReadyListener) {
         }
         return '';
       };
-      selectionToRange = function(selection) {
+      selectionToRange = API.selectionToHostRange = function(selection) {
         if (isHostMethod(selection, 'getRangeAt')) {
           return selection.rangeCount ? selection.getRangeAt(0) : null;
         }
