@@ -13,8 +13,8 @@ if (API && API.isHostObjectProperty && API.isHostObjectProperty(window, 'navigat
 			}, position);
 		}
 
-		API.getGeoLocation = function(callback, thisObject) {
-			if (savedPosition) {
+		API.getGeoLocation = function(callback, thisObject, refresh) {
+			if (savedPosition && refresh !== false) {
 				doCallback(savedPosition, callback, thisObject);
 			} else {
 				window.navigator.geolocation.getCurrentPosition(function(position) {
