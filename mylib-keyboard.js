@@ -16,7 +16,7 @@
 
     onnavkeypress (function) - called on arrow key, PageUp/Down and Esc key presses
 
-    callbackContext (object) - set the - this - object for callbacks
+    callbackContext (object) - sets the - this - object for callbacks
 
     suppressControlKeyAutoRepeat - prevents repeated onkey callbacks for control keys
 
@@ -25,7 +25,7 @@
   Test page at: http://www.cinsoft.net/mylib-keyboard.html
 */
 
-var API, E, D, global = this;
+var API, Q, E, D, global = this;
 
 if (API && API.attachListener && Function.prototype.apply) {
 	(function() {
@@ -126,14 +126,20 @@ if (API && API.attachListener && Function.prototype.apply) {
 						}
 					}
 				} else if (!charCode && !suppressControlKeyAutoRepeat) {
-					if (lastControlKeyPress == keyCode) {
-						lastControlKeyPressRepeat++;
-					}
-					if (typeof autoRepeatModel == 'undefined') {
-						if (lastKeyDownRepeat) {
-							autoRepeatModel = lastControlKeyPressRepeat ? 'both' : 'down';
-						} else if (lastControlKeyPressRepeat) {
-							autoRepeatModel = 'press';
+
+					// Escape and Tab are not considered for auto-repeat detection
+					// as they can cause the focus to change, possibly losing a keyup event
+
+					if (keyCode != 27 && keyCode != 9) {
+						if (lastControlKeyPress == keyCode) {
+							lastControlKeyPressRepeat++;
+						}
+						if (typeof autoRepeatModel == 'undefined') {
+							if (lastKeyDownRepeat) {
+								autoRepeatModel = lastControlKeyPressRepeat ? 'both' : 'down';
+							} else if (lastControlKeyPressRepeat) {
+								autoRepeatModel = 'press';
+							}
 						}
 					}
 
@@ -143,7 +149,10 @@ if (API && API.attachListener && Function.prototype.apply) {
 						onkey.apply(context || this, [e, keyCode]);
 					}
 
-					lastControlKeyPress = keyCode;
+
+					if (keyCode != 27 && keyCode != 9) {
+						lastControlKeyPress = keyCode;
+					}
 
 					if (keyCode > 36 && keyCode < 41 || (keyCode == 33 || keyCode == 34) || keyCode == 27) {
 						if (onnavkeypress) {
@@ -191,10 +200,8 @@ if (API && API.attachListener && Function.prototype.apply) {
 						if (keyDownMap[key]) {
 							return;
 						}
-					} else {
-						if (lastKeyDown === key && (time - keyDownMap[key] < 500)) {
-							lastKeyDownRepeat++;
-						}
+					} else if (lastKeyDown === key && key != 27 && key != 9) {
+						lastKeyDownRepeat++;
 					}
 
 					if (autoRepeatModel == 'press') {
@@ -232,17 +239,21 @@ if (API && API.attachListener && Function.prototype.apply) {
 
 		if (E && E.prototype) {
 			E.prototype.onKeyboard = function(options) {
-				var el = this.element();
-
-				attachKeyboardListeners(el, options);
+				attachKeyboardListeners(this.element(), options);
 			};
 		}
 
 		if (D && D.prototype) {
 			D.prototype.onKeyboard = function(options) {
-				var doc = this.node();
+				attachKeyboardListeners(this.node(), options);
+			};
+		}
 
-				attachKeyboardListeners(doc, options);
+		if (Q && Q.prototype) {
+			Q.prototype.onKeyboard = function(options) {
+				this.forEach(function(el) {
+					attachKeyboardListeners(el, options);
+				});
 			};
 		}
 	})();
