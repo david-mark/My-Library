@@ -12,15 +12,26 @@
 
     onkey (function) - called on keyup/down for all keys
 
-    onshortcutchar (function) - called on Ctrl + alphanumeric combinations (not cancelable)
+    onshortcutchar (optional function) - called on Ctrl + alphanumeric (or enter) combinations (not cancelable)
 
-    onnavkeypress (function) - called on arrow key, PageUp/Down and Esc key presses
+    onbeforeshortcutchar (optional function) - called before (on keydown) Ctrl + alphanumeric (or enter) combinations
 
-    callbackContext (object) - sets the - this - object for callbacks
+    onnavkeypress (optional function) - called on arrow key, PageUp/Down and Esc key presses (not cross-browser)
+
+    callbackContext (optional object) - sets the - this - object for callbacks
 
     suppressControlKeyAutoRepeat - prevents repeated onkey callbacks for control keys
 
+    allowShiftCombinations
+
   Except as noted, all callbacks may cancel the default behavior by returning false
+
+  Note that the onnavkeypress callback is not called in all browsers.  But it is only meant to used to cancel
+  default behaviors in the odd browsers that do not allow canceling navigation keydown events (e.g. Opera).
+  See the Spinner example.
+
+  Note that the onshortcutchar callback is not called in IE when the Ctrl key is released before
+  the alphanumeric.
 
   Test page at: http://www.cinsoft.net/mylib-keyboard.html
 */
@@ -71,25 +82,25 @@ if (API && API.attachListener && Function.prototype.apply) {
 			'63277': 34
 		};
 
+		function isShortcutCombination(e, key, allowShiftCombinations, allowAltCombinations) {
+			return ((e.ctrlKey || e.metaKey) && (e.ctrlKey !== e.metaKey) && ((key > 47 && key < 91) || key == 13) && (allowAltCombinations || !e.altKey) && (allowShiftCombinations || !e.shiftKey));
+		}
+
 		var attachKeyboardListeners = function(el, options) {
-			var onchar = options.onchar;
-			var onkey = options.onkey;
+			var onchar = options.onchar, onkey = options.onkey;
 			var onshortcutchar = options.onshortcutchar;
+			var onbeforeshortcutchar = options.onbeforeshortcutchar;
 			var onnavkeypress = options.onnavkeypress;
 			var context = options.callbackContext;
 			var suppressControlKeyAutoRepeat = options.suppressControlKeyAutoRepeat;
-
+			var allowShiftCombinations = options.allowShiftCombinations, allowAltCombinations = options.allowAltCombinations;
 			var lastKeyDown, lastKeyDownRepeat = 0, lastControlKeyPress, lastControlKeyPressRepeat = 0;
+			var upperCaseCharCode;
 
 			attachListener(el, 'keypress', function(e) {
-				var charCode, which, keyCode;
-
-				if (!e) {
-					e = (((this.ownerDocument && this.ownerDocument.parentWindow) || this.parentWindow) || global.window).event;
-				}
-
-				which = e.which;
-				keyCode = e.keyCode;
+				var charCode;
+				var which = e.which;
+				var keyCode = e.keyCode;
 
 				// Determine which character
 
@@ -109,11 +120,12 @@ if (API && API.attachListener && Function.prototype.apply) {
 
 					// Call character listener for printable characters
 
-					if (onshortcutchar && (e.ctrlKey || e.metaKey) && (e.ctrlKey !== e.metaKey) && !e.altKey && !e.shiftKey) {
+					if (onshortcutchar && isShortcutCombination(e, (upperCaseCharCode = (charCode > 96 && charCode < 123) ? charCode - 32 : charCode), allowShiftCombinations, allowAltCombinations)) {
 						shortcutCharactersPressed = true;
-						onshortcutchar.apply(context || this, [e, (charCode > 96 && charCode < 123) ? charCode - 32 : charCode]);
+						onshortcutchar.apply(context || this, [e, upperCaseCharCode]);
 						return;
 					}
+
 					if (!e.ctrlKey && !e.altKey && !e.metaKey) {
 
 						// Opera < 10.5 botches home, end, insert and delete
@@ -149,7 +161,6 @@ if (API && API.attachListener && Function.prototype.apply) {
 						onkey.apply(context || this, [e, keyCode]);
 					}
 
-
 					if (keyCode != 27 && keyCode != 9) {
 						lastControlKeyPress = keyCode;
 					}
@@ -167,10 +178,6 @@ if (API && API.attachListener && Function.prototype.apply) {
 			var keyUpAndDownListener = function(e) {
 				var key, duration, result;
 
-				if (!e) {
-					e = (((this.ownerDocument && this.ownerDocument.parentWindow) || this.parentWindow) || global.window).event;
-				}
-
 				key = typeof e.which == 'number' ? e.which : e.keyCode;
 
 				key = extendedAsciiKeyCodes[key] || key;
@@ -179,14 +186,14 @@ if (API && API.attachListener && Function.prototype.apply) {
 
 					// Backspace or enter failed to fire keypress event
 
-					if (key == 8 && !keyPressMap[8] || key == 13 && !keyPressMap[13]) {
+					if ((key == 8 && !keyPressMap[8] || key == 13 && !keyPressMap[13]) && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
 
 						// Call character listener just in time
 
 						onchar.apply(context || this, [e, key]);
-					} else if (!e.shiftKey && !e.ctrlKey && !e.metaKey && ((key == 189 && !keyPressMap[45]) || (key == 190 && !keyPressMap[46]))) {
+					} else if (((key == 189 && !keyPressMap[45]) || (key == 190 && !keyPressMap[46])) && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
 						onchar.apply(context || this, [e, key - 144]);					
-					} else if (!shortcutCharactersPressed && (e.ctrlKey || e.metaKey) && (e.ctrlKey !== e.metaKey) && (key > 47 && key < 91 || key == 13) && !e.altKey && !e.shiftKey) {
+					} else if (onshortcutchar && !shortcutCharactersPressed && isShortcutCombination(e, key, allowShiftCombinations, allowAltCombinations)) {
 						onshortcutchar.apply(context || this, [e, key]);
 					}
 
@@ -222,6 +229,10 @@ if (API && API.attachListener && Function.prototype.apply) {
 
 				if (e.type == 'keyup') {
 					keyDownMap[key] = lastKeyDown = lastControlKeyPress = lastKeyDownRepeat = lastControlKeyPressRepeat = 0;
+				} else if (onbeforeshortcutchar && isShortcutCombination(e, key, allowShiftCombinations, allowAltCombinations)) {
+					if (onbeforeshortcutchar.apply(context || this, [e, key]) === false) {
+						result = false;
+					}
 				}
 
 				if (result === false) {
