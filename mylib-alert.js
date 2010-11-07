@@ -34,6 +34,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var getElementPositionStyle = api.getElementPositionStyle;
 		var getElementSizeStyle = api.getElementSizeStyle;
 		var getElementParentElement = api.getElementParentElement;
+		var getScrollPosition = api.getScrollPosition;
 		var makeElementUnselectable = api.makeElementUnselectable;
 		var callInContext = api.callInContext;
 		var elCaption, elSizeHandle, elSizeHandleH, elSizeHandleV;
@@ -41,15 +42,41 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 		var elLabel = createElement('div');
 		var elButton = createElement('input');
 		var elFieldset = createElement('fieldset');
-		var elFixButton, elIconButton, elMaximizeButton, elMinimizeButton, elCloseButton, elHelpButton, elCancelButton, elNoButton, elApplyButton;
+		var elFixButton, elIconButton, elMaximizeButton, elMinimizeButton, elCloseButton, elHelpButton, elCancelButton, elNoButton, elApplyButton, elPreviousButton;
 		var body = api.getBodyElement();
 		var isMaximized, showOptions, dimOptions, curtainOptions, shown;
 		var preMinimizedDimensions = {};
-		var onhelp, onpositive, onnegative, onindeterminate, onsave, onclose, onhide, oniconclick, onactivate, ondeactivate, onfocus, onblur, ondragstart, ondrop, onmaximize, onminimize, onrestore, callbackContext;
+		var onhelp, onpositive, onnegative, onindeterminate, onsave, onclose, onhide, oniconclick, onactivate, ondeactivate, onfocus, onblur, ondragstart, ondrop, onmaximize, onminimize, onrestore, onstep, callbackContext;
 		var isDirty, isInBackground, isModal, focusAlert, focusTimer, isCaptionButton, presentControls, updateSizeHandle, updateSizeHandles, updateMin, updateMaxCaption, updateMaxButton, updateDrag, update, minimize, maximize, restore, sizable, maximizable, minimizable, decision, showButtons;
 		var setRole = api.setControlRole, setProperty = api.setWaiProperty, removeProperty = api.removeWaiProperty, setControlContent = api.setControlContent;
 		var disableControl = api.disableControl, isDisabled = api.isControlDisabled, checkControl = api.checkControl, isChecked = api.isControlChecked, showControl = api.showControl;
 		var activateAlert, deactivateAlert, attachActivationListeners;
+		var updatePreviousNextButtons, playAlertEventSound;
+		var step, steps, autoDismissTimer;
+		var playEventSound = api.playEventSound, cornerControl = api.cornerControl;
+
+		if (playEventSound) {
+			playAlertEventSound = function() {
+				var eventSound, duration = showOptions.duration;
+
+				if (!showOptions.effects) {
+					duration = 0;
+				}
+
+				if (showOptions.className.indexOf('stop') != -1) {
+					eventSound = 'stop';
+				} else if (showOptions.className.indexOf('caution') != -1) {
+					eventSound = 'caution';
+				} else if (showOptions.icon !== false) {
+					eventSound = 'info';
+				}
+				if (eventSound) {
+					global.setTimeout(function() {
+						playEventSound(eventSound);
+					}, duration);
+				}
+			};
+		}
 
 		var callback = function(fn, arg1, arg2, arg3) {
 			return callInContext(fn, callbackContext || API, arg1, arg2, arg3);
@@ -57,10 +84,6 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 		var captionButtonTitle = function(title, accelerator) {
 			return title + (accelerator ? ' [Ctrl+' + accelerator + ']' : '');
-		};
-
-		var disableAlertControl = function(el, b) {
-			disableControl(el, b);
 		};
 
 		var appendCaptionButton = function(title, accelerator) {
@@ -78,18 +101,22 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			return elButton;
 		};
 
-		var appendCommandButton = function(name) {
-			var elButton = createElement('input');
-			if (elButton) {
-				elButton.className = 'commandbutton button';
-				elButton.type = 'button';
-				elButton.value = name;
-				elFieldset.appendChild(elButton);
+		var appendCommandButton = function(name, before) {
+			var elNewButton = createElement('input');
+			if (elNewButton) {
+				elNewButton.className = 'commandbutton button';
+				elNewButton.type = 'button';
+				elNewButton.value = name;
+				if (before) {
+					elFieldset.insertBefore(elNewButton, elButton);
+				} else {
+					elFieldset.appendChild(elNewButton);
+				}
 				if (attachActivationListeners) {
-					attachActivationListeners(elButton);
+					attachActivationListeners(elNewButton);
 				}
 			}
-			return elButton;
+			return elNewButton;
 		};
 		
 		if (attachDragToControl) {
@@ -97,11 +124,17 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				(b ? detachDragFromControl : attachDragToControl)(el, elCaption, { ondragstart:ondragstart, ondrop:ondrop });
 			};
 		}
+
+		var fixedCurtain;
 	
 		var showCurtain = function(b) {
 			if (b) {
 				elCurtain.style.display = 'block';
 				coverDocument(elCurtain);
+				if (fixElement && !fixedCurtain) {
+					fixElement(elCurtain);
+					fixedCurtain = true;
+				}
 				if (addClass) {
 
 					// TODO: Create ease classes to correspond to stock easing functions
@@ -119,7 +152,6 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				}
 				curtainOptions.keyClassName = 'drawn';
 				showControl(elCurtain, true, curtainOptions);
-				//showElement(elCurtain, true, curtainOptions);
 			} else {
 				if (removeClass) {
 					removeClass(elCurtain, 'drawn');
@@ -128,10 +160,11 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 						addClass(elCurtain, 'out');
 					}
 				}
-				showElement(elCurtain, false, { removeOnHide:true });
-				if (removeClass) {
-					removeClass(elCurtain, 'animated');
-				}
+				showControl(elCurtain, false, curtainOptions);
+				//showElement(elCurtain, false, { removeOnHide:true });
+				//if (removeClass) {
+				//	removeClass(elCurtain, 'animated');
+				//}
 			}
 		};
 
@@ -163,11 +196,11 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 		updateMin = function(b) {
 			if (elMinimizeButton) {
-				disableAlertControl(elMinimizeButton, b);
+				disableControl(elMinimizeButton, b);
 			}
 
 			if (elMaximizeButton) {
-				disableAlertControl(elMaximizeButton, !b && !maximizable);
+				disableControl(elMaximizeButton, !b && !maximizable);
 			}
 
 			if (elMaximizeButton) {
@@ -209,7 +242,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			}
 
 			if (elFixButton) {
-				disableAlertControl(elFixButton, b);
+				disableControl(elFixButton, b);
 			}
 		};
 
@@ -391,6 +424,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					if (onsave && callback(onsave, el) === false) {
 						return false;
 					}
+					isDirty = false;
 				}
 
 				if (onclose && callback(onclose, el) === false) {
@@ -417,10 +451,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			return false;
 		}
 
-
-		// Need getScrollPosition as centerElement only works for fixed positioned elements without it.
-
-		if (showElement && centerElement && sizeElement && api.getScrollPosition && el && elButton && elFieldset && elLabel && body && isHostMethod(global, 'setTimeout')) {
+		if (showElement && centerElement && sizeElement && getScrollPosition && el && elButton && elFieldset && elLabel && body && isHostMethod(global, 'setTimeout')) {
 
 			api.dismissAlert = dismiss;
 
@@ -434,6 +465,12 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 			api.isAlertModal = function() {
 				return shown && !isModal;
+			};
+
+			api.setAlertTitle = function(text) {
+				if (elCaption) {
+					setElementText(elCaption, text);
+				}
 			};
 
 			api.deactivateAlert = deactivateAlert = function() {
@@ -506,13 +543,11 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				if (shown && el.style.visibility == 'visible' && elFieldset.style.display != 'none') {
 					elButton.focus();
 				}
-				if (activateAlert) {
-					activateAlert();
-				}
+				activateAlert();
 			};
 
 			var blurIfPossible = function(el) {
-				if (!el.disabled && elCancelButton.style.display != 'none') {
+				if (!el.disabled && el.style.display != 'none') {
 					el.blur();
 				}
 			};
@@ -529,6 +564,9 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					if (elApplyButton) {
 						blurIfPossible(elApplyButton);
 					}
+					if (elPreviousButton) {
+						blurIfPossible(elPreviousButton);
+					}
 					if (elHelpButton) {
 						blurIfPossible(elHelpButton);
 					}
@@ -537,6 +575,31 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					deactivateAlert();
 				}
 			};
+
+			var flashTimer, flashCount;
+
+			if (addClass) {
+			api.flashAlert = function(n) {
+				if (!n) {
+					n = 3;
+				}
+				if (flashTimer) {
+					global.clearInterval(flashTimer);
+				}
+				flashCount = 0;
+				addClass(el, 'background');
+				flashTimer = global.setInterval(function() {
+					if (flashTimer) {
+						flashCount++;
+						((flashCount % 2) ? removeClass : addClass)(el, 'background');
+						if (flashCount == n * 2 - 1) {
+							global.clearInterval(flashTimer);
+							flashTimer = 0;
+						}
+					}
+				}, 400);
+			};
+			}
 
 			attachListener(el, 'click', function(e) {
 				var doFocus;
@@ -556,7 +619,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			});
 
 			api.setAlertDirty = function(b, external) {
-				if (decision == 'dialog') {
+				if (decision == 'dialog' && !steps) {
 					if (typeof external == 'boolean') {
 						elButton.value = b ? 'Close' : 'OK';
 						if (elCancelButton) {
@@ -567,7 +630,9 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 						elApplyButton.disabled = !b;
 					}
 					isDirty = b;
+					return true;
 				}
+				return false;
 			};
 
 			api.isAlertModal = function() {
@@ -724,6 +789,7 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			elNoButton = appendCommandButton('No');
 			elCancelButton = appendCommandButton('Cancel');
 			elApplyButton = appendCommandButton('Apply');
+			elPreviousButton = appendCommandButton('Previous', true);
 			elHelpButton = appendCommandButton('Help');
 
 			el.appendChild(elFieldset);
@@ -732,8 +798,21 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 			showElement(el, false);
 			positionElement(el, 0, 0);
 			attachListener(elButton, 'click', function() {
-				if (!decision || makeDecision(true)) {
-					dismiss(isDirty);
+				if (steps) {
+					if (step < steps) {
+						if (callback(onstep, step + 1, step) !== false) {
+							step++;
+							updatePreviousNextButtons();
+						}
+					} else {
+						if (!decision || makeDecision(true)) {
+							dismiss(true);
+						}
+					}
+				} else {
+					if (!decision || makeDecision(true)) {
+						dismiss(isDirty);
+					}
 				}
 			});
 			if (elCurtain) {
@@ -838,9 +917,30 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					}
 				});
 			}
+
+			updatePreviousNextButtons = function() {
+				elPreviousButton.disabled = step == 1;
+				elButton.value = step == steps ? 'Finish' : 'Next';
+			};
+
+			if (elPreviousButton) {
+				attachListener(elPreviousButton, 'click', function() {
+					if (steps && step) {
+						if (callback(onstep, step - 1, step) !== false) {
+							step--;
+							updatePreviousNextButtons();
+						}
+					}
+				});
+			}
 			
 			api.alert = function(sText, options) {
-				var dummy, captionButtons, icon, title, hasTitle, oldLeft, oldTop;
+				if (autoDismissTimer) {
+					global.clearTimeout(autoDismissTimer);
+					autoDismissTimer = 0;
+				}
+
+				var dummy, captionButtons, icon, title, hasTitle, oldLeft, oldTop, moveOptions;
 
 				options = options || {};
 				if (options.effects && typeof options.duration == 'undefined') {
@@ -854,6 +954,18 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				showButtons = options.buttons !== false;
 				captionButtons = options.captionButtons !== false;
 				icon = options.icon !== false;
+
+				onstep = options.onstep;
+				if (onstep && decision == 'dialog') {
+					steps = options.steps;
+					if (steps > 1) {
+						step = 1;
+					} else {
+						steps = 0;
+					}
+				} else {
+					steps = 0;
+				}
 
 				if (setRole) {
 					setRole(el, decision == 'dialog' ? 'dialog' : 'alertdialog');
@@ -875,22 +987,38 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 					elCancelButton.style.display = (decision && decision != 'yesno')? '' : 'none';
 				}
 
+				if (elPreviousButton) {
+					elPreviousButton.style.display = steps ? '' : 'none';
+					updatePreviousNextButtons();
+				}
+
 				if (elNoButton) {
 					elNoButton.style.display = (decision == 'yesno' || decision == 'yesnocancel')? '' : 'none';
 				}
 
 				if (elCloseButton) {
-					disableAlertControl(elCloseButton, !!decision && decision != 'dialog');
+					disableControl(elCloseButton, !!decision && decision != 'dialog');
 				}
 
 				if (elIconButton) {
-					elIconButton.title = decision ? '' : 'Double-click to close';
+					elIconButton.title = (decision && decision != 'dialog') ? '' : 'Double-click to close';
 
 					if (setRole) {
 						setRole(elIconButton, decision ? '' : 'button');
 					}
 
 					elIconButton.style.visibility = (!captionButtons || !icon || !addClass) ? 'hidden' : '';
+				}
+
+
+				// FIXME: Should do this in show callback
+				var autoDismiss = +options.autoDismiss;
+				if (autoDismiss) {
+					autoDismissTimer = global.setTimeout(function() {
+						if (autoDismissTimer && shown) {
+							dismiss(false);
+						}
+					}, autoDismiss);
 				}
 
 				onpositive = options.onpositive;
@@ -908,21 +1036,18 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				ondrop = options.ondrop;
 				callbackContext = options.callbackContext;
 
-				isDirty = false;
-
-				elButton.value = 'OK';
-
 				if (elCancelButton) {
 					elCancelButton.disabled = false;
 				}
 
 				if (elApplyButton) {
+					isDirty = false;
 					elApplyButton.disabled = true;
 					onsave = options.onsave;
-					elApplyButton.style.display = (options.onsave && decision == 'dialog') ? '' : 'none';
+					elApplyButton.style.display = (!steps && onsave && decision == 'dialog') ? '' : 'none';
 				}				
 
-				elButton.value = decision ? ((decision.indexOf('yes') != -1) ? 'Yes' : 'OK') : 'Close';
+				elButton.value = decision ? ((decision.indexOf('yes') != -1) ? 'Yes' : (steps ? 'Next' : 'OK')) : 'Close';
 
 				if (elCaption) {
 					title = options.title;
@@ -1017,9 +1142,9 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 				if (elMaximizeButton) {
 					if (sizable && maximize && maximizable) {
-						disableAlertControl(elMaximizeButton, false);
+						disableControl(elMaximizeButton, false);
 					} else {
-						disableAlertControl(elMaximizeButton);
+						disableControl(elMaximizeButton);
 						if (isMaximized) {
 							restoreElement(el);
 							isMaximized = false;
@@ -1034,9 +1159,9 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 
 				if (elMinimizeButton) {
 					if (sizable && minimize && minimizable) {
-						disableAlertControl(elMinimizeButton, false);
+						disableControl(elMinimizeButton, false);
 					} else {
-						disableAlertControl(elMinimizeButton);
+						disableControl(elMinimizeButton);
 					}
 				}
 
@@ -1094,32 +1219,130 @@ if (API && typeof API == 'object' && API.areFeatures && API.areFeatures('attachL
 				if (isInBackground) {
 					deactivateAlert();
 				}
+
+				var fix, sp = getScrollPosition();
+
+				if (fixElement) {
+					var isFixedChecked = isChecked(elFixButton);
+
+					if (typeof options.fixed == 'undefined') {
+						fix = isFixedChecked;
+					} else {
+						fix = options.fixed;
+					}
+					fix = fix && options.fixable !== false;
+					if (fix && !isFixedChecked || (!fix && isFixedChecked)) {
+						if (isMaximized) {
+							restoreElement(el);
+						} else if (!el.style.top) {
+							el.style.left = sp[0] + 'px';
+							el.style.top = sp[1] + 'px';
+						}
+						fixElement(el, fix);
+						if (elFixButton) {
+							checkControl(elFixButton, fix);
+						}
+						if (isMaximized) {
+							maximizeElement(el);
+						}
+					}
+				}
+
+				var position = options.position;
+				var positionSlideDirections = { topleft:'nw', bottomleft:'sw', topright:'ne', bottomright:'se' };
+
+				if (typeof position == 'string') {
+					if (API.effects && options.effects == API.effects.slide && !options.effectParams) {
+						options.effectParams = { side: 'diagonal' + positionSlideDirections[position] };
+					}
+				}
+
+				if (position && typeof position != 'string') {
+					if (el.style.position != 'fixed') {
+						position[0] += sp[0];
+						position[1] += sp[1];
+					}
+					if (!shown) {
+						if (isMaximized) {
+							restoreElement(el);
+						}
+						el.style.top = position[0] + 'px';
+						el.style.left = position[1] + 'px';
+						if (isMaximized) {
+							maximizeElement(el);
+						}
+					}
+				}
+
 				if (shown || !fnShow || !callback(fnShow, el, options, isMaximized)) {
 					if (shown) {
-						if (!elFixButton || !isChecked(elFixButton)) {
-							global.setTimeout(function() {
-								centerElement(el, { duration:options.duration, ease:options.ease, fps:options.fps }, function() { if (focusAlert) { focusAlert(); } });
-							}, 10);
+						if (options.effects) {
+							moveOptions = {
+								duration:options.duration,
+								ease:options.ease,
+								fps:options.fps
+							};
 						}
+
+						//if (!elFixButton || !isChecked(elFixButton)) {
+							global.setTimeout(function() {
+								if (position) {
+									if (typeof position == 'string') {
+										cornerControl(el, position, moveOptions, focusAlert);
+									} else {
+										positionElement(el, position[0], position[1], moveOptions, focusAlert);
+									}
+								} else {
+									centerElement(el, moveOptions, focusAlert);
+								}
+							}, 10);
+						//}
 						showElement(el);						
+						if (focusAlert && !positionElement.async) {
+							focusAlert();
+						}
 					} else {
 						if (!isMaximized) {
-							centerElement(el);
+							if (position) {
+								if (typeof position == 'string') {
+									cornerControl(el, position);
+								} else {
+									positionElement(el, position[0], position[1]);
+								}
+							} else {
+								centerElement(el);
+							}
 						} else {
 							restoreElement(el);
-							maximizeElement(el, null, function() {
+							var fn = function() {
 								if (addClass) {
 									addClass(el, 'maximized');
 								}
-							});
+							};
+							if (position) {
+								// TODO: Add positionControl function that takes an array
+								if (typeof position == 'string') {
+									cornerControl(el, position);
+								} else {
+									positionElement(el, position[0], position[1]);
+								}
+							}
+							maximizeElement(el, null, fn);
+							if (!maximizeElement.async) {
+								fn();
+							}
 						}
-						showElement(el, true, options);
+						shown = true;
+						showElement(el, true, options, focusAlert);
+						if (focusAlert && !showElement.async) {
+							focusAlert();
+						}
 					}
 				}
-				if (!shown && elButton && isHostMethod(elButton, 'focus')) {
-					global.setTimeout(focusAlert, options.duration || 1);
-				}
 				shown = true;
+				if (playAlertEventSound && !options.mute) {
+					playAlertEventSound(options);
+				}
 			};
 		}
 		body = api = null;
