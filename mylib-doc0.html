@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Last-Modified" content="6 Apr 2010 22:58:00 GMT">
+<title>My Library Documentation</title>
+<meta name="description" content="Documentation for My Library, which is a cross-browser scripting library, written in Javascript">
+<meta name="keywords" content="My Library, Javascript, library, project, repository, builder, browser scripting, Ajax, comp.lang.javascript, newsgroup, documentation">
+<meta name="author" content="David Mark">
+<link rel="home" href="mylib.html" title="Home">
+<link rel="stylesheet" type="text/css" href="style/mylib.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-handheld.css" media="handheld">
+<link rel="stylesheet" type="text/css" href="style/mylib-print.css" media="print">
+</head>
+<body>
+<div id="sidebar">
+<a href="#content" id="skipnav">Skip Navigation</a>
+<h2>Resources</h2>
+<h3>Contents</h3>
+<ul><li><a href="mylib.html" accesskey="1" title="Home [1]">Home</a></li><li><a href="mylib-downloads.html">Downloads</a></li><li class="current"><span id="current">Documentation</span><ul><li><a href="mylib-doc.asp">API Reference</a></li><li><a href="mylib-doc-objects.html">Object Reference</a></li></ul></li><li><a href="mylib-examples.html" title="Try out examples and generate code">Examples</a></li><li><a href="mylib-builder.asp">Builder</a></li><li><a href="mylib-test.asp?version=1.0&amp;requester=on&amp;array=on&amp;script=on&amp;mouseposition=on&amp;drag=on&amp;every=on&amp;cookie=on&amp;contextclick=on&amp;adjacent=on&amp;ajaxlink=on&amp;ajax=on&amp;event=on&amp;audio=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;filter=on&amp;dispatch=on&amp;help=on&amp;flash=on&amp;opacity=on&amp;maximize=on&amp;ashtml=on&amp;foreach=on&amp;query=on&amp;serialize=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;bookmark=on&amp;collections=on&amp;html=on&amp;offset=on&amp;size=on&amp;fx=on&amp;ajaxform=on&amp;overlay=on&amp;some=on&amp;crumb=on&amp;text=on&amp;dom0=on&amp;mousewheel=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;dom=on&amp;setattribute=on&amp;stylesheets=on&amp;style=on&amp;coverdocument=on&amp;dollar=on&amp;objects=on&amp;import=on&amp;rollover=on&amp;locationquery=on&amp;border=on&amp;updater=on&amp;form=on&amp;image=on&amp;plugin=on&amp;directx=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;gethtml=on&amp;mode=HTML" title="Test full build">Build Test</a></li><li><a href="mylib-testspeed.html" title="Compare the performance of the query feature to three popular libraries">Speed Tests</a></li><li><a href="mylib-sponsors.html" title="List of our benefactors">Sponsors</a></li></ul>
+<h3>Related Links</h3>
+<ul><li><a href="http://www.pledgie.com/campaigns/9768" title="Please make a donation today!">Donations</a></li><li><a href="http://groups.google.com/group/my-library-general-discussion/">Discussion</a></li><li><a href="http://code.google.com/p/ourlibrary/source/checkout">Repository</a></li></ul>
+<h3>Primers</h3>
+<ul><li><a href="attributes.html" title="A is for Attributes primer">Attributes</a></li><li><a href="host.html" title="H is for Host primer">Host</a></li><li><a href="keyboard.html" title="K is for Keyboard primer">Keyboard</a></li><li><a href="position.html" title="P is for Position primer">Position</a></li><li><a href="size.html" title="S is for Size primer">Size</a></li><li><a href="viewport.asp" title="V is for Viewport primer">Viewport</a></li></ul>
+<h3>Bookmark</h3>
+<ul><li><a title="Digg this" href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-doc.html&amp;title=My%20Library&amp;bodytext=Build%20your%20own%20browser%20scripting%20library&amp;topic=programming">Digg This</a></li><li><a title="Add bookmark to deli.cio.us" href="http://del.icio.us/post?url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-doc.html">Add to deli.cio.us</a></li></ul>
+<h3>Javascript Help</h3>
+<ul><li><a href="http://groups.google.com/group/comp.lang.javascript/topics" title="comp.lang.javascript newsgroup">Newsgroup</a></li><li><a href="http://jibbering.com/faq/index.html" title="comp.lang.javascript newsgroup FAQ">FAQ</a></li></ul>
+<script type="text/javascript">
+google_ad_client = "pub-0919891272636534";
+google_ad_slot = "6037707224";
+google_ad_width = 120;
+google_ad_height = 90;
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<div>
+<a name="content"></a>
+<h1><span class="redundant">My Library </span>Documentation</h1>
+<ul title="Contents">
+<li><a href="#filestructure">File Structure</a>
+<ul>
+<li><a href="#core">Core</a></li>
+<li><a href="#addons">Add-ons</a></li>
+</ul>
+</li>
+<li><a href="#interfaces">Interfaces</a>
+<ul>
+<li><a href="#api">API</a></li>
+<li><a href="#objects">Object Wrappers</a></li>
+</ul>
+</li>
+<li><a href="#featuredetection">Feature Detection</a>
+<ul>
+<li><a href="#apifunctions">API Functions</a>
+<li><a href="#objectmethods">Object Methods</a>
+<li><a href="#featuretypes">Feature Types</a>
+<ul>
+<li><a href="#immediate">Immediate</a></li>
+<li><a href="#deferred">Deferred</a></li>
+<li><a href="#hybrid">Hybrid</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2><a name="filestructure">File Structure</a></h2>
+<p></p>
+<h3><a name="core">Core</a></h3>
+<p>The core of My Library consists of one main file and three optional extensions. The main file must appear first and is typically included in the <code>head</code> element. The main file may be <a href="mylib-min.js">downloaded in minified form</a> or tailored to specific needs with the online <a href="mylib-builder.asp">builder</a>. The optional extensions are downloaded separately and are typically included just before the end of <code>body</code> element. See the <a href="mylib-downloads.html#core">downloads</a> page for more information.</p>
+<p>This is an example of the typical structure:</p>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+...
+&lt;script type="text/javascript" src="mylib-min.js"&gt;&lt;/script&gt;
+...
+&lt;/head&gt;
+&lt;body&gt;
+...
+&lt;script type="text/javascript" src="mylib-unclip.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="mylib-fix.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="mylib-domready.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><strong>Note</strong> that the unclip and fix extensions are for the slide/clip effects and fixed positioning respectively.</p>
+<p>The preceding example assumes that functions of the <a href="#api">API</a> will be called during page load. If this is not the case, then it is preferable to use this structure:</p>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+...
+&lt;/head&gt;
+&lt;body&gt;
+...
+&lt;script type="text/javascript" src="mylib-min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="mylib-unclip.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="mylib-fix.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="mylib-domready.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<h3><a name="addons">Add-ons</a></h3>
+<p>Add-ons are <a href="mylib-downloads.html#addons">downloaded</a> separately and extend the functionality of My Library. The files must be included after the main file.</p>
+<p>This example shows the structure of a document that makes use of the <a href="#debug">Debug</a> add-on:</p>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+...
+&lt;script type="text/javascript" src="mylib-min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="mylib-debug.js"&gt;&lt;/script&gt;
+...
+&lt;/head&gt;
+&lt;body&gt;
+...
+&lt;script type="text/javascript" src="mylib-unclip.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="mylib-domready.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>This example assumes that functions added by the Debug add-on will be required during page load.</p>
+<h2><a name="interfaces">Interfaces</a></h2>
+<p></p>
+<h3><a name="api">API</a></h3>
+<p>The API is simply a collection of functions. The functions are encapsulated as properties of a global <code>API</code> object to prevent namespace collisions with other scripts. For reasons of performance, the structure of the <code>API</code> object is largely flat. See the <a href="mylib-doc.asp">API Reference</a> for more information.</p>
+<h3><a name="objects">Object Wrappers</a></h3>
+<p>The optional object wrappers adds several global constructor functions that provide an OOP interface for My Library and enable the chaining of <a href="#api">API</a> functions. See the <a href="mylib-doc-objects.html">Object Reference</a> for more information.</p>
+<h2><a name="featuredetection">Feature Detection</a></h2>
+<p>Calling applications should <em>always</em> detect methods of the <a href="#api">API</a> as the interface adapts to its environment, though it is not <em>strictly</em> necessary in many cases (most features degrade only in very old browsers). Leaving API feature detection out will likely do no worse (and likely better) than other libraries and frameworks, which have no capabilities to deal with older or otherwise lacking environments (and must be constantly rewritten to appear to work in the latest ones). However, with a small amount of additional effort, applications can be made to withstand even the harshest and most unexpected environments, safely bailing out when required features are unavailable (or lacking). There are no guarantees, but applications that utilize appropriate feature testing have the best chance to hold up in the future.</p>
+<p>For example, an application that requires the <a href="mylib-doc.asp#setopacity"><code>setOpacity</code></a> and <a href="mylib-doc.asp#addstylerule"><code>addStyleRule</code></a> functions would be wrapped in a conditional utilizing the <a href="mylib-doc.asp#arefeatures"><code>areFeatures</code></a> like this:</p>
+<h3><a name="apifunctions">API Functions</a></h3>
+<pre>
+var API; // In case library script failed to load
+
+if (API && API.areFeatures('setOpacity', 'addStyleRule')) {
+
+  // Application
+
+}
+</pre>
+...which is equivalent to:
+<pre>
+var API; // In case library script failed to load
+
+if (API && API.setOpacity && API.addStyleRule) {
+
+  // Application
+
+}
+</pre>
+<h3><a name="objectmethods">Object Methods</a></h3>
+<pre>
+var D, E; // In case library script failed to load
+
+if (D && D().areFeatures('addStyleRule') && E && E().areFeatures('setOpacity')) {
+
+  // Application
+
+}
+</pre>
+...which is equivalent to:
+<pre>
+var D, E; // In case library script failed to load
+
+if (D && D.prototype.addStyleRule && E && E.prototype.setOpacity) {
+
+  // Application
+
+}
+</pre>
+<h3><a name="featuretypes">Feature types</a></h3>
+<p>There are three types of features: <a href="#immediate">immediate</a>, <a href="#deferred">deferred</a> and <a href="#hybrid">hybrid</a>.</p>
+<h4><a name="immediate">Immediate</a></h4>
+<p>Immediate functions and methods may be feature detected and called during page load.</p>
+<h4><a name="deferred">Deferred</a></h4>
+<p>Deferred functions and methods may <em>not</em> be feature detected or called until the document is ready. See the <a href="mylib-doc.asp#attachdocumentreadylistener"><code>attachDocumentReadyListener</code></a> function for more information.</p>
+<h4><a name="hybrid">Hybrid</a></h4>
+<p>Hybrid functions and methods are rare. An example is the <a href="mylib-doc.asp#changeimage"><code>changeImage</code></a> function. These functions and methods are created immediately, but may be replaced with augmented versions when the document is ready. It is recommended that these function and methods be treated as if they were <a href="#deferred">deferred</a> as they will likely be changed to such in the future.</p>
+</div>
+<div id="logo"><a href="mylib.html" title="Home"><img src="images/mylibrarylogo.jpg" height="108" width="260" alt="My Library" title="Home"></a></div>
+<p class="meta">Last Modified: 6 Apr 2010 22:58:00 GMT</p>
+<address>By <a title="Send email to David Mark" href="mailto:dmark@cinsoft.net">David Mark</a></address>
+<div class="legal">Copyright &copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a>. All Rights Reserved.</div>
+</body>
+</html>

@@ -1,0 +1,3351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Last-Modified" content="23 Apr 2010 22:29:00 GMT">
+<title>My Library Object Reference</title>
+<meta name="description" content="Object reference for My Library, which is a cross-browser scripting library, written in Javascript">
+<meta name="keywords" content="My Library, Javascript, library, project, repository, builder, browser scripting, Ajax, comp.lang.javascript, newsgroup, documentation, reference, object">
+<meta name="author" content="David Mark">
+<link rel="home" href="mylib.html" title="Home">
+<link rel="up" href="mylib-doc0.html" title="Documentation">
+<link rel="previous" href="mylib-doc.asp" title="API Reference">
+<link rel="stylesheet" type="text/css" href="style/mylib.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-handheld.css" media="handheld">
+<link rel="stylesheet" type="text/css" href="style/mylib-print.css" media="print">
+</head>
+<body>
+<div id="sidebar">
+<a href="#content" id="skipnav">Skip Navigation</a>
+<h2>Resources</h2>
+<h3>Contents</h3>
+<ul><li><a href="mylib.html" title="Home [1]" accesskey="1">Home</a></li><li><a href="mylib-downloads.html">Downloads</a></li><li class="current"><a href="mylib-doc0.html">Documentation</a><ul><li><a href="mylib-doc.asp">API Reference</a></li><li><span id="current">Object Reference</span></li></ul></li><li><a href="mylib-examples.html" title="Try out examples and generate code">Examples</a></li><li><a href="mylib-builder.asp">Builder</a></li><li><a href="mylib-test.asp?version=1.0&amp;requester=on&amp;array=on&amp;script=on&amp;mouseposition=on&amp;drag=on&amp;every=on&amp;cookie=on&amp;contextclick=on&amp;adjacent=on&amp;ajaxlink=on&amp;ajax=on&amp;event=on&amp;audio=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;filter=on&amp;dispatch=on&amp;help=on&amp;flash=on&amp;opacity=on&amp;maximize=on&amp;ashtml=on&amp;foreach=on&amp;query=on&amp;serialize=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;bookmark=on&amp;collections=on&amp;html=on&amp;offset=on&amp;size=on&amp;fx=on&amp;ajaxform=on&amp;overlay=on&amp;some=on&amp;crumb=on&amp;text=on&amp;dom0=on&amp;mousewheel=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;dom=on&amp;setattribute=on&amp;stylesheets=on&amp;style=on&amp;coverdocument=on&amp;dollar=on&amp;objects=on&amp;import=on&amp;rollover=on&amp;locationquery=on&amp;border=on&amp;updater=on&amp;form=on&amp;image=on&amp;plugin=on&amp;directx=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;gethtml=on&amp;mode=HTML" title="Test full build">Build Test</a></li><li><a href="mylib-testspeed.html" title="Compare the performance of the query feature to three popular libraries">Speed Tests</a></li><li><a href="mylib-sponsors.html" title="List of our benefactors">Sponsors</a></li></ul>
+<h3>Related Links</h3>
+<ul><li><a href="http://www.pledgie.com/campaigns/9768" title="Please make a donation today!">Donations</a></li><li><a href="http://groups.google.com/group/my-library-general-discussion/">Discussion</a></li><li><a href="http://code.google.com/p/ourlibrary/source/checkout">Repository</a></li></ul>
+<h3>Primers</h3>
+<ul><li><a href="attributes.html" title="A is for Attributes primer">Attributes</a></li><li><a href="host.html" title="H is for Host primer">Host</a></li><li><a href="keyboard.html" title="K is for Keyboard primer">Keyboard</a></li><li><a href="position.html" title="P is for Position primer">Position</a></li><li><a href="size.html" title="S is for Size primer">Size</a></li><li><a href="viewport.asp" title="V is for Viewport primer">Viewport</a></li></ul>
+<h3>Bookmark</h3>
+<ul><li><a title="Digg this" href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-doc.html&amp;title=My%20Library&amp;bodytext=Build%20your%20own%20browser%20scripting%20library&amp;topic=programming">Digg This</a></li><li><a title="Add bookmark to deli.cio.us" href="http://del.icio.us/post?url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-doc.html">Add to deli.cio.us</a></li></ul>
+<h3>Javascript Help</h3>
+<ul><li><a href="http://groups.google.com/group/comp.lang.javascript/topics" title="comp.lang.javascript newsgroup">Newsgroup</a></li><li><a href="http://jibbering.com/faq/index.html" title="comp.lang.javascript newsgroup FAQ">FAQ</a></li></ul>
+<script type="text/javascript">
+google_ad_client = "pub-0919891272636534";
+google_ad_slot = "6037707224";
+google_ad_width = 120;
+google_ad_height = 90;
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<div>
+<a name="content"></a>
+<h1><span class="redundant">My Library </span>Object Reference</h1>
+<p>This is the reference for the object-oriented interface, which is built on top of the <a href="mylib-doc0.html#api">functional API</a>. Typically, each method wraps a single API function, though some (e.g. <a href="#d-anchors">anchors</a>) wrap multiple functions. The relationships between the two interfaces are cross-referenced for convenient comparison.</p>
+<p><strong>Note</strong> this document is a work in progress. We ask that you please bear with us.</p>
+<ul id="toc" title="Contents">
+<li><a href="#c">C</a>
+	<ul>
+		<li><a href="#c-changed">changed</a></li>
+		<li><a href="#c-getvalue">getValue</a></li>
+	</ul>
+</li>
+<li><a href="#d">D</a>
+	<ul>
+		<li><a href="#d-addstylerule">addStyleRule</a></li>
+		<li><a href="#d-anchors">anchors</a></li>
+		<li><a href="#d-body">body</a></li>
+		<li><a href="#d-children">children</a></li>
+		<li><a href="#d-clientrectangle">clientRectangle</a></li>
+		<li><a href="#d-create">create</a></li>
+		<li><a href="#d-createwithattributes">createWithAttributes</a></li>
+		<li><a href="#d-createwithproperties">createWithProperties</a></li>
+		<li><a href="#d-deletecookie">deleteCookie</a></li>
+		<li><a href="#d-descendants">descendants</a></li>
+		<li><a href="#d-forms">forms</a></li>
+		<li><a href="#d-getcookie">getCookie</a></li>
+		<li><a href="#d-getscrollposition">getScrollPosition</a></li>
+		<li><a href="#d-head">head</a></li>
+		<li><a href="#d-html">html</a></li>
+		<li><a href="#d-htmlelement">htmlElement</a></li>
+		<li><a href="#d-images">images</a></li>
+		<li><a href="#d-isxhtml">isXhtml</a></li>
+		<li><a href="#d-links">links</a></li>
+		<li><a href="#d-load">load</a></li>
+		<li><a href="#d-node">node</a></li>
+		<li><a href="#d-off">off</a></li>
+		<li><a href="#d-on">on</a></li>
+		<li><a href="#d-onready">onReady</a></li>
+		<li><a href="#d-query">query</a></li>
+		<li><a href="#d-scrollrectangle">scrollRectangle</a></li>
+		<li><a href="#d-scrollsize">scrollSize</a></li>
+		<li><a href="#d-setactivestylesheet">setActiveStyleSheet</a></li>
+		<li><a href="#d-setcookie">setCookie</a></li>
+		<li><a href="#d-setscrollposition">setScrollPosition</a></li>
+		<li><a href="#d-window">window</a></li>
+	</ul>
+</li>
+<li><a href="#e">E</a>
+	<ul>
+		<li><a href="#e-absolute">absolute</a></li>
+		<li><a href="#e-addclass">addClass</a></li>
+		<li><a href="#e-addhtml">addHtml</a></li>
+		<li><a href="#e-addtext">addText</a></li>
+		<li><a href="#e-adjacent">adjacent</a></li>
+		<li><a href="#e-appendto">appendTo</a></li>
+		<li><a href="#e-attachdrag">attachDrag</a></li>
+		<li><a href="#e-border">border</a></li>
+		<li><a href="#e-borders">borders</a></li>
+		<li><a href="#e-center">center</a></li>
+		<li><a href="#e-children">children</a></li>
+		<li><a href="#e-clone">clone</a></li>
+		<li><a href="#e-containedby">containedBy</a></li>
+		<li><a href="#e-coverdocument">coverDocument</a></li>
+		<li><a href="#e-descendants">descendants</a></li>
+		<li><a href="#e-detachdrag">detachDrag</a></li>
+		<li><a href="#e-dispatch">dispatch</a></li>
+		<li><a href="#e-document">document</a></li>
+		<li><a href="#e-dropin">dropIn</a></li>
+		<li><a href="#e-dropout">dropOut</a></li>
+		<li><a href="#e-element">element</a></li>
+		<li><a href="#e-empty">empty</a></li>
+		<li><a href="#e-fadein">fadeIn</a></li>
+		<li><a href="#e-fadeout">fadeOut</a></li>
+		<li><a href="#e-foldin">foldIn</a></li>
+		<li><a href="#e-foldout">foldOut</a></li>
+		<li><a href="#e-fullscreen">fullScreen</a></li>
+		<li><a href="#e-getattribute">getAttribute</a></li>
+		<li><a href="#e-getattributeproperty">getAttributeProperty</a></li>
+		<li><a href="#e-getcomputedstyle">getComputedStyle</a></li>
+		<li><a href="#e-getopacity">getOpacity</a></li>
+		<li><a href="#e-getposition">getPosition</a></li>
+		<li><a href="#e-getsize">getSize</a></li>
+		<li><a href="#e-getstyle">getStyle</a></li>
+		<li><a href="#e-gettext">getText</a></li>
+		<li><a href="#e-gettransformmatrix">getTransformMatrix</a></li>
+		<li><a href="#e-growin">growIn</a></li>
+		<li><a href="#e-growout">growOut</a></li>
+		<li><a href="#e-hasattribute">hasAttribute</a></li>
+		<li><a href="#e-hasclass">hasClass</a></li>
+		<li><a href="#e-html">html</a></li>
+		<li><a href="#e-htmlouter">htmlOuter</a></li>
+		<li><a href="#e-initiatedrag">initiateDrag</a></li>
+		<li><a href="#e-insertafter">insertAfter</a></li>
+		<li><a href="#e-insertbefore">insertBefore</a></li>
+		<li><a href="#e-isancestor">isAncestor</a></li>
+		<li><a href="#e-isdescendant">isDescendant</a></li>
+		<li><a href="#e-ispresent">isPresent</a></li>
+		<li><a href="#e-istag">isTag</a></li>
+		<li><a href="#e-isvisible">isVisible</a></li>
+		<li><a href="#e-loadclone">loadClone</a></li>
+		<li><a href="#e-loadhtml">loadHtml</a></li>
+		<li><a href="#e-loadnew">loadNew</a></li>
+		<li><a href="#e-loadnext">loadNext</a></li>
+		<li><a href="#e-loadprevious">loadPrevious</a></li>
+		<li><a href="#e-margin">margin</a></li>
+		<li><a href="#e-margins">margins</a></li>
+		<li><a href="#e-maximize">maximize</a></li>
+		<li><a href="#e-off">off</a></li>
+		<li><a href="#e-offcontextclick">offContextClick</a></li>
+		<li><a href="#e-offhelp">offHelp</a></li>
+		<li><a href="#e-on">on</a></li>
+		<li><a href="#e-oncontextclick">onContextClick</a></li>
+		<li><a href="#e-onhelp">onHelp</a></li>
+		<li><a href="#e-onroll">onRoll</a></li>
+		<li><a href="#e-overlaps">overlaps</a></li>
+		<li><a href="#e-overlay">overlay</a></li>
+		<li><a href="#e-position">position</a></li>
+		<li><a href="#e-positionstyle">positionStyle</a></li>
+		<li><a href="#e-present">present</a></li>
+		<li><a href="#e-query">query</a></li>
+		<li><a href="#e-relative">relative</a></li>
+		<li><a href="#e-remove">remove</a></li>
+		<li><a href="#e-removeattribute">removeAttribute</a></li>
+		<li><a href="#e-removeclass">removeClass</a></li>
+		<li><a href="#e-replace">replace</a></li>
+		<li><a href="#e-restore">restore</a></li>
+		<li><a href="#e-setattribute">setAttribute</a></li>
+		<li><a href="#e-setattributeproperty">setAttributeProperty</a></li>
+		<li><a href="#e-setattributes">setAttributes</a></li>
+		<li><a href="#e-sethtml">setHtml</a></li>
+		<li><a href="#e-setopacity">setOpacity</a></li>
+		<li><a href="#e-setouterhtml">setOuterHtml</a></li>
+		<li><a href="#e-setstyle">setStyle</a></li>
+		<li><a href="#e-setstyles">setStyles</a></li>
+		<li><a href="#e-settext">setText</a></li>
+		<li><a href="#e-show">show</a></li>
+		<li><a href="#e-size">size</a></li>
+		<li><a href="#e-sizeouter">sizeOuter</a></li>
+		<li><a href="#e-sizestyle">sizeStyle</a></li>
+		<li><a href="#e-springin">springIn</a></li>
+		<li><a href="#e-springout">springOut</a></li>
+		<li><a href="#e-toggle">toggle</a></li>
+		<li><a href="#e-togglepresence">togglePresence</a></li>
+		<li><a href="#e-update">update</a></li>
+	</ul>
+</li>
+<li><a href="#f">F</a>
+	<ul>
+		<li><a href="#f-changed">changed</a></li>
+		<li><a href="#f-controls">controls</a></li>
+		<li><a href="#f-send">send</a></li>
+		<li><a href="#f-serialize">serialize</a></li>
+	</ul>
+</li>
+<li><a href="#i">I</a>
+	<ul>
+		<li><a href="#i-change">change</a></li>
+	</ul>
+</li>
+<li><a href="#q">Q</a>
+	<ul>
+		<li><a href="#q-addclass">addClass</a></li>
+		<li><a href="#q-addhtml">addHtml</a></li>
+		<li><a href="#q-addme">addMe</a></li>
+		<li><a href="#q-append">append</a></li>
+		<li><a href="#q-appendto">appendTo</a></li>
+		<li><a href="#q-clear">clear</a></li>
+		<li><a href="#q-copy">copy</a></li>
+		<li><a href="#q-dropin">dropIn</a></li>
+		<li><a href="#q-dropout">dropOut</a></li>
+		<li><a href="#q-empty">empty</a></li>
+		<li><a href="#q-evens">evens</a></li>
+		<li><a href="#q-every">every</a></li>
+		<li><a href="#q-fadein">fadeIn</a></li>
+		<li><a href="#q-fadeout">fadeOut</a></li>
+		<li><a href="#q-filter">filter</a></li>
+		<li><a href="#q-find">find</a></li>
+		<li><a href="#q-first">first</a></li>
+		<li><a href="#q-foldin">foldIn</a></li>
+		<li><a href="#q-foldout">foldOut</a></li>
+		<li><a href="#q-foreach">forEach</a></li>
+		<li><a href="#q-growin">growIn</a></li>
+		<li><a href="#q-growout">growOut</a></li>
+		<li><a href="#q-hasattribute">hasAttribute</a></li>
+		<li><a href="#q-hasclass">hasClass</a></li>
+		<li><a href="#q-indexof">indexOf</a></li>
+		<li><a href="#q-inject">inject</a></li>
+		<li><a href="#q-insertafter">insertAfter</a></li>
+		<li><a href="#q-insertbefore">insertBefore</a></li>
+		<li><a href="#q-last">last</a></li>
+		<li><a href="#q-loadhtml">loadHtml</a></li>
+		<li><a href="#q-map">map</a></li>
+		<li><a href="#q-odds">odds</a></li>
+		<li><a href="#q-off">off</a></li>
+		<li><a href="#q-offcontextclick">offContextClick</a></li>
+		<li><a href="#q-offhelp">offHelp</a></li>
+		<li><a href="#q-on">on</a></li>
+		<li><a href="#q-oncontextclick">onContextClick</a></li>
+		<li><a href="#q-onhelp">onHelp</a></li>
+		<li><a href="#q-onroll">onRoll</a></li>
+		<li><a href="#q-pop">pop</a></li>
+		<li><a href="#q-position">position</a></li>
+		<li><a href="#q-prepend">prepend</a></li>
+		<li><a href="#q-present">present</a></li>
+		<li><a href="#q-push">push</a></li>
+		<li><a href="#q-random">random</a></li>
+		<li><a href="#q-remove">remove</a></li>
+		<li><a href="#q-removeattribute">removeAttribute</a></li>
+		<li><a href="#q-removeclass">removeClass</a></li>
+		<li><a href="#q-reverse">reverse</a></li>
+		<li><a href="#q-setattribute">setAttribute</a></li>
+		<li><a href="#q-setattributeproperty">setAttributeProperty</a></li>
+		<li><a href="#q-sethtml">setHtml</a></li>
+		<li><a href="#q-setopacity">setOpacity</a></li>
+		<li><a href="#q-setstyle">setStyle</a></li>
+		<li><a href="#q-setstyles">setStyles</a></li>
+		<li><a href="#q-settext">setText</a></li>
+		<li><a href="#q-shift">shift</a></li>
+		<li><a href="#q-show">show</a></li>
+		<li><a href="#q-size">size</a></li>
+		<li><a href="#q-sizeouter">sizeOuter</a></li>
+		<li><a href="#q-slice">slice</a></li>
+		<li><a href="#q-snip">snip</a></li>
+		<li><a href="#q-some">some</a></li>
+		<li><a href="#q-splice">splice</a></li>
+		<li><a href="#q-tohtml">toHtml</a></li>
+		<li><a href="#q-toggle">toggle</a></li>
+		<li><a href="#q-togglepresence">togglePresence</a></li>
+		<li><a href="#q-unshift">unshift</a></li>
+	</ul>
+</li>
+<li><a href="#w">W</a>
+	<ul>
+		<li><a href="#w-addbookmark">addBookmark</a></li>
+		<li><a href="#w-addbookmarkcurrent">addBookmarkCurrent</a></li>
+		<li><a href="#w-getenabledplugin">getEnabledPlugin</a></li>
+		<li><a href="#w-getframebyid">getFrameById</a></li>
+		<li><a href="#w-getiframedocument">getIFrameDocument</a></li>
+		<li><a href="#w-off">off</a></li>
+		<li><a href="#w-on">on</a></li>
+		<li><a href="#w-setstatus">setStatus</a></li>
+		<li><a href="#w-viewportsize">viewportSize</a></li>
+	</ul>
+</li></ul>
+
+<h2><a name="c">C</a></h2>
+<div class="seealso">
+<h3>See Also</h3>
+<ul><li><a href="#e">E</a></li></ul>
+</div>
+
+<p>The <code>C</code> function constructs an object that abstracts a
+form control. This constructor <a href="mylib-doc.asp#inherit">inherits</a> from <a href="#e"><code>E</code></a>.</p>
+<p><strong>Note</strong> to always use with the <code>new</code>
+operator if <em>calling</em> the constructor from an alternate frame.
+Creating <code>C</code> objects from form controls in alternate frames
+does not require the <code>new</code> operator.</p>
+<h3 class="syntax">Syntax</h3>
+<pre>
+c = C([<em>el</em>]);
+c = new C([<em>el</em>]);
+</pre>
+<h3>Examples</h3>
+<pre>var c = C('myid');
+var c = C(F('myform').controls('myinput'));
+window.alert('Value is ' + c.getValue());
+</pre>
+<h3><a name="c-changed">changed</a> (<a href="#c">C</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#c-getvalue">getValue</a></li><li><a href="mylib-doc.asp#inputchanged">inputChanged (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = c.changed();</pre>
+<h4>Examples</h4>
+<pre>
+b = C('mycontrol').changed();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="c-getvalue">getValue</a> (<a href="#c">C</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#c-changed">changed</a></li><li><a href="mylib-doc.asp#inputvalue">inputValue (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>value = c.getValue([<em>default</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+value = C('myid').getValue();
+defaultValue = C('myid').getValue(true);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string or array.</p>
+
+<h2><a name="d">D</a></h2>
+
+<p>The <code>D</code> function constructs an object that abstracts a
+document.</p>
+<p><strong>Note</strong> to always use with the <code>new</code>
+operator if <em>calling</em> the constructor from an alternate frame.
+Creating <code>D</code> objects from documents in alternate frames does
+not require the <code>new</code> operator.</p>
+<h3 class="syntax">Syntax</h3>
+<pre>d = D([<em>doc</em>]);
+d = new D([<em>doc</em>]);
+</pre>
+<h3>Examples</h3>
+<pre>
+var d = D();
+window.alert(d.isXHTML());
+d = D(doc);
+d.onReady(function() { window.alert('Ready'); });
+d.on('click', function() { this.setScrollPosition(100, 0); });
+var q = d.query('.testclass');
+</pre>
+<h3><a name="d-addstylerule">addStyleRule</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#addstylerule">addStyleRule (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>d.addStyleRule(<em>selector</em>, <em>rule</em>[, <em>media</em>])
+</pre>
+<h4>Examples</h4>
+<pre>D().addStyleRule('.myclass', 'color:#ff0000');
+D(doc).addStyleRule('.myclass', 'color:#ff0000');
+D().addStyleRule('fieldset', 'display:none', 'print');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object.</p>
+
+
+<h3><a name="d-anchors">anchors</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-links">links</a></li><li><a href="mylib-doc.asp#getanchor">getAnchor (API)</a></li><li><a href="mylib-doc.asp#getanchors">getAnchors (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>a = d.anchors([<em>i</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+anchors = D().anchors();
+anchors = D(doc).anchors();
+anchor = D().anchors(0);
+anchor = D().anchors('myname');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array (or array-like host object) or <code>a</code> element.</p>
+<p><strong>Note</strong> array-like host objects are <em>live</em> collections, so handle with results with care. Use the <a href="mylib-doc.asp#toarray"><code>toArray</code></a> function to convert to an array.</p>
+
+<h3><a name="d-body">body</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-head">head</a></li><li><a href="#d-htmlelement">htmlElement</a></li><li><a href="mylib-doc.asp#getbodyelement">getBodyElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = d.body();</pre>
+<h4>Examples</h4>
+<pre>
+el = D().body();
+el = D(doc).body();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a <code>body</code> element.</p>
+
+<h3><a name="d-children">children</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-descendants">descendants</a></li><li><a href="mylib-doc.asp#getchildren">getChildren (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>c = d.children([<em>i</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+children = D().children();
+children = D(doc).children();
+child = D().children(0);
+</pre>
+<h4>Return Value</h4>
+<p>Normally, the method returns an array or an element; but, if the index (i) is out of bounds, it will return <em>undefined</em>.</p>
+
+<h3><a name="d-clientrectangle">clientRectangle</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getviewportclientrectangle">getViewportClientRectangle (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>r = d.clientRectangle();</pre>
+<h4>Examples</h4>
+<pre>
+r = D().clientRectangle();
+r = D(doc).clientRectangle();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array containing the top, left, height and width of the viewport.</p>
+
+<h3><a name="d-create">create</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#createelement">createElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = D().create(<em>tag</em>);</pre>
+<h4>Examples</h4>
+<pre>
+el = D().create('div');
+el = D(doc).createElement('div');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an element.</p>
+
+<h3><a name="d-createwithattributes">createWithAttributes</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-create">create</a></li><li><a href="#d-createwithproperties">createWithProperties</a></li><li><a href="mylib-doc.asp#createelementwithattributes">createElementWithAttributes (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = D().createWithAttributes(<em>tag</em>, <em>atts</em>);</pre>
+<h4>Examples</h4>
+<pre>
+el = D().createWithAttributes('div', { id:'me', 'class':'hello' });
+el = D(doc).createWithAttributes('div', { id:'you', 'class':'hello' });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an element.</p>
+
+<h3><a name="d-createwithproperties">createWithProperties</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-create">create</a></li><li><a href="#d-createwithattributes">createWithAttributes</a></li><li><a href="mylib-doc.asp#createelementwithproperties">createElementWithProperties (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = D(el).createWithProperties(<em>tag</em>, <em>props</em>);</pre>
+<h4>Examples</h4>
+<pre>
+el = D().createElementWithProperties('input', { type:'checkbox', checked:true });
+el = D(doc).createElementWithProperties('input', { type:'checkbox', checked:true });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an element.</p>
+
+<h3><a name="d-deletecookie">deleteCookie</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-setcookie">setCookie</a></li><li><a href="mylib-doc.asp#deletecookie">deleteCookie (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>d.deleteCookie(<em>name</em>[, <em>path</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+D().deleteCookie('test');
+D(doc).deleteCookie('test');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object.</p>
+
+<h3><a name="d-descendants">descendants</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-children">children</a></li><li><a href="mylib-doc.asp#getebtn">getEBTN (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e = d.descendants(<em>tag</em>[, <em>i</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+els = D().descendants('*');
+els = D(doc).descendants('*');
+el = D().descendants('div', 0);
+</pre>
+<h4>Return Value</h4>
+<p>Normally, the method returns an array (or array-like host object) or element; but, if the index (i) is out of bounds, it will return <code>undefined</code>.</p>
+<p><strong>Note</strong> array-like host objects are <em>live</em> collections, so handle with results with care. Use the <a href="mylib-doc.asp#toarray"><code>toArray</code></a> function to convert to an array.</p>
+
+<h3><a name="d-forms">forms</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getform">getForm (API)</a></li><li><a href="mylib-doc.asp#getforms">getForms (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e = d.forms([<em>i</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+els = D().forms();
+els = D(doc).forms();
+el = D().forms(0);
+el = D().forms('myname');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array (or array-like host object) or a <code>form</code> element.</p>
+<p><strong>Note</strong> array-like host objects are <em>live</em> collections, so handle with results with care. Use the <a href="mylib-doc.asp#toarray"><code>toArray</code></a> function to convert to an array.</p>
+
+<h3><a name="d-getcookie">getCookie</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-deletecookie">deleteCookie</a></li><li><a href="#d-setcookie">setCookie</a></li><li><a href="mylib-doc.asp#getcookie">getCookie (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = d.getCookie(<em>name</em>[, <em>defaultValue</em>[, <em>encoded</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+c = D().getCookie('test');
+c = D(doc).getCookie('test');
+c = D().getCookie('test', '');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string or <code>null</code>.</p>
+
+<h3><a name="d-getscrollposition">getScrollPosition</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-setscrollposition">setScrollPosition</a></li><li><a href="mylib-doc.asp#getscrollposition">getScrollPosition (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>p = d.getScrollPosition();</pre>
+<h4>Examples</h4>
+<pre>
+p = D().getScrollPosition();
+p = D(doc).getScrollPosition();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array containing the top and left scroll positions or null if the position cannot be determined.</p>
+
+<h3><a name="d-head">head</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-body">body</a></li><li><a href="#d-htmlelement">htmlElement</a></li><li><a href="mylib-doc.asp#getheadelement">getHeadElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = d.head();</pre>
+<h4>Examples</h4>
+<pre>
+el = D().head();
+el = D(doc).head();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a <code>head</code> element.</p>
+
+<h3><a name="d-html">html</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getdocumenthtml">getDocumentHtml (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = d.html([<em>xhtml</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+html = D().html();
+html = D(doc).html();
+xhtml = D(doc).html(true);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string.</p>
+
+<h3><a name="d-htmlelement">htmlElement</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-body">body</a></li><li><a href="#d-head">head</a></li><li><a href="mylib-doc.asp#head">getHtmlElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = d.htmlElement();</pre>
+<h4>Examples</h4>
+<pre>
+el = D().htmlElement();
+el = D(doc).htmlElement();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an <code>html</code> element.</p>
+
+<h3><a name="d-images">images</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getimage">getImage (API)</a></li><li><a href="mylib-doc.asp#getimages">getImages (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e = d.images([<em>i</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+els = D().images();
+els = D(doc).images();
+el = D().images(0);
+el = D().images('myname');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array (or array-like host object) or <code>img</code> element.</p>
+<p><strong>Note</strong> array-like host objects are <em>live</em> collections, so handle with results with care. Use the <a href="mylib-doc.asp#toarray"><code>toArray</code></a> function to convert to an array.</p>
+
+<h3><a name="d-isxhtml">isXhtml</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#isxmlparsemode">isXmlParseMode (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = d.isXhtml();</pre>
+<h4>Examples</h4>
+<pre>
+b = D().isXhtml();
+b = D(doc).isXhtml();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean value.</p>
+
+<h3><a name="d-links">links</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-anchors">anchors</a></li><li><a href="mylib-doc.asp#getlink">getLink (API)</a></li><li><a href="mylib-doc.asp#getlinks">getLinks (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e = d.links([<em>i</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+els = D().links();
+els = D(doc).links();
+el = D().links(0);
+el = D().links('myname');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array (or array-like host object) or <code>a</code> element.</p>
+<p><strong>Note</strong> array-like host objects are <em>live</em> collections, so handle with results with care. Use the <a href="mylib-doc.asp#toarray"><code>toArray</code></a> function to convert to an array.</p>
+
+<h3><a name="d-load">load</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-node">node</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>d.load(<em>doc</em>);</pre>
+<h4>Examples</h4>
+<pre>
+D().load(doc);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object.</p>
+
+<h3><a name="d-node">node</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-load">load</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>doc = d.node();</pre>
+<h4>Examples</h4>
+<pre>
+doc = D().node();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a document.</p>
+
+<h3><a name="d-off">off</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-on">on</a></li><li><a href="mylib-doc.asp#detachdocumentlistener">detachDocumentListener (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+d.off(<em>ev</em>, <em>fn</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+D().off('click', fn);
+D(doc).off('click', fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object</p>
+
+<h3><a name="d-on">on</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-off">off</a></li><li><a href="mylib-doc.asp#attachdocumentlistener">attachDocumentListener (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+d.on(<em>ev</em>, <em>fn</em>[, <em>context</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+D().on('click', function() { window.alert('Hello again!'); });
+D().on('click', function() { this.doSomething(); }, someObject);
+D(doc).on('click', function() { this.doSomethingElse(); }, someObject);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object</p>
+
+<h3><a name="d-onready">onReady</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#attachdocumentreadylistener">attachDocumentReadyListener (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+d.onReady(<em>fn</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+D(doc).onReady(function() { doSomething(); });
+D(docOther).onReady(function() { doSomethingElse(); });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object</p>
+
+<h3><a name="d-query">query</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getebcs">getEBCS (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q = d.query(<em>selector</em>);</pre>
+<h4>Examples</h4>
+<pre>
+q = D().query('div');
+q = D(doc).query('div');
+q = D().query('div div div');
+q = D().query('.myclass');
+q = D().query('#myid');
+q = D().query('#myid p.myclass');
+q = D().query('div:first-child');
+q = D().query('div:only-child');
+q = D().query('div:nth-child(5)');
+q = D().query('h2 + div');
+q = D().query('h2 + div#myid');
+q = D().query('h2 ~ div#myid');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a <a href="#q">Q</a> object.</p>
+
+<h3><a name="d-scrollrectangle">scrollRectangle</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-scrollsize">scrollSize</a></li><li><a href="mylib-doc.asp#getviewportscrollrectangle">getViewportScrollRectangle (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>r = d.scrollRectangle();</pre>
+<h4>Examples</h4>
+<pre>
+r = D().scrollRectangle();
+r = D(doc).scrollRectangle();
+</pre>
+<h4>Return Value</h4>
+<p>The function returns an array containing the top, left, height and width of the top-level rendered element (HTML or body).</p>
+
+<h3><a name="d-scrollsize">scrollSize</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-scrollrectangle">scrollRectangle</a></li><li><a href="mylib-doc.asp#getviewportscrollsize">getViewportScrollSize (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>r = d.scrollSize();</pre>
+<h4>Examples</h4>
+<pre>
+r = D().scrollRectangle();
+r = D(doc).scrollRectangle();
+</pre>
+<h4>Return Value</h4>
+<p>The function returns an array containing the height and width of the top-level rendered element (HTML or body).</p>
+
+<h3><a name="d-setactivestylesheet">setActiveStyleSheet</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#setactivestylesheet">setActiveStyleSheet (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+d.setActiveStyleSheet(<em>id</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+D().setActiveStyleSheet('winter');
+D(doc).setActiveStyleSheet('winter');
+D().setActiveStyleSheet('summer');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object</p>
+
+<h3><a name="d-setcookie">setCookie</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-deletecookie">deleteCookie</a></li><li><a href="#d-getcookie">getCookie</a></li><li><a href="mylib-doc.asp#setcookie">setCookie (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>d.setCookie(<em>name</em>, <em>value</em>[, <em>expires</em>[, <em>path</em>[, <em>secure</em>]]]);</pre>
+<h4>Examples</h4>
+<pre>
+D().setCookie('myname', 'myvalue');
+D(doc).setCookie('myname', 'myvalue');
+D().setCookie('myname', 'myvalue', 7); // Expires in 7 days
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object</p>
+
+<h3><a name="d-setscrollposition">setScrollPosition</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#d-getscrollposition">getScrollPosition</a></li><li><a href="mylib-doc.asp#setscrollposition">setScrollPosition (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+d.setScrollPosition(<em>top</em>, <em>left</em>[, <em>isNormalized</em>[, <em>options</em>[, <em>callback</em>]]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+D().setScrollPosition(el, 0, 0);
+D(doc).setScrollPosition(el, 0, 0);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the D object</p>
+
+<h3><a name="d-window">window</a> (<a href="#d">D</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getdocumentwindow">getDocumentWindow (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>win = d.window();</pre>
+<h4>Examples</h4>
+<pre>
+win = D().window();
+win = D(doc).window();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a window object.</p>
+
+<div id="E_Object">
+<h2><a name="e">E</a></h2>
+<div class="seealso">
+<h3>See Also</h3>
+<ul>
+<li><a href="#c">C</a></li>
+<li><a href="#f">F</a></li>
+<li><a href="#i">I</a></li>
+</ul>
+</div>
+<p>The <code>E</code> function constructs an object that abstracts
+an element.</p>
+<p><strong>Note</strong> to always use with the <code>new</code>
+operator if <em>calling</em> the constructor from an alternate frame.
+Creating <code>E</code> objects from elements in alternate frames does
+not require the <code>new</code> operator.</p>
+<h3 class="syntax">Syntax</h3>
+<pre>e = E(<em>id</em>);
+e = new E(<em>id</em>);
+</pre>
+<h3>Examples</h3>
+<pre>var e = E(API.getHtmlElement());
+e.onHelp(function() { window.alert('Help') }).onContextClick(function() { window.alert('Context click') });
+e.load('testid');
+e.fadeIn({ duration:1000 }).on('click', function() { window.alert('Clicked'); });
+E().loadHtml('&lt;div&gt;&lt;strong&gt;This is a test&lt;\/strong&gt;&lt;\/div&gt;').appendTo(document.body);
+</pre>
+<h3><a name="e-absolute">absolute</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#absoluteelement">absoluteElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.absolute();
+</pre>
+<h4>Examples</h4>
+<pre>
+E('myid').absolute();
+E(el).absolute();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-addclass">addClass</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-hasclass">hasClass</a></li><li><a href="#e-removeclass">removeClass</a></li><li><a href="mylib-doc.asp#addclass">addClass (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.addClass(<em>className</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E('myid').addClass('myclass');
+E(el).addClass('myclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-addhtml">addHtml</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-sethtml">setHtml</a></li><li><a href="mylib-doc.asp#addelementhtml">addElementHtml (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.addHtml(<em>html</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E('myid').addHtml('&lt;p&gt;This is a test&lt;/p&gt;');
+E(el).addHtml('&lt;p&gt;This is also a test&lt;/p&gt;');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-addtext">addText</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-gettext">getText</a></li><li><a href="#e-settext">setText</a></li><li><a href="mylib-doc.asp#addelementtext">addElementText (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.addText(<em>text</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E('myid').addText('Burma-Shave');
+E(el).addText('Burma-Shave');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-adjacent">adjacent</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#adjacentelement">adjacentElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.adjacent(<em>el</em>[, <em>side</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E('myid').adjacent(el);
+E(el).adjacent(el2);
+E('myid').adjacent(el, 'right');
+E('myid').adjacent(el, 'top');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-appendto">appendTo</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.appendTo(<em>el</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E('myid').appendTo(el);
+E(el).appendTo(elContainer);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-attachdrag">attachDrag</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-detachdrag">detachDrag</a></li><li><a href="mylib-doc.asp#attachdrag">attachDrag (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.attachDrag([<em>elHandle</em>[, <em>options</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+E('myid').attachDrag();
+E(el).attachDrag();
+E(el).attachDrag(elHandle, { ondrop: function() { window.alert('Dropped!' } });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-border">border</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-borders">borders</a></li><li><a href="mylib-doc.asp#getelementborder">getElementBorder (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>w = e.border(<em>side</em>);</pre>
+<h4>Examples</h4>
+<pre>
+i = E('myid').border('right');
+i = E(el).border('right');
+i = E('myid').border('top');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a number of pixels.</p>
+
+<h3><a name="e-borders">borders</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-border">border</a></li><li><a href="mylib-doc.asp#getelementborders">getElementBorders (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>o = e.borders();</pre>
+<h4>Examples</h4>
+<pre>
+o = E('myid').borders();
+o = E(el).borders();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an object with properties named for each side (top, left, bottom and right), containing a number of pixels.</p>
+
+<h3><a name="e-center">center</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#centerelement">centerElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.center([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).center();
+E('myid').center();
+E(el).center({ duration:1000, ease:API.ease.circle });
+E(el).center({ duration:1000, ease:API.ease.circle }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-children">children</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-descendants">descendants</a></li><li><a href="mylib-doc.asp#getchildren">getChildren (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>c = e.children([<em>i</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+c = E(el).children();
+c = E('myid').children();
+el = E(el).children(0);
+</pre>
+<h4>Return Value</h4>
+<p>Normally, the method returns an array or an element; but, if the index (i) is out of bounds, it will return <em>undefined</em>.</p>
+
+<h3><a name="e-clone">clone</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-loadclone">loadClone</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = e.clone([<em>deep</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+el = E(el).clone();
+el = E('myid').clone();
+el = E(el).clone(true);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an element.</p>
+
+<h3><a name="e-containedby">containedBy</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#elementcontainedinelement">elementContainedInElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = e.containedBy(<em>el</em>);</pre>
+<h4>Examples</h4>
+<pre>
+b = E(el).containedBy(elContainer);
+b = E('myid').containedBy(elContainer);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="e-coverdocument">coverDocument</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#coverdocument">coverDocument (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.coverDocument();
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).coverDocument();
+E('myid').coverDocument();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-descendants">descendants</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-children">children</a></li><li><a href="mylib-doc.asp#getebtn">getEBTN (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>o = e.descendants([<em>tag</em>[, <em>i</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+els = E(el).descendants();
+els = E('myid').descendants();
+els = E(el).descendants('div');
+el = E(el).descendants('div', 0);
+</pre>
+<h4>Return Value</h4>
+<p>Normally, the method returns an array (or array-like host object) or an element; but, if the index (i) is out of bounds, it will return <code>undefined</code>.</p>
+<p><strong>Note</strong> array-like host objects are <em>live</em> collections, so handle with results with care. Use the <a href="mylib-doc.asp#toarray"><code>toArray</code></a> function to convert to an array.</p>
+
+<h3><a name="e-detachdrag">detachDrag</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-attachdrag">attachDrag</a></li><li><a href="mylib-doc.asp#detachdrag">detachDrag (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.detachDrag([<em>elHandle</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).detachDrag();
+E('myid').detachDrag();
+E(el).detachDrag(elHandle);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-dispatch">dispatch</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#dispatchevent">dispatchEvent (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.dispatch(<em>ev</em>[, <em>evType</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).dispatch('click');
+E('myid').dispatch('click');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-document">document</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getelementdocument">getElementDocument (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>doc = e.document();</pre>
+<h4>Examples</h4>
+<pre>
+doc = E(el).document();
+doc = E('myid').document();
+</pre>
+<h4>Return Value</h4>
+<p></p>
+
+<h3><a name="e-dropin">dropIn</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-dropout">dropOut</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.dropIn([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).dropIn();
+E('myid').dropIn();
+E(el).dropIn({ ease:API.ease.circle, duration:1000 });
+E(el).dropIn({ ease:API.ease.circle, duration:1000 }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-dropout">dropOut</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-dropin">dropIn</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.dropOut([<em>options</em>[, <em>callback</em>]])
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).dropOut();
+E('myid').dropOut();
+E(el).dropOut({ ease:API.ease.circle, duration:1000 });
+E(el).dropOut({ ease:API.ease.circle, duration:1000 }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-empty">empty</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.empty();
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).empty();
+E('myid').empty();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-element">element</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+el = e.element();
+</pre>
+<h4>Examples</h4>
+<pre>
+el = E(el).element();
+E('myid').element();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an element.</p>
+
+
+
+<h3><a name="e-fadein">fadeIn</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-fadeout">fadeOut</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.fadeIn([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).fadeIn();
+E('myid').fadeIn();
+E(el).fadeIn({ ease:API.ease.circle, duration:1000 });
+E(el).fadeIn({ ease:API.ease.circle, duration:1000 }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-fadeout">fadeOut</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-fadein">fadeIn</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.fadeOut([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).fadeOut();
+E('myid').fadeOut();
+E(el).fadeOut({ ease:API.ease.circle, duration:1000 });
+E(el).fadeOut({ ease:API.ease.circle, duration:1000 }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-foldin">foldIn</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-foldout">foldOut</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.foldIn([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).foldIn();
+E('myid').foldIn();
+E(el).foldIn({ ease:API.ease.circle, duration:1000 });
+E(el).foldIn({ ease:API.ease.circle, duration:1000 }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-foldout">foldOut</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-foldin">foldIn</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.foldOut([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).foldOut();
+E('myid').foldOut();
+E(el).foldOut({ ease:API.ease.circle, duration:1000 });
+E(el).foldOut({ ease:API.ease.circle, duration:1000 }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-fullscreen">fullScreen</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#fullscreenelement">fullScreenElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.fullScreen();
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).fullScreen();
+E('myid').fullScreen();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-getattribute">getAttribute</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-hasattribute">hasAttribute</a></li><li><a href="#e-removeattribute">removeAttribute</a></li><li><a href="#e-setattribute">setAttribute</a></li><li><a href="mylib-doc.asp#getattribute">getAttribute (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = e.getAttribute(<em>name</em>);</pre>
+<h4>Examples</h4>
+<pre>
+s = E(el).getAttribute('class');
+s = E('myid').getAttribute('class');
+s = E(el).getAttribute('style');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string or <code>null</code>.</p>
+
+<h3><a name="e-getattributeproperty">getAttributeProperty</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-setattributeproperty">setAttributeProperty</a></li><li><a href="mylib-doc.asp#getattributeproperty">getAttributeProperty (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>v = e.getAttributeProperty(name);</pre>
+<h4>Examples</h4>
+<pre>
+s = E(el).getAttributeProperty('class');
+s = E('myid').getAttributeProperty('class');
+b = E(el).getAttributeProperty('readonly');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the property value or <code>null</code>.</p>
+
+<h3><a name="e-getcomputedstyle">getComputedStyle</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-getstyle">getStyle</a></li><li><a href="mylib-doc.asp#getcomputedstyle">getComputedStyle (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = e.getComputedStyle(<em>style</em>);</pre>
+<h4>Examples</h4>
+<pre>
+s = E(el).getComputedStyle('color');
+s = E('myid').getComputedStyle('color');
+s = E(el).getComputedStyle('backgroundColor');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the a string or <code>null</code>.</p>
+<p><strong>Note</strong> that as with all style-related functions, the name of the style must be in camel-case.</p>
+
+<h3><a name="e-getopacity">getOpacity</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-setopacity">setOpacity</a></li><li><a href="mylib-doc.asp#getopacity">getOpacity (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<p><strong>Note</strong> that this method will be made <a href="mylib-doc0.html#immediate">immediate</a> in the near future.</p>
+<h4 class="syntax">Syntax</h4>
+<pre>o = e.getOpacity();</pre>
+<h4>Examples</h4>
+<pre>
+o = E(el).getOpacity();
+o = E('myid').getOpacity();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a number from 0 to 1.</p>
+
+<h3><a name="e-getposition">getPosition</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getelementposition">getElementPosition (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>p = e.getPosition();</pre>
+<h4>Examples</h4>
+<pre>
+p = E(el).getPosition();
+p = E('myid').getPosition();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array.</p>
+
+<h3><a name="e-getsize">getSize</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getelementsize">getElementSize (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>d = e.getSize();</pre>
+<h4>Examples</h4>
+<pre>
+d = E(el).getSize();
+d = E('myid').getSize();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array.</p>
+
+<h3><a name="e-getstyle">getStyle</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-getcomputedstyle">getComputedStyle</a></li><li><a href="mylib-doc.asp#getstyle">getStyle (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = e.getStyle(<em>style</em>);</pre>
+<h4>Examples</h4>
+<pre>
+s = E(el).getStyle('color');
+s = E('myid').getStyle('color');
+s = E(el).getStyle('backgroundColor');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string or <code>null</code>.</p>
+
+<h3><a name="e-gettext">getText</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-addtext">addText</a></li><li><a href="#e-settext">setText</a></li><li><a href="mylib-doc.asp#getelementtext">getElementText (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = e.getText();</pre>
+<h4>Examples</h4>
+<pre>
+s = E(el).getText();
+s = E('myid').getText();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string.</p>
+
+<h3><a name="e-growin">growIn</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-growout">growOut</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.growIn([<em>options</em>[, <em>fnDone</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).growIn();
+E('myid').growIn();
+E(el).growIn({ ease:API.ease.circle, duration:1000 });
+E(el).growIn({ ease:API.ease.circle, duration:1000 }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-growout">growOut</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-growin">growIn</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.growOut([<em>options</em>[, <em>fnDone</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).growOut();
+E('myid').growOut();
+E(el).growOut({ ease:API.ease.circle, duration:1000 });
+E(el).growOut({ ease:API.ease.circle, duration:1000 }, fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-hasattribute">hasAttribute</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-getattribute">getAttribute</a></li><li><a href="#e-removeattribute">removeAttribute</a></li><li><a href="#e-setattribute">setAttribute</a></li><li><a href="mylib-doc.asp#hasattribute">hasAttribute (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = e.hasAttribute(<em>name</em>);</pre>
+<h4>Examples</h4>
+<pre>
+b = E(el).hasAttribute('class');
+b = E('myid').hasAttribute('class');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="e-hasclass">hasClass</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-addclass">addClass</a></li><li><a href="#e-removeclass">removeClass</a></li><li><a href="mylib-doc.asp#hasclass">hasClass (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = e.hasClass(<em>className</em>);</pre>
+<h4>Examples</h4>
+<pre>
+b = E(el).hasClass('myclass');
+b = E('myid').hasClass('myclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="e-html">html</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-htmlouter">htmlOuter</a></li><li><a href="#e-sethtml">setHtml</a></li><li><a href="mylib-doc.asp#getelementhtml">getElementHtml (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = e.html([<em>xhtml</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+html = E(el).html();
+html = E('myid').html();
+xhtml = E(el).html(true);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string.</p>
+
+<h3><a name="e-htmlouter">htmlOuter</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-html">html</a></li><li><a href="#e-setouterhtml">setOuterHtml</a></li><li><a href="mylib-doc.asp#getelementouterhtml">getElementOuterHtml (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = e.htmlOuter([<em>xhtml</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+html = E(el).htmlOuter();
+html = E('myid').htmlOuter();
+xhtml = E(el).htmlOuter(true);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string.</p>
+
+<h3><a name="e-initiatedrag">initiateDrag</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#initiatedrag">initiateDrag (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.initiateDrag();</pre>
+<h4>Examples</h4>
+<pre>
+E(el).initiateDrag();
+E('myid').initiateDrag();
+</pre>
+
+<h3><a name="e-insertafter">insertAfter</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.insertAfter(<em>el</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(elInsert).insertAfter(el);
+E('myid').insertAfter(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-insertbefore">insertBefore</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.insertBefore(<em>el</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(elInsert).insertBefore(el);
+E('myid').insertBefore(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-isancestor">isAncestor</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#isdescendant">isDescendant (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = e.isAncestor(<em>el</em>);</pre>
+<h4>Examples</h4>
+<pre>
+b = E(elAncestor).isAncestor(<em>el</em>);
+b = E('myid').isAncestor(<em>el</em>);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="e-isdescendant">isDescendant</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#isdescendant">isDescendant (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+b = e.isDescendant(<em>el</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+b = E('myid').isDescendant(<em>elAncestor</em>);
+b = E(el).isDescendant(<em>elAncestor</em>);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean value</p>
+
+<h3><a name="e-ispresent">isPresent</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#ispresent">isPresent (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = e.isPresent();</pre>
+<h4>Examples</h4>
+<pre>
+b = E(el).isPresent();
+b = E('myid').isPresent();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="e-istag">isTag</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getelementnodename">getElementNodeName (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = e.isTag(<em>tag</em>);</pre>
+<h4>Examples</h4>
+<pre>
+b = E(el).isTag('div');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="e-isvisible">isVisible</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#isvisible">isVisible (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = e.isVisible();</pre>
+<h4>Examples</h4>
+<pre>
+b = E(el).isVisible();
+b = E('myid').isVisible();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="e-load">load</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.load(el);</pre>
+<h4>Examples</h4>
+<pre>
+E().load(el);
+E().load('myid');
+</pre>
+
+<h3><a name="e-loadclone">loadClone</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.loadClone(<em>deep</em>);</pre>
+<h4>Examples</h4>
+<pre>E(el).loadClone();</pre>
+
+<h3><a name="e-loadhtml">loadHtml</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#createelementwithattributes">createElementWithAttributes (API)</a></li><li><a href="mylib-doc.asp#createelementwithproperties">createElementWithProperties (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.loadHtml(<em>html</em>[, <em>docNode</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+E().loadHtml('&lt;p&gt;And then...&lt;/p&gt;');
+</pre>
+
+<h3><a name="e-loadnew">loadNew</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-loadPrevious">loadPrevious</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.loadNew(tag, attributesOrProperties, setProperties);</pre>
+<h4>Examples</h4>
+<pre>
+E().loadNew('div', { id:'you', 'class':'goodbye', disabled:'disabled' });
+</pre>
+
+<h3><a name="e-loadnext">loadNext</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-loadnext">loadNext</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.loadNext();</pre>
+<h4>Examples</h4>
+<pre>
+E(el).loadNext();
+</pre>
+
+<h3><a name="e-loadprevious">loadPrevious</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-loadprevious">loadPrevious</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.loadPrevious();</pre>
+<h4>Examples</h4>
+<pre>
+E(el).loadPrevious();
+</pre>
+
+<h3><a name="e-margin">margin</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-margins">margins</a></li><li><a href="mylib-doc.asp#getelementmargin">getElementMargin (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>i = e.margin(<em>side</em>);</pre>
+<h4>Examples</h4>
+<pre>
+i = E(el).margin('left');
+i = E('myid').margin('left');
+i = E(el).margin('top');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a number of pixels.</p>
+
+<h3><a name="e-margins">margins</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-margin">margin</a></li><li><a href="mylib-doc.asp#getelementmargins">getElementMargins (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>o = e.margins();</pre>
+<h4>Examples</h4>
+<pre>
+o = E(el).margins();
+o = E('myid').margins();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an object with properties named for each side (top, left, bottom and right), containing a number of pixels.</p>
+
+<h3><a name="e-maximize">maximize</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-restore">restore</a></li><li><a href="mylib-doc.asp#maximizeelement">maximizeElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.maximize([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).maximize();
+E('myid').maximize();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-off">off</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-on">on</a></li><li><a href="#e-remove">remove</a></li><li><a href="#e-on">on</a></li><li><a href="mylib-doc.asp#detachlistener">detachListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.off(<em>ev</em>, <em>fn</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).off('click', function() { window.alert('Clicked'); });
+E('myid').off('click', function() { window.alert('Also clicked'); });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-offcontextclick">offContextClick</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-oncontextclick">onContextClick</a></li><li><a href="mylib-doc.asp#detachcontextclicklistener">detachContextClickListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.offContextClick();
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).offContextClick();;
+E('myid').offContextClick();;
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-offhelp">offHelp</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-onhelp">onHelp</a></li><li><a href="mylib-doc.asp#detachhelplistener">detachHelpListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.offHelp();
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).offHelp();
+E('myid').offHelp();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-on">on</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-off">off</a></li><li><a href="mylib-doc.asp#detachlistener">detachListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.on(<em>ev</em>, <em>fn</em>[, <em>context</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).on('click', function() { window.alert('Clicked'); });
+E('myid').on('click', function() { window.alert('Also clicked'); });
+E(el).on('click', function() { this.log('Object clicked'); }, someObject);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-oncontextclick">onContextClick</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-offcontextclick">offContextClick</a></li><li><a href="mylib-doc.asp#detachcontextclicklistener">detachContextClickListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+E(id).onContextClick(<em>fn</em>[, <em>context</em>])
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).onContextClick(function() { window.alert('Context clicked'); });
+E('myid').onContextClick(function() { window.alert('Also context clicked'); });
+E(el).onContextClick(function() { this.log('Context clicked'); }, someObject);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-onhelp">onHelp</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-offhelp">offHelp</a></li><li><a href="mylib-doc.asp#detachhelplistener">detachHelpListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.onHelp(<em>fn</em>[, <em>context</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).onHelp(function() { window.alert('Help!'); });
+E('myid').onHelp(function() { window.alert('Help yourself!'); });
+E(el).onHelp(function(e) { this.showHelp(); }, someObject);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-onroll">onRoll</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#attachrolloverlisteners">attachRolloverListeners (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.onRoll(<em>fnOver</em>, <em>fnOut</em>[, <em>context</em>[, <em>bAttachFocusListeners</em>[, <em>bSetStatus]]]</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).onRoll(function() { window.status = 'over'; }, function() { window.status = 'and out'; } );
+E('myid').onRoll(function() { window.status = 'roger'; }, function() { window.status = 'that'; } );
+E(el).onRoll(function(e) { this.onover(e); }, function(e) { this.onout(e); }, someObject);
+
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-overlaps">overlaps</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#elementoverlapselement">elementOverlapsElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = e.overlaps(<em>el</em>);</pre>
+<h4>Examples</h4>
+<pre>
+b = E(elOverlay).overlaps(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="e-overlay">overlay</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#overlayelement">overlayElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.overlay(<em>el</em>[, <em>cover</em>])
+</pre>
+<h4>Examples</h4>
+<pre>
+E(elOverlay).overlay(el);
+E('myid').overlay(el);
+E(elOverlay).overlay(el, true);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-position">position</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-positionstyle">positionStyle</a></li><li><a href="mylib-doc.asp#positionelement">positionElement (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.position(<em>y</em>, <em>x</em>[, <em>options</em>[, <em>callback</em>]])</pre>
+<h4>Examples</h4>
+<pre>
+E(el).position(100, 100);
+E('myid').position(0, 0);
+E(el).position(100, 100, { duration:1000, ease:API.ease.circle });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-positionstyle">positionStyle</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-position">position</a></li><li><a href="mylib-doc.asp#getelementpositionstyle">getElementPositionStyle (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>p = e.positionStyle();</pre>
+<h4>Examples</h4>
+<pre>
+p = E(el).positionStyle();
+p = E('myid').positionStyle();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array.</p>
+
+
+<h3><a name="e-present">present</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#positionelement">presentElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.present(<em>b</em>[, <em>display</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).present();
+E(el).present(false);
+E(el).present(true, 'block');
+E(el).present(true, 'inline');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-query">query</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getebcs">getEBCS (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q = e.query(<em>s</em>);</pre>
+<h4>Examples</h4>
+<pre>
+q = E(el).query('div');
+q = E('myid').query('div');
+q = E(el).query('.myclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a <a href="#q">Q</a> object.</p>
+
+<h3><a name="e-relative">relative</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#relativeElement">relativeElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.relative();
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).relative();
+E('myid').relative();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-remove">remove</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.remove();</pre>
+<h4>Examples</h4>
+<pre>
+E(el).remove();
+E('myid').remove();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-removeattribute">removeAttribute</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-getattribute">getAttribute</a></li><li><a href="#e-hasattribute">hasAttribute</a></li><li><a href="#e-setattribute">setAttribute</a></li><li><a href="mylib-doc.asp#removeattribute">removeAttribute (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.removeAttribute(<em>name</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).removeAttribute('class');
+E('id').removeAttribute('class');
+E(el).removeAttribute('style');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-removeclass">removeClass</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-addclass">addClass</a></li><li><a href="#e-hasclass">hasClass</a></li><li><a href="mylib-doc.asp#removeclass">removeClass (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.removeClass(<em>className</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).removeClass('someclass');
+E('myid').removeClass('someclass');
+E(el).removeClass('someclass').removeClass('someotherclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-replace">replace</a> (<a href="#e">E</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.replace(<em>el</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(elReplacement).replace(el);
+E('myid').replace(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-restore">restore</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-maximize">maximize</a></li><li><a href="mylib-doc.asp#restoreelement">restoreElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.restore([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).restore();
+E('myid').restore();
+E(el).restore({ duration:1000, ease:API.ease.circle });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-setattribute">setAttribute</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-getattribute">getAttribute</a></li><li><a href="#e-hasattribute">hasAttribute</a></li><li><a href="#e-removeattribute">removeAttribute</a></li><li><a href="mylib-doc.asp#setattribute">setAttribute (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+e.setAttribute(<em>name</em>, <em>value</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+E(el).setAttribute('class', 'myclass');
+E(el).setAttribute('checked', 'checked');
+E(el).setAttribute('tabindex', '2');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-setattributeproperty">setAttributeProperty</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-getattributeproperty">getAttributeProperty</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.setAttributeProperty(<em>name</em>, <em>value</em>);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).setAttributeProperty('class', 'myclass');
+E(el).setAttributeProperty('checked', true);
+E(el).setAttributeProperty('tabindex', 2);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+	<h3><a name="e-setattributes">setAttributes</a> (<a href="#e">E</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-setattribute">setAttribute</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+	<pre>e.setAttributes(<em>attributes</em>);</pre>
+	<h4>Examples</h4>
+<pre>
+E(el).setAttributes({
+  class: 'myclass',
+  checked: 'checked',
+  tabindex: '2'
+});
+</pre>
+	<h4>Return Value</h4>
+	<p>The method returns the E object.</p>
+
+
+	<h3><a name="e-sethtml">setHtml</a> (<a href="#e">E</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-addhtml">addHtml</a></li><li><a href="#e-loadhtml">loadHtml</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+<pre>e.setHtml(<em>html</em>[, options[, callback]])</pre>
+<h4>Examples</h4>
+<pre>
+E(el).setHtml('&lt;p&gt;This is a test&lt;/p&gt;');
+</pre>
+	<h4>Return Value</h4>
+	<p>The method returns the E object.</p>
+
+
+	<h3><a name="e-setopacity">setOpacity</a> (<a href="#e">E</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-getopacity">getOpacity</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+<pre>e.setOpacity(o)</pre>
+	<h4>Examples</h4>
+<pre>
+E(el).setOpacity(0.5);
+</pre>
+	<h4>Return Value</h4>
+	<p>The method returns the E object.</p>
+
+
+	<h3><a name="e-setouterhtml">setOuterHtml</a> (<a href="#e">E</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-sethtml">setHtml</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+	<pre>e.setOuterHtml(html, options, fnDone)</pre>
+	<h4>Examples</h4>
+<pre>
+E(el).setOuterHtml('&lt;p&gt;This is a test&lt;/p&gt;');
+</pre>
+	<h4>Return Value</h4>
+	<p>The method returns the E object.ss</p>
+
+
+	<h3><a name="e-setstyle">setStyle</a> (<a href="#e">E</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-getstyle">getStyle</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+<pre>
+e.setStyle(style, value)
+</pre>
+	<h4>Examples</h4>
+<pre>
+E(el).setStyle('color', '#ff0000');
+</pre>
+	<h4>Return Value</h4>
+	<p>The method returns the E object.</p>
+
+
+	<h3><a name="e-setstyles">setStyles</a> (<a href="#e">E</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-setstyle">setStyle</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+<pre>e.setStyles(styles)</pre>
+	<h4>Examples</h4>
+<pre>
+E(el).setStyles({
+  color: '#ff0000',
+  backgroundColor: '#0000ff'
+});
+</pre>
+	<h4>Return Value</h4>
+	<p>The method returns the E object.</p>
+
+
+<h3><a name="e-settext">setText</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-addtext">addText</a></li><li><a href="#e-gettext">getText</a></li><li><a href="mylib-doc.asp#setelementtext">setElementText (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.setText(text);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).setText('This is a test');
+E('myid').setText('This is a test');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-show">show</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.show(<em>b</em>[, <em>options</em>[, <em>callback</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).show();
+E('myid').show();
+E(el).show(false);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-size">size</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-sizestyle">sizeStyle</a></li><li><a href="mylib-doc.asp#sizeelement">sizeElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.size(<em>h</em>, <em>w</em>[, <em>options</em>[, <em>callback</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).size(100, 100);
+E('myid').size(100, 100);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-sizeouter">sizeOuter</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-size">size</a></li><li><a href="mylib-doc.asp#sizeelement">sizeElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.sizeOuter(<em>h</em>, <em>w</em>);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).sizeOuter(100, 100);
+E('myid').sizeOuter(100, 100);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-sizestyle">sizeStyle</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-size">size</a></li><li><a href="mylib-doc.asp#getelementsizestyle">getElementSizeStyle (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>d = e.sizeStyle();</pre>
+<h4>Examples</h4>
+<pre>
+d = E(el).sizeStyle();
+d = E('myid').sizeStyle();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array.</p>
+
+
+<h3><a name="e-springin">springIn</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-springout">springOut</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.springIn(<em>elFrom</em>[, <em>options</em>[, <em>callback</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+E(elPopup).springIn(el);
+E('myid').springIn(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-springout">springOut</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-springin">springIn</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.springOut(<em>elFrom</em>[, <em>options</em>[, <em>callback</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+E(elPopup).springOut(el);
+E('myid').springOut(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-toggle">toggle</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#toggleelement">toggleElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.toggle([options[, callback]]);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).toggle();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+
+<h3><a name="e-togglepresence">togglePresence</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#e-toggle">toggle</a></li><li><a href="mylib-doc.asp#toggleelementpresence">toggleElementPresence (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.togglePresence([display]);</pre>
+<h4>Examples</h4>
+<pre>
+E(el).togglePresence();
+E(el).togglePresence('inline');
+E(el).togglePresence('block');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+
+<h3><a name="e-update">update</a> (<a href="#e">E</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#updateelement">updateElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e.update(uri, bAppend, updateOptions, fnUpdate, fnUpdated, requester)</pre>
+<h4>Examples</h4>
+<pre>
+E(el).update('http://www.cinsoft.net/');
+E(el).update('http://www.cinsoft.net/', true);
+E(el).update('http://www.cinsoft.net/', false, {
+  effects: API.effects.fade,
+  duration: 1000
+});
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the E object.</p>
+</div>
+
+<h2><a name="f">F</a></h2>
+<div class="seealso">
+<h3>See Also</h3>
+<ul>
+<li><a href="#e">E</a></li>
+</ul>
+</div>
+<p>The <code>F</code> function constructs an object that abstracts a
+form element. This constructor <a href="mylib-doc.asp#inherit">inherits</a> from <a href="#e"><code>E</code></a>.</p>
+<p><strong>Note</strong> to always use with the <code>new</code>
+operator if <em>calling</em> the constructor from an alternate frame.
+Creating <code>F</code> objects from forms in alternate frames does not
+require the <code>new</code> operator.</p>
+<h3 class="syntax">Syntax</h3>
+<pre>f = F(<em>id</em>);
+f = new F(<em>id</em>);
+</pre>
+<h3>Examples</h3>
+<pre>var s, f = F(0);
+s = f.serialize();
+f.send();
+</pre>
+<h3><a name="f-changed">changed</a> (<a href="#f">F</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#formchanged">formChanged (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = f.changed();</pre>
+<h4>Examples</h4>
+<pre>
+b = F(0).changed();
+b = F('myname').changed();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="f-controls">controls</a> (<a href="#f">F</a>)</h3>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>e = f.controls(<em>i</em>);</pre>
+<h4>Examples</h4>
+<pre>
+els = F(0).controls();
+els = F('myname').controls();
+el = F('myname').controls(0);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array or an element.</p>
+<h3><a name="f-send">send</a> (<a href="#f">F</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#submitajaxform">submitAjaxForm</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+f.send([<em>json</em>[, <em>requester</em>]])
+</pre>
+<h4>Examples</h4>
+<pre>
+F(0).send();
+F('nyname').send();
+F(0).send(true);
+F(0).send(true, requester);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the F object.</p>
+
+<h3><a name="f-serialize">serialize</a> (<a href="#f">F</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#serializeformurlencoded">serializeFormUrlencoded (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = f.serialize();</pre>
+<h4>Examples</h4>
+<pre>
+s = F(0).serialize();
+s = F('myname').serialize();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string.</p>
+
+<h2><a name="i">I</a></h2>
+<div class="seealso">
+<h3>See Also</h3>
+<ul>
+<li><a href="#e">E</a></li>
+</ul>
+</div>
+<p>The <code>I</code> function constructs an object that abstracts
+an image element. This constructor <a href="mylib-doc.asp#inherit">inherits</a> from <a href="#e"><code>E</code></a>.</p>
+<p><strong>Note</strong> to always use with the <code>new</code>
+operator if <em>calling</em> the constructor from an alternate frame.
+Creating <code>I</code> objects from images in alternate frames does not
+require the <code>new</code> operator.</p>
+<h3 class="syntax">Syntax</h3>
+<pre>i = I(<em>id</em>);
+i = new I(<em>id</em>);
+</pre>
+<h3>Examples</h3>
+<pre>var i = I(0);
+i.loadURI('testuri').slideIn({ duration:1000 }).on('click', function() { window.alert('Image clicked'); });
+</pre>
+<h3><a name="i-change">change</a> (<a href="#i">I</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#changeimage">changeImage (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+i.change(<em>src</em>[, <em>options</em>[, <em>callback</em>]])
+</pre>
+<h4>Examples</h4>
+<pre>
+I.change('http://www.cinsoft.net/images/cinsoft.gif');
+I.change('http://www.cinsoft.net/images/cinsoft.gif', { effects: API.effects.fade, duration:1000, ease:API.ease.circle });
+I.change('http://www.cinsoft.net/images/cinsoft.gif', { effects: [API.effects.fade, API.effects.grow], duration:1000, ease:API.ease.circle });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the I object.</p>
+
+<h2><a name="q">Q</a></h2>
+<p>The <code>Q</code> function constructs an object that abstracts
+multiple elements.</p>
+<p><strong>Note</strong> to always use with the <code>new</code>
+operator if <em>calling</em> the constructor from an alternate frame.
+Creating <code>Q</code> objects that query documents in alternate frames
+does not require the <code>new</code> operator.</p>
+<h3 class="syntax">Syntax</h3>
+<pre>q = Q(<em>selector</em>[, <em>node</em>]);
+q = new Q(<em>selector</em>[, <em>node</em>]);
+</pre>
+<h3>Examples</h3>
+<pre>
+var q = Q('div:last-child');
+q.addClass('testclass').zoomIn({ duration:1000 }).on('click', function() { window.alert('Clicked'); });
+q.load('div&gt;div').addClass('testclass2').fadeIn({ duration:1000 }).on('click', function() { E(this).verticalBlindsOut({ duration:1000 }); });
+q.load("#two.test1[test=test][test2]:first-child").slideIn({ duration:1000 }).on('click', function() { this.fadeOut({ duration:1000 }); }, q);
+var q2 = Q([el1, el2, el3]);
+</pre>
+<h3><a name="q-addclass">addClass</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-hasclass">hasClass</a></li><li><a href="#q-removeclass">removeClass</a></li><li><a href="mylib-doc.asp#addclass">addClass (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.addClass(<em>className</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').addClass('yourclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-addhtml">addHtml</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-sethtml">setHtml</a></li><li><a href="mylib-doc.asp#addelementhtml">addElementHtml (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.addHtml(<em>html</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').addHtml('&lt;p&gt;&lt;/p&gt;');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-addme">addMe</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.addMe([<em>pos</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass', el).addMe();
+Q('.myclass', el).addMe(0);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-append">append</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.append(<em>selector</em>[, <em>node</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').append('.yourclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-appendto">appendTo</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.appendTo(<em>el</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').appendTo(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-clear">clear</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.clear();</pre>
+<h4>Examples</h4>
+<pre>Q('.myclass').clear();</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-copy">copy</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>r = q.copy();</pre>
+<h4>Examples</h4>
+<pre>r = Q('.myclass').copy()</pre>
+<h4>Return Value</h4>
+<p>The method returns a new Q object.</p>
+
+<h3><a name="q-dropin">dropIn</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-dropout">dropOut</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.dropIn([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>Q('.myclass').dropIn();</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-dropout">dropOut</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-dropin">dropIn</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.dropOut([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').dropOut();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-empty">empty</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#emptynode">emptyNode (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.empty();
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').empty();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-evens">evens</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-odds">odds</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.evens();</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').evens();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-every">every</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-some">some</a></li><li><a href="mylib-doc.asp#every">every (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.every(<em>fn</em>[, <em>context</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').every(function(el) { return API.hasClass(el, 'yourclass'); });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-fadein">fadeIn</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-fadeout">fadeOut</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.fadeIn([<em>options</em>[, <em>callback</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').fadeIn();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-fadeout">fadeOut</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-fadein">fadeIn</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.fadeOut([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').fadeOut();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-filter">filter</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#filter">filter (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.filter(<em>fn</em>[, <em>context</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').filter(function() { return API.hasClass(el, 'yourclass'); });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-find">find</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>r = q.find(<em>selector</em>);</pre>
+<h4>Examples</h4>
+<pre>
+r = Q('.myclass', el)
+r = r.find('.yourclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a new Q object.</p>
+
+<h3><a name="q-first">first</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-last">last</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = q.first();</pre>
+<h4>Examples</h4>
+<pre>
+el = Q('.myclass').first();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an element.</p>
+
+<h3><a name="q-foldin">foldIn</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-foldout">foldOut</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.foldIn([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').foldIn();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-foldout">foldOut</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-foldin">foldIn</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.foldOut([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').foldOut();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-foreach">forEach</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#foreach">forEach (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.forEach(fn, context);</pre>
+<h4>Examples</h4>
+<pre>Q('.myclass').forEach(function() { API.addClass(el, 'yourclass'); });</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-growin">growIn</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-growout">growOut</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.growIn([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').growIn();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-growout">growOut</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-growin">growIn</a></li><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.growOut([<em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>Q('.myclass').growOut();</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-hasattribute">hasAttribute</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-removeattribute">removeAttribute</a></li><li><a href="#q-setattribute">setAttribute</a></li><li><a href="mylib-doc.asp#hasattribute">hasAttribute (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = q.hasAttribute(<em>name</em>);</pre>
+<h4>Examples</h4>
+<pre>
+b = Q('.myclass').hasAttribute('style');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="q-hasclass">hasClass</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-addclass">addClass</a></li><li><a href="#q-removeclass">removeClass</a></li><li><a href="mylib-doc.asp#hasclass">hasClass (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = q.hasClass(<em>className</em>);</pre>
+<h4>Examples</h4>
+<pre>
+b = Q('.myclass').hasClass('yourclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+<h3><a name="q-indexof">indexOf</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#indexof">indexOf (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>i = q.indexOf(<em>el</em>);</pre>
+<h4>Examples</h4>
+<pre>
+i = Q('.myclass').indexOf(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a number.</p>
+
+<h3><a name="q-inject">inject</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-splice">splice</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.inject(<em>pos</em>[, <em>selector</em>[, <em>node</em>]]);</pre>
+<h4>Examples</h4>
+<pre></pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+	<h3><a name="q-insertafter">insertAfter</a> (<a href="#q">Q</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-insertbefore">insertBefore</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+	<pre>q.insertAfter(el);</pre>
+	<h4>Examples</h4>
+	<pre></pre>
+	<h4>Return Value</h4>
+	<p>The method returns the Q object.</p>
+
+
+	<h3><a name="q-insertbefore">insertBefore</a> (<a href="#q">Q</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-insertafter">insertAfter</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+	<pre>q.insertBefore(el);</pre>
+	<h4>Examples</h4>
+	<pre></pre>
+	<h4>Return Value</h4>
+	<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-last">last</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-first">first</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = q.last();</pre>
+<h4>Examples</h4>
+<pre>el = Q('.myclass').last();</pre>
+<h4>Return Value</h4>
+<p>The method returns an element or <code>undefined</code> if the query is empty.</p>
+
+
+<h3><a name="q-loadhtml">loadHtml</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-addhtml">addHtml</a></li><li><a href="#q-sethtml">setHtml</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.loadHtml(<em>html</em>[, <em>docNode</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q().loadHtml('&lt;p&gt;&lt;/p&gt;');
+Q().loadHtml('&lt;p&gt;&lt;/p&gt;&lt;div&gt;&lt;/div&gt;');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+	<h3><a name="q-map">map</a> (<a href="#q">Q</a>)</h3>
+	<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#map">map (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+	<h4 class="syntax">Syntax</h4>
+	<pre>a = q.map(<em>fn</em>[, <em>context</em>]);</pre>
+	<h4>Examples</h4>
+<pre>
+a = Q('.myclass').map(function(el) { return el.id; });
+</pre>
+	<h4>Return Value</h4>
+	<p>The method returns an array.</p>
+
+
+<h3><a name="q-odds">odds</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-evens">evens</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.odds();</pre>
+<h4>Examples</h4>
+<pre>
+Q(.myclass').odds();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-off">off</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-on">on</a></li><li><a href="mylib-doc.asp#detachlistener">detachListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.off(<em>ev</em>, <em>fn</em>);</pre>
+	<h4>Examples</h4>
+	<pre></pre>
+	<h4>Return Value</h4>
+	<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-offcontextclick">offContextClick</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-oncontextclick">onContextClick</a></li><li><a href="mylib-doc.asp#detachcontextclicklistener">detachContextClickListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.offContextClick();
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').offContextClick();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-offhelp">offHelp</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-onhelp">onHelp</a></li><li><a href="mylib-doc.asp#detachhelplistener">detachHelpListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.offHelp();
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').offHelp();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-offmousewheel">offMousewheel</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-onmousewheel">onMousewheel</a></li><li><a href="mylib-doc.asp#detachmousewheellistener">detachMousewheelListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.offMousewheel();
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').offMousewheel();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-on">on</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-off">off</a></li><li><a href="mylib-doc.asp#attachlistener">attachListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.on(<em>ev</em>, <em>fn</em>[, <em>context</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').on('click', function() { window.alert('Clicked'); });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-oncontextclick">onContextClick</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-offcontextclick">offContextClick</a></li><li><a href="mylib-doc.asp#attachcontextclicklistener">attachContextClickListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.onContextClick(fn, context);
+</pre>
+<h4>Examples</h4>
+<pre></pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-onhelp">onHelp</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-offhelp">offHelp</a></li><li><a href="mylib-doc.asp#attachhelplistener">attachHelpListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.onHelp(<em>fn</em>[, <em>context</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').onHelp(function() { window.alert('Help!'); });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-onhelp">onMousewheel</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-offmousewheel">offMousewheel</a></li><li><a href="mylib-doc.asp#attachmousewheellistener">attachMouseWheelListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.onMousewheel(<em>fn</em>[, <em>context</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').onMousewheel(function(e, delta) { window.status = delta; });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-onroll">onRoll</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#attachrolloverlisteners">attachRolloverListeners (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.onRoll(<em>fnOver</em>[, <em>fnOut</em>[, <em>context</em>[, <em>attachFocusListeners</em>[, <em>setStatus</em>]]]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').onRoll(function() { window.alert('over'); }, function() { window.alert('out'); });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-pop">pop</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-push">push</a></li><li><a href="mylib-doc.asp#pop">pop (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = q.pop();</pre>
+<h4>Examples</h4>
+<pre>
+el = Q('.myclass').pop();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an element or <code>undefined</code> if the query is empty.</p>
+
+
+<h3><a name="q-position">position</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#positionElement">positionElement (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.position(<em>top</em>[, <em>left</em>])</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').position(100, 100);
+Q('.yourclass').position(0, 0);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-prepend">prepend</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-append">append</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.prepend(<em>selector</em>[, node]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('p').prepend('div');
+Q('.myclass').prepend('.yourclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-present">present</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#presentelement">presentElement (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.present(<em>b</em>[, <em>display</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q(.myclass').present();
+Q(.yourclass').present(false);
+Q(.myclass').present(true, 'block');
+Q(.myclass').present(true, 'inline');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-push">push</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-pop">pop</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.push(<em>el1</em>, [<em>el2</em>, ..., <em>elN</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').push(el);
+Q('.myclass').push(el1, el2);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-random">random</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = q.random();</pre>
+<h4>Examples</h4>
+<pre>
+el = Q('.myclass').random();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an element.</p>
+
+<h3><a name="q-remove">remove</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.remove();</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').remove();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-removeattribute">removeAttribute</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-hasattribute">hasAttribute</a></li><li><a href="#q-setattribute">setAttribute</a></li><li><a href="mylib-doc.asp#removeattribute">removeAttribute (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.removeAttribute(<em>name</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').removeAttribute('class');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-removeclass">removeClass</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-addclass">addClass</a></li><li><a href="#q-hasclass">hasClass</a></li><li><a href="mylib-doc.asp#removeclass">removeClass (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.removeClass(<em>className</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').removeClass('myclass');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-reverse">reverse</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="https://developer.mozilla.org/En/Core_JavaScript_1.5_Reference/Objects/Array/Reverse" class="external">reverse (MDC)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.reverse();</pre>
+<h4>Examples</h4>
+<pre>Q('.myclass').reverse()</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-setattribute">setAttribute</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-hasattribute">hasAttribute</a></li><li><a href="#q-removeattribute">removeAttribute</a></li><li><a href="mylib-doc.asp#setattribute">setAttribute (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.setAttribute(<em>name</em>, <em>value</em>);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').setAttribute('disabled', 'disabled');
+Q('.myclass').setAttribute('title', 'This control is disabled.');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-setattributeproperty">setAttributeProperty</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-setattribute">setAttribute</a></li><li><a href="mylib-doc.asp#setattributeproperty">setAttributeProperty (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.setAttributeProperty(<em>name</em>, <em>value</em>);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').setAttributeProperty('disabled', true);
+Q('.myclass').setAttributeProperty('title', 'This control is disabled.');
+</pre>
+<h4>Return Value</h4>
+<p>The method the Q object.</p>
+
+
+<h3><a name="q-sethtml">setHtml</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-addhtml">addHtml</a></li><li><a href="mylib-doc.asp#setelementhtml">setElementHtml (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.setHtml(<em>html</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').setHtml('&lt;p&gt;&lt;/p&gt;');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-setopacity">setOpacity</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#setopacity">setOpacity (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.setOpacity(<em>o</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').setOpacity(0.5);
+Q('.yourclass').setOpacity(0.75);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-setstyle">setStyle</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#setstyle">setStyle (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.setStyle(<em>style</em>, <em>value</em>);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').setStyle('backgroundColor', '#000');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-setstyles">setStyles</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#setstyles">setStyles (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.setStyles(<em>styles</em>);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').setStyles({ color:'#F00', backgroundColor:'#000' });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-settext">setText</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#setelementtext">setElementText (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.setText(<em>text</em>);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').setText('This is a test.');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-shift">shift</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-unshift">unshift</a></li><li><a href="https://developer.mozilla.org/En/Core_JavaScript_1.5_Reference/Objects/Array/Shift" class="external">shift (MDC)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>el = q.shift();</pre>
+<h4>Examples</h4>
+<pre>
+el = Q('.myclass').shift();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-show">show</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#showelement">showElement (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.show(<em>b</em>[, <em>options</em>[, <em>callback</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').show();
+Q('.myclass').show({ effects:API.effects.fade, duration:1000, ease:API.ease.circle });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-size">size</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#sizeelement">sizeElement (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.size(<em>h</em>, <em>w</em>[, <em>options</em>[, <em>callback</em>]]);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').size(100, 100);
+Q('.myclass').size(100, 100, { duration:1000, ease:API.ease.circle });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-sizeouter">sizeOuter</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-size">size</a></li><li><a href="mylib-doc.asp#sizeelementouter">sizeElementOuter (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+q.sizeOuter(<em>h</em>, <em>w</em>);
+</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').sizeOuter(100, 100);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-slice">slice</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="https://developer.mozilla.org/En/Core_JavaScript_1.5_Reference/Objects/Array/Slice" class="external">slice (MDC)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.slice(<em>begin</em>[, <em>end</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').slice(1);
+Q('.myclass').slice(0, 1);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-snip">snip</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-splice">splice</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.snip(<em>pos</em>, <em>count</em>);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').snip(0, 1);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-some">some</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-every">every</a></li><li><a href="mylib-doc.asp#some">some (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>b = q.some(<em>fn</em>[, <em>context</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+b = Q('.myclass').some(function(el) { return API.hasClass(el, 'yourclass'); });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a boolean.</p>
+
+
+<h3><a name="q-splice">splice</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="https://developer.mozilla.org/En/Core_JavaScript_1.5_Reference/Objects/Array/Splice" class="external">splice (MDC)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.splice(<em>index</em>, <em>howMany</em>, [<em>el1</em>][el2, ..., <em>elN</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').splice(1, 2);
+Q('.myclass').splice(1, 2, el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+
+<h3><a name="q-tohtml">toHtml</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = q.toHtml([<em>xhtml</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+html = q.toHtml();
+xhtml = q.toHtml(true);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a string.</p>
+
+<h3><a name="q-toggle">toggle</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-togglepresence">togglePresence</a></li><li><a href="mylib-doc.asp#toggleelement">toggleElement</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.toggle([<em>options</em>[, <em>callback</em>]]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').toggle();
+Q('.yourclass').toggle({ effects:API.effects.fade, duration:1000 });
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-togglepresence">togglePresence</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-toggle">toggle</a></li><li><a href="mylib-doc.asp#toggleelementpresence">toggleElementPresence</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.togglePresence([<em>display</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').togglePresence();
+Q('.myclass').togglePresence('block');
+Q('.yourclass').togglePresence('inline');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h3><a name="q-unshift">unshift</a> (<a href="#q">Q</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#q-shift">shift</a></li><li><a href="https://developer.mozilla.org/En/Core_JavaScript_1.5_Reference/Objects/Array/Unshift" class="external">unshift (MDC)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>q.unshift(<em>el1</em>[, <em>el2</em>, ..., <em>elN</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+Q('.myclass').unshift(el1, el2, el3, el4);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the Q object.</p>
+
+<h2><a name="w">W</a></h2>
+<p>The <code>W</code> function constructs an object that abstracts a
+window.</p>
+<p><strong>Note</strong> to always use with the <code>new</code>
+operator if <em>calling</em> the constructor from an alternate frame.
+Creating <code>W</code> objects from alternate frames does not require
+the <code>new</code> operator.</p>
+<h3 class="syntax">Syntax</h3>
+<pre>w = W([<em>window</em>]);
+w = new W([<em>window</em>]);
+</pre>
+<h3>Examples</h3>
+<pre>var w = W();
+var s = w.getViewportSize();
+w.setStatus('Viewport size ' + s);
+w.addBookmark('http://www.cinsoft.net/mylib.html', 'My Library');
+</pre>
+<h3><a name="w-addbookmark">addBookmark</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#w-addbookmarkcurrent">addBookmarkCurrent</a></li><li><a href="mylib-doc.asp#addbookmark">addBookmark (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>	<h4 class="syntax">Syntax</h4>
+<pre>w.addBookmark(<em>uri</em>[, <em>title</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+W().addBookmark('http://www.hartkelaw.net', 'Hartke Law Firm')
+W(win).addBookmark('http://www.hartkelaw.net', 'Hartke Law Firm')
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the W object.</p>
+
+
+<h3><a name="w-addbookmarkcurrent">addBookmarkCurrent</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#w-addbookmark">addBookmark</a></li><li><a href="mylib-doc.asp#addbookmarkcurrent">addBookmarkCurrent (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>w.addBookmarkCurrent();</pre>
+<h4>Examples</h4>
+<pre>
+W().addBookmarkCurrent()
+W(win).addBookmarkCurrent()
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the W object.</p>
+
+<h3><a name="w-getenabledplugin">getEnabledPlugin</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getenabledplugin">getEnabledPlugin (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>p = w.getEnabledPlugin(<em>mimeType</em>[, <em>title</em>]);</pre>
+<h4>Examples</h4>
+<pre>
+p = W().getEnabledPlugin('audio/x-wav');
+p = W(win).getEnabledPlugin('audio/x-wav');
+</pre>
+<h4>Return Value</h4>
+<p>The function returns a string or null if an enabled plugin is not found.</p>
+
+<h3><a name="w-getframebyid">getFrameById</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getframebyid">getFrameById (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>frame = w.getFrameById(<em>id</em>);</pre>
+<h4>Examples</h4>
+<pre>
+frame = W().getFrameById('myid');
+frame = W(win).getFrameById('myid');
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a window object or <code>null</code> if none is found.</p>
+
+<h3><a name="w-getiframedocument">getIFrameDocument</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getiframedocument">getIFrameDocument (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>doc = w.getIFrameDocument(el);</pre>
+<h4>Examples</h4>
+<pre>
+doc = W().getIFrameDocument(el);
+doc = W(win).getIFrameDocument(el);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns a document.</p>
+
+<h3><a name="w-off">off</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#w-on">on</a></li><li><a href="mylib-doc.asp#detachwindowlistener">detachWindowListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>w.off(<em>ev</em>, <em>fn</em>);</pre>
+<h4>Examples</h4>
+<pre>
+W().off('resize', fn);
+W(win).off('resize', fn);
+W().off('scroll', fn);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the W object.</p>
+
+<h3><a name="w-on">on</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="#w-off">off</a></li><li><a href="mylib-doc.asp#attachwindowlistener">attachWindowListener (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>
+w.on(<em>ev</em>, <em>fn</em>[, <em>context</em>]);
+</pre>
+<h4>Examples</h4>
+<pre>
+W().on('resize', function() { window.status = 'Resized'; });
+W(win).on('resize', function() { window.status = 'Resized'; });
+W().on('scroll', function(e) { this.onscroll(e); }, someObject);
+</pre>
+<h4>Return Value</h4>
+<p>The method returns the W object.</p>
+
+<h3><a name="w-setstatus">setStatus</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#setstatus">setStatus (API)</a></li></ul></div>
+<div class="seealso immediate"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#immediate">Immediate</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>w.setStatus(<em>text</em>);</pre>
+<h4>Examples</h4>
+<pre>W().setStatus('Hello!');</pre>
+<pre>W(win).setStatus('Hello to you!');</pre>
+<h4>Return Value</h4>
+<p>The method returns the W object.</p>
+
+<h3><a name="w-viewportsize">viewportSize</a> (<a href="#w">W</a>)</h3>
+<div class="seealso"><h4>See Also</h4><ul><li><a href="mylib-doc.asp#getviewportsize">getViewportSize (API)</a></li></ul></div>
+<div class="seealso deferred"><h4>Feature Detection</h4><p><a href="mylib-doc0.html#deferred">Deferred</a></p></div>
+<h4 class="syntax">Syntax</h4>
+<pre>s = w.viewportSize();</pre>
+<h4>Examples</h4>
+<pre>
+s = W().viewportSize();
+s = W(win).viewportSize();
+</pre>
+<h4>Return Value</h4>
+<p>The method returns an array containing the height and width of the viewport in pixels.</p>
+<div id="logo"><a href="mylib.html" title="Home"><img src="images/mylibrarylogo.jpg" height="108" width="260" alt="My Library" title="Home"></a></div>
+<p class="meta">Last Modified: 23 Apr 2010 22:29:00 GMT</p>
+<address>By <a title="Send email to David Mark" href="mailto:dmark@cinsoft.net">David Mark</a></address>
+<div class="legal">Copyright &copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a>. All Rights Reserved.</div>
+</div>
+</body>
+</html>

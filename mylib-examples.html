@@ -1,0 +1,2696 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Last-Modified" content="6 May 2010 22:29:00 GMT">
+<meta name="description" content="Examples of My Library, a cross-browser scripting library, written in Javascript">
+<meta name="keywords" content="My Library, Javascript, library, project, repository, builder, browser scripting, Ajax, comp.lang.javascript, newsgroup, example">
+<meta name="author" content="David Mark">
+<title>My Library Examples</title>
+<link rel="home" href="mylib.html" title="Home">
+<link rel="bookmark" href="#content" title="Content">
+<link rel="stylesheet" type="text/css" href="style/mylib.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-widgets.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-skin-blues.css" media="all" title="Blues">
+<link rel="alternate stylesheet" type="text/css" href="style/mylib-skin-doom.css" media="all" title="Doom">
+<link rel="alternate stylesheet" type="text/css" href="style/mylib-skin-froggy.css" media="all" title="Froggy">
+<link rel="alternate stylesheet" type="text/css" href="style/mylib-skin-hades.css" media="all" title="Hades">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="style/mylib-ie.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-widgets-ie.css" media="all">
+<script type="text/javascript">
+// IE8 breaks conditional comments
+
+(function() {
+	var doc = this.document;
+
+	if (doc && typeof doc.documentMode == 'number' && doc.documentMode < 8 && typeof doc.write != 'undefined') {
+		doc.write('<link rel="stylesheet" type="text/css" href="style/mylib-widgets-ieold.css" media="all">');
+	}
+
+	if (typeof doc.compatMode == 'undefined' || doc.compatMode.toLowerCase().indexOf('css') == -1) {
+		this.document.write('<link rel="stylesheet" type="text/css" media="all" href="style/mylib-widgets-ie5.css">');
+	}
+})();
+</script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="style/mylib-alert.css" media="all">
+<!--[if lt IE 8]>
+<link rel="stylesheet" type="text/css" href="style/mylib-widgets-ieold.css" media="all">
+<![endif]-->
+<!--[if lt IE 6]>
+<link rel="stylesheet" type="text/css" media="all" href="style/mylib-widgets-ie5.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="style/mylib-handheld.css" media="handheld">
+<link rel="stylesheet" type="text/css" href="style/mylib-print.css" media="print">
+<link rel="stylesheet" type="text/css" href="style/mylib-widgets-print.css" media="print">
+<script type="text/javascript">
+var API = { deferAudio:true };
+</script>
+<script type="text/javascript" src="mylib-example-build-min.js"></script>
+<script type="text/javascript">
+var API, global = this;
+
+/* Prevent FoUC for example alert style
+   getEBI will be needed to find it and the related anchor, which will be turned into a link on ready
+   attachListener will be needed to attach a click listener to the newly created link
+   canAdjustStyle is consulted to determine if display styles can be changed by script (else example would be irretrievably hidden) */
+
+if (API && API.forEach && API.attachListener && API.getEBI && API.canAdjustStyle && API.canAdjustStyle('display') && API.isHostMethod(this.document, 'write')) {
+  this.document.write('<style type="text/css" media="all">#examplealertstyle { display:none }<\/style><style type="text/css" media="print">#examplealertstyle { display:block !important }<\/style>');
+}
+</script>
+<style type="text/css" media="all">
+#testalertleftlabel {
+	margin-left:.5em
+}
+#alerttestmessages div { margin-top:.5em }
+fieldset div.dialognote, #toolbarlanding { margin-bottom:1em }
+#skintoolbar, #apptoolbar, .tabstrip, fieldset.abrupt { margin-top:1em }
+#createbuttonremoveall, #confirmchanges, #backgroundmusicstatuspanel, div.aside { float:right }
+#backgroundmusicstatuspanel { margin-top:-.75em }
+#backgroundmusicstatusduration { font-family:monospace;font-size:80%;text-align:right }
+#backgroundmusiccontrols {
+	background:url(images/jukebox.gif) no-repeat right top;
+}
+#backgroundmusiccontrols.playing {
+	background-image:url(images/jukeboxflashing.gif)
+}
+#backgroundmusictrack input {
+	width:7.5em
+}
+#skinblues {
+	background-image:url(images/cloud.gif);
+}
+#skindoom {
+	background-image:url(images/skull.png);
+}
+#skinfroggy {
+	background-image:url(images/frog.png);
+}
+#skinhades {
+	background-image:url(images/devil.gif);
+}
+#testtransform, #testtransformadvanced { width:297px;text-align:center }
+#testtransform img, #testtransformadvanced img { display:block; }
+#testalerttext { margin-bottom:.5em; }
+.textinput { width:3em }
+.matrix { width:7em }
+.flat { border:none }
+div.music, div.sounds { background-image:url(images/music.gif);background-repeat:no-repeat;background-position:left;padding-left:4em;white-space:normal;width:10em }
+div.sounds { background-image:url(images/speaker.gif) }
+iframe.test { width:100%;height:9.25em;border:none }
+</style>
+</head>
+<body>
+<div id="sidebar">
+<a href="#content" id="skipnav">Skip Navigation</a>
+<h2>Resources</h2>
+<h3>Contents</h3>
+<ul><li><a href="mylib.html" accesskey="1" title="Home [1]">Home</a></li><li><a href="mylib-downloads.html">Downloads</a></li><li><a href="mylib-doc0.html">Documentation</a></li><li><span id="current">Examples</span></li><li><a href="mylib-builder.asp">Builder</a></li><li><a href="mylib-test.asp?version=1.0&amp;requester=on&amp;array=on&amp;script=on&amp;mouseposition=on&amp;drag=on&amp;every=on&amp;cookie=on&amp;contextclick=on&amp;adjacent=on&amp;ajaxlink=on&amp;ajax=on&amp;event=on&amp;audio=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;filter=on&amp;dispatch=on&amp;help=on&amp;flash=on&amp;opacity=on&amp;maximize=on&amp;ashtml=on&amp;foreach=on&amp;query=on&amp;serialize=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;bookmark=on&amp;collections=on&amp;html=on&amp;offset=on&amp;size=on&amp;fx=on&amp;ajaxform=on&amp;overlay=on&amp;some=on&amp;crumb=on&amp;text=on&amp;dom0=on&amp;mousewheel=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;dom=on&amp;setattribute=on&amp;stylesheets=on&amp;style=on&amp;coverdocument=on&amp;dollar=on&amp;objects=on&amp;import=on&amp;rollover=on&amp;locationquery=on&amp;border=on&amp;updater=on&amp;form=on&amp;image=on&amp;plugin=on&amp;directx=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;gethtml=on&amp;mode=HTML" title="Test full build">Build Test</a></li><li><a href="mylib-testspeed.html" title="Compare the performance of the query feature to three popular libraries">Speed Tests</a></li><li><a href="mylib-sponsors.html" title="List of our benefactors">Sponsors</a></li></ul>
+<h3>Related Links</h3>
+<ul><li><a href="http://www.pledgie.com/campaigns/9768" title="Please make a donation today!">Donations</a></li><li><a href="http://groups.google.com/group/my-library-general-discussion/">Discussion</a></li><li><a href="http://code.google.com/p/ourlibrary/source/checkout">Repository</a></li></ul>
+<h3>Primers</h3>
+<ul><li><a href="attributes.html" title="A is for Attributes primer">Attributes</a></li><li><a href="host.html" title="H is for Host primer">Host</a></li><li><a href="keyboard.html" title="K is for Keyboard primer">Keyboard</a></li><li><a href="position.html" title="P is for Position primer">Position</a></li><li><a href="size.html" title="S is for Size primer">Size</a></li><li><a href="viewport.asp" title="V is for Viewport primer">Viewport</a></li></ul>
+<h3>Bookmark</h3>
+<ul><li><a title="Digg this" href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-downloads.html&amp;title=My%20Library&amp;bodytext=Build%20your%20own%20browser%20scripting%20library&amp;topic=programming">Digg This</a></li><li><a title="Add bookmark to deli.cio.us" href="http://del.icio.us/post?url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-downloads.html">Add to deli.cio.us</a></li></ul>
+<h3>Javascript Help</h3>
+<ul><li><a href="http://groups.google.com/group/comp.lang.javascript/topics" title="comp.lang.javascript newsgroup">Newsgroup</a></li><li><a href="http://jibbering.com/faq/index.html" title="comp.lang.javascript newsgroup FAQ">FAQ</a></li></ul>
+<script type="text/javascript">
+google_ad_client = "pub-0919891272636534";
+google_ad_slot = "6037707224";
+google_ad_width = 120;
+google_ad_height = 90;
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<div>
+<a name="content"></a>
+<h1><span class="redundant">My Library </span>Examples</h1>
+<p>Many additional examples can be found on the <a href="mylib-test.asp?version=1.0&amp;requester=on&amp;array=on&amp;script=on&amp;mouseposition=on&amp;drag=on&amp;every=on&amp;cookie=on&amp;contextclick=on&amp;adjacent=on&amp;ajaxlink=on&amp;ajax=on&amp;event=on&amp;audio=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;filter=on&amp;dispatch=on&amp;help=on&amp;flash=on&amp;opacity=on&amp;maximize=on&amp;ashtml=on&amp;foreach=on&amp;query=on&amp;serialize=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;bookmark=on&amp;collections=on&amp;html=on&amp;offset=on&amp;size=on&amp;fx=on&amp;ajaxform=on&amp;overlay=on&amp;some=on&amp;crumb=on&amp;text=on&amp;dom0=on&amp;mousewheel=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;dom=on&amp;setattribute=on&amp;stylesheets=on&amp;style=on&amp;coverdocument=on&amp;dollar=on&amp;objects=on&amp;import=on&amp;rollover=on&amp;locationquery=on&amp;border=on&amp;updater=on&amp;form=on&amp;image=on&amp;plugin=on&amp;directx=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;gethtml=on&amp;mode=HTML">Build Test</a> page.</p>
+<p>This document uses a <a href="mylib-example-build-min.js">minified</a> version of a <a href="mylib-build.asp?version=1.0&amp;array=on&amp;mouseposition=on&amp;drag=on&amp;adjacent=on&amp;foreach=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;collections=on&amp;offset=on&amp;size=on&amp;fx=on&amp;overlay=on&amp;dom=on&amp;style=on&amp;coverdocument=on&amp;text=on&amp;dom0=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;event=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;form=on&amp;image=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;border=on&amp;opacity=on&amp;maximize=on&amp;stylesheets=on&amp;rollover=on">custom build</a> that weighs approximately 76K. The minified versions of the demonstrated add-ons weigh between 2 and 7K. As always, reported sizes are pre-GZIP-compression as GZIP is not a constant on the Web and compressed sizes are less than ideal for comparative purposes (unless you manually GZIP every asset you compare).</p>
+<ul id="toc" title="Contents"><li><a href="#myaudio">Audio</a></li><li><a href="#addons">Add-ons</a><ul><li><a href="#myalert">Alert</a></li><li><a href="#scrollinganchors">Scrolling Anchors</a></li><li><a href="#sidebars">Sidebar</a></li><li><a href="#toast">Toast</a></li><li><a href="#mytoolbar">Toolbar</a></li><li><a href="#transform">Transform</a><ul><li><a href="#transformbasic">Basic</a></li><li><a href="#transformbymatrix">By Matrix</a></li><li><a href="#transformreveal">Reveal</a></li></ul></li></ul></li><li><a href="#userexamples">User Examples</a><ul><li><a href="#slideshow">Slide Show</a></li><li><a href="#tabbedpane">Tabbed Pane Widget</a></li></ul></li></ul>
+<h2 id="myaudio">Audio</h2>
+<p>Where permitted, the Audio module, in conjunction with the Playlist add-on can enhance the following examples. When enabled, the <code>API.playEventSound</code> function is called to play specified sound clips on <a href="#myalert">alert</a> and <a href="#toast">toast</a> operations. Applications can use the <code>API.addEventSound</code> and <code>API.removeEventSound</code> functions to create audio schemes.</p>
+<p><strong>Note</strong> in browsers that use plug-ins for audio (e.g. most but IE), performance is limited to the ability of the plug-in.</p>
+<fieldset>
+<legend>Event Sounds</legend>
+<input id="eventsounds" type="button" value="Enable" title="Enable event sounds (disabled)" disabled>
+</fieldset>
+<pre id="codeaudio">
+(Code will appear when event sounds are enabled)
+</pre>
+<fieldset>
+<legend>Background Music</legend>
+<fieldset id="backgroundmusiccontrols">
+<legend>
+<input id="backgroundmusic" type="button" value="Enable" title="Enable background music (disabled)" disabled>
+</legend>
+<input type="checkbox" id="backgroundmusicautorepeat" disabled><label for="backgroundmusicautorepeat" id="backgroundmusicautorepeatlabel" class="disabled">Auto Repeat</label>
+</fieldset>
+<fieldset id="backgroundmusictrack">
+<legend>Track</legend>
+<div id="backgroundmusicstatuspanel"><div id="backgroundmusicstatus"></div><div id="backgroundmusicstatusduration"></div></div>
+<input id="backgroundmusicfirst" type="button" value="First" disabled title="First track (disabled)">
+<input id="backgroundmusicprevious" type="button" value="Previous" disabled title="Previous track (disabled)">
+<input id="backgroundmusicnext" type="button" value="Next" disabled title="Next track (disabled)">
+<input id="backgroundmusiclast" type="button" value="Last" disabled title="Last track (disabled)">
+</fieldset>
+</fieldset>
+<pre id="codemusic">
+(Code will appear when background music is enabled)
+</pre>
+<h2 id="addons">Add-ons</h2>
+<p>This section demonstrates a few of the <a href="mylib-downloads.html#addons">add-ons available for My Library</a>.</p>
+<h3 id="myalert">Alert</h3>
+<p>The Alert add-on is a basic alert replacement, which was originally written to demonstrate progressive enhancement on the <a href="mylib-builder.asp">builder</a> test page. At one point efforts were undertaken to add additional functionality to allow it to serve as a confirm replacement, as well as a customizable dialog. A prompt feature will be added shortly, as well as property sheets (tabbed dialogs) and wizards with validation callbacks.</p>
+<h4>Styling</h4>
+<p>Example styles for the alert element are available for <a href="mylib-downloads.html#skins" title="Download sample alert style sheet">download</a> or <a id="examplealertstyleanchor">study here</a>. It will be enhanced by the use of a <a href="mylib-downloads.html#skins">skin</a>. The curtain fade-in effect in this example is accomplished with only skin CSS and only works in some browsers (e.g. Chrome, Safari, iPhone/Pod/Pad).</p>
+<pre id="examplealertstyle">
+div.alert div.content {
+	text-align:center;
+	padding:1em
+}
+div.alert fieldset {
+	text-align:center;
+	border:none;
+	white-space:nowrap
+}
+div.alert input.commandbutton {
+	width:5em;
+	margin-left:.25em	
+}
+div.alert input.close {
+	margin-left:0
+}
+div.alert div.icon {
+	position:absolute;
+	left:2px;
+	top:.2em
+}
+div.alert div.movehandle {
+	padding-right:20px
+}
+div.maxminbuttons div.movehandle {
+	padding-right:60px
+}
+div.fixable div.movehandle {
+	padding-right:42px
+}
+div.fixable.maxminbuttons div.movehandle {
+	padding-right:82px
+}
+div.nocaptionbuttons div.movehandle {
+	padding-right:2px
+}
+div.iconic div.movehandle {
+	padding-left:20px
+}
+div.alert div.maximize {
+	right:20px
+}
+div.alert div.fix {
+	right:62px
+}
+div.nomaxminbuttons div.fix {
+	right:22px
+}
+div.alert div.minimize {
+	right:40px
+}
+div.alert div.close {
+	right:0px
+}
+</pre>
+<h4>Modality</h4>
+<p>Care has been taken to enforce <em>real</em> modality for this application. This is accomplished by attaching <code>focus</code> listeners to links and form controls.</p>
+<pre>
+var focusListener = function(e) {
+  if (API.isAlertModal()) {
+    window.setTimeout(function() {
+      API.focusAlert();
+    }, 1);
+    return API.cancelDefault(e);
+  }
+};
+</pre>
+<p>To draw further attention to the plight of the user trying to break out of the modal alert, the <code>flashAlert</code> function can be called in addition to <code>focusAlert</code>.</p>
+<p><strong>Note</strong> that the dialog type does not display an actual dialog in this example, but plain text. The Set Dirty buttons allow simulation of data changes by its controls and/or the controls of a successor dialog. The Apply button enables and, in the latter case, the OK button changes to Close and the Cancel button is disabled). A dialog application would pass controls as HTML (<code>html</code> option) or DOM nodes (<code>nodes</code> option). In the former case, it would attach <code>change</code> listeners in the <code>onopen</code> callback. In either case, it would call the <code>setAlertDirty</code> API function to signal user changes. When dirty, the <code>onsave</code> callback is called on a positive outcome (OK button) or when the Apply button is pressed. Also note that, for dialogs, the escape key does not trigger a negative outcome (cancel button) but simply closes the dialog, calling the <code>onclose</code> callback. This is <strong>important</strong> as applications should <em>always</em> abandon changes on cancel, but should prompt the user to save any <em>pending</em> changes on close.</p>
+<!--[if gt IE 7]>
+<p><strong>Note</strong> that in some circumstances there is an issue with showing the alert using effects that are implemented with DirectX (e.g. skew, spin, fade) where IE8 standards mode shows a flash of the final animation state initially. This is not something we've seen before (certainly not with any of the effects on the <a href="mylib-test.asp?version=1.0&amp;requester=on&amp;array=on&amp;script=on&amp;mouseposition=on&amp;drag=on&amp;every=on&amp;cookie=on&amp;contextclick=on&amp;adjacent=on&amp;ajaxlink=on&amp;ajax=on&amp;event=on&amp;audio=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;filter=on&amp;dispatch=on&amp;help=on&amp;flash=on&amp;opacity=on&amp;maximize=on&amp;ashtml=on&amp;foreach=on&amp;query=on&amp;serialize=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;bookmark=on&amp;collections=on&amp;html=on&amp;offset=on&amp;size=on&amp;fx=on&amp;ajaxform=on&amp;overlay=on&amp;some=on&amp;crumb=on&amp;text=on&amp;dom0=on&amp;mousewheel=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;dom=on&amp;setattribute=on&amp;stylesheets=on&amp;style=on&amp;coverdocument=on&amp;dollar=on&amp;objects=on&amp;import=on&amp;rollover=on&amp;locationquery=on&amp;border=on&amp;updater=on&amp;form=on&amp;image=on&amp;plugin=on&amp;directx=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;gethtml=on&amp;mode=HTML" title="Test full build">Build Test</a> page). The issue is not present when effects are combined (e.g. spin + fade). For this example, which uses one effect at a time, the workaround is simple. Where previously we had this:</p>
+<pre>
+API.alert(text, options);
+</pre>
+<p>...we have replaced it with this:</p>
+<pre>
+var elAlert = API.getAlertElement();
+
+API.setOpacity(elAlert, 0);
+
+API.alert(text, options);
+
+if (effectName != 'fade') {
+  API.setOpacity(elAlert, 1);
+}
+</pre>
+<p>...setting the alert to transparent initially and then putting it back after the show has started and the effects have initialized (unless the fade effect is used).</p>
+<p><strong>Note</strong> that, also in IE8 standards mode, using the spin effect <em>after</em> the slide or clip effects results in some cropping during the transition. This appears to be related to the <code>clip</code> style used by the slide effect, but is odd as the element is "unclipped" at the end of that transition (clipping is set to automatic).</p>
+<![endif]-->
+<fieldset>
+<legend>Alert</legend>
+<div class="dialognote"><strong>Note</strong> that changes are only applied on show.</div>
+<label for="testalerttype" id="testalerttypelabel" class="disabled">Type:</label><select id="testalerttype" disabled><option selected>alert</option><option>confirm</option><option>yes/no</option><option>yes/no/cancel</option><option>dialog</option></select>
+<label id="testalerttitlelabel" class="disabled">Title:</label><input id="testalerttitle" value="Alert" disabled>
+<label id="testalertstepslabel" for="testalertsteps" class="disabled">Steps:</label><input id="testalertsteps" value="1" class="textinput" disabled>
+<div>
+<label id="testalerttextlabel" class="disabled">Text:</label><textarea rows="5" cols="80" id="testalerttext" disabled>This is only a test!</textarea>
+</div>
+<fieldset>
+<legend>Configuration</legend>
+<input id="testalertmodal" type="checkbox" checked disabled><label class="disabled" id="testalertmodallabel" for="testalertmodal">Modal</label>
+<input id="testalertfixable" type="checkbox" checked disabled><label class="disabled" id="testalertfixablelabel" for="testalertfixable">Fixable</label>
+<input id="testalertautodismiss" type="checkbox" disabled><label class="disabled" id="testalertautodismisslabel" for="testalertautodismiss">Auto dismiss</label><label for="testalertautodismissseconds" id="testalertautodismisssecondslabel" class="disabled">after</label><input id="testalertautodismissseconds" disabled class="textinput" value="30"><span class="disabled" id="testalertautodismisssecondsdecoration">seconds</span>
+<fieldset class="abrupt">
+<legend>Position</legend>
+<input type="radio" name="testalertposition" id="testalertcenter" disabled checked><label for="testalertcenter" id="testalertcenterlabel" class="disabled">Center</label>
+<div><input type="radio" name="testalertposition" id="testalertcorner" disabled><label for="testalertcorner" id="testalertcornerlabel" class="disabled">Corner</label><label for="testalertcornerposition" id="testalertcornerpositionlabel" class="disabled">at</label><select id="testalertcornerposition" disabled><option selected>Top Left</option><option>Top Right</option><option>Bottom Left</option><option>Bottom Right</option></select></div>
+<div><input type="radio" name="testalertposition" id="testalertoffset" disabled><label for="testalertoffset" id="testalertoffsetlabel" class="disabled">Offset</label><label class="disabled" for="testalerttop" id="testalerttoplabel">Top:</label><input class="textinput" id="testalerttop" disabled value="0"><span id="testalerttopdecoration" title="pixels">px</span><label class="disabled" for="testalertleft" id="testalertleftlabel">Left:</label><input class="textinput" id="testalertleft" disabled value="0"><span id="testalertleftdecoration" title="pixels">px</span></div>
+<input type="checkbox" id="testalertfixed" disabled><label for="testalertfixed" id="testalertfixedlabel" class="disabled">Fixed</label>
+</fieldset>
+<fieldset class="abrupt">
+<legend><input id="testalertsizable" type="checkbox" checked disabled><label class="disabled" for="testalertsizable" id="testalertsizablelabel">Sizable</label></legend>
+<input id="testalertmaximizable" type="checkbox" checked disabled><label class="disabled" for="testalertmaximizable" id="testalertmaximizablelabel">Maximizable</label>
+<input id="testalertminimizable" type="checkbox" checked disabled><label class="disabled" for="testalertminimizable" id="testalertminimizablelabel">Minimizable</label>
+</fieldset>
+<fieldset>
+<legend>Buttons</legend>
+<input id="testalertbuttons" type="checkbox" checked disabled><label class="disabled" for="testalertbuttons" id="testalertbuttonslabel">Command</label>
+<input id="testalertcaptionbuttons" type="checkbox" checked disabled><label class="disabled" for="testalertcaptionbuttons" id="testalertcaptionbuttonslabel">Caption</label>
+<input id="testalerticon" type="checkbox" checked disabled><label class="disabled" for="testalerticon" id="testalerticonlabel">Icon</label>
+</fieldset>
+</fieldset>
+<fieldset>
+<legend>Class</legend>
+<input id="testalertclassinformational" name="testalertclass" type="radio" checked disabled><label id="testalertclassinformationallabel" for="testalertclassinformational" class="disabled">Informational</label>
+<input id="testalertclasswarning" name="testalertclass" type="radio" disabled><label id="testalertclasswarninglabel" for="testalertclasswarning" class="disabled">Warning</label>
+<input id="testalertclasserror" name="testalertclass" type="radio" disabled><label id="testalertclasserrorlabel" for="testalertclasserror" class="disabled">Error</label>
+<fieldset class="abrupt">
+<legend>Skin</legend>
+<div class="dialognote">The skin can be changed with a View command in some browsers. Applications can use the <a href="mylib-doc.asp#setactivestylesheet"><code>setActiveStyleSheet</code></a> API function, as seen in the <a href="#mytoolbar">Toolbar</a> example.</div>
+<input id="testalertclassrounded" type="checkbox" checked disabled><label id="testalertclassroundedlabel" for="testalertclassrounded" class="disabled">Rounded</label>
+<input id="testalertclassshadowed" type="checkbox" checked disabled><label id="testalertclassshadowedlabel" for="testalertclassshadowed" class="disabled">Shadowed</label>
+<input id="testalertclasswrapped" type="checkbox" checked disabled><label id="testalertclasswrappedlabel" for="testalertclasswrapped" class="disabled">Wrap</label>
+</fieldset>
+</fieldset>
+<fieldset>
+<legend>CSS Transitions</legend>
+<div class="dialognote"><strong>Note</strong> that CSS transitions do not work in all browsers. In this example, only the curtain has CSS transitions declared in the skins. Switching between CSS and scripted transitions is an <em>experimental</em> feature.</div>
+<input name="testalerttransitioned" id="testalerttransitionedalways" type="radio" disabled><label id="testalerttransitionedalwayslabel" for="testalerttransitionedalways" class="disabled">Always</label>
+<input name="testalerttransitioned" id="testalerttransitionedonanimation" type="radio" disabled><label id="testalerttransitionedonanimationlabel" for="testalerttransitionedonanimation" class="disabled">On Animation</label>
+<input name="testalerttransitioned" id="testalerttransitionednever" type="radio" checked disabled><label id="testalerttransitionedneverlabel" for="testalerttransitionednever" class="disabled">Never</label>
+</fieldset>
+<fieldset>
+<legend><label for="animatealert" id="animatealertlabel" class="disabled">Animate</label><select id="animatealert" disabled><option selected>[None]</option></select></legend>
+<label for="durationalert" id="durationalertlabel" class="disabled">Duration:</label><input id="durationalert" class="textinput" value=".7" disabled><span id="durationalertdecoration" class="disabled">seconds</span>
+<label for="easealert" id="easealertlabel" class="disabled">Easing:</label><select id="easealert" disabled><option>[None]</option></select>
+<input type="checkbox" id="addfadealert" disabled><label for="addfadealert" id="addfadealertlabel" class="disabled">Add Fade</label>
+</fieldset>
+<fieldset>
+<legend><input id="animatecurtain" type="checkbox" disabled><label id="animatecurtainlabel" for="animatecurtain" class="disabled">Animate Curtain</label></legend>
+<label for="durationcurtain" id="durationcurtainlabel" class="disabled">Duration:</label><input id="durationcurtain" class="textinput" value=".4" disabled><span id="durationcurtaindecoration" class="disabled">seconds</span>
+<label for="easecurtain" id="easecurtainlabel" class="disabled">Easing:</label><select id="easecurtain" disabled><option>[None]</option></select>
+</fieldset>
+<fieldset id="alerttestmessages">
+<legend>Test Messages</legend>
+<div>
+<label for="testalertpositivemessage" id="testalertpositivemessagelabel" class="disabled">Positive:</label><input id="testalertpositivemessage" value="Affirmative" disabled>
+<label for="testalertnegativemessage" id="testalertnegativemessagelabel" class="disabled">Negative:</label><input id="testalertnegativemessage" value="Negative" disabled>
+</div>
+<div>
+<label for="testalertindeterminatemessage" id="testalertindeterminatemessagelabel" class="disabled">Indeterminate:</label><input id="testalertindeterminatemessage" value="Unsure" disabled>
+<label for="testalerthelpmessage" id="testalerthelpmessagelabel" class="disabled">Help:</label><input id="testalerthelpmessage" disabled>
+</div>
+<div>
+<label for="testalertsavemessage" id="testalertsavemessagelabel" class="disabled">Save:</label><input id="testalertsavemessage" value="Save" disabled>
+<label for="testalertstepmessage" id="testalertstepmessagelabel" class="disabled">Step:</label><input id="testalertstepmessage" value="Step" disabled>
+</div>
+</fieldset>
+<input id="testalert" type="button" value="Show" disabled><input id="testalerthide" type="button" value="Hide" disabled><input id="testalertdirty" type="button" value="Set Dirty" disabled><input id="testalertdirtyexternal" type="button" value="Set Dirty (External)" disabled><input type="button" id="testalertfocus" value="Focus" disabled><input type="button" id="testalertblur" value="Blur" disabled><input type="button" value="Flash" id="testalertflash" disabled>
+</fieldset>
+<pre id="codealert" class="code">
+(Code will appear hear when popup is shown)
+</pre>
+<h3 id="scrollinganchors">Scrolling Anchors</h3>
+<p>The Scrolling Anchors add-on enables scrolling effects for navigation within the document. <span id="autoscroll">For this example, it is started automatically</span>. See the <a href="#toc">table of contents</a> for links that navigate to anchors.</p>
+<p><strong>Note</strong> that the <code>updateHash</code> option to change the hash at the end of the scroll (enabled by default as it is typically the desired behavior) will disallow some browsers (e.g. IE6/7), degrading back to standard navigation. This is a better strategy for such an enhancement than using hacks involving extraneous <code>iframe</code> elements.  The functions return <code>false</code> in these cases. Like <em>any</em> script that modifies the hash (e.g. Ajax "history managers" and "back button fixers"), this add-on is <em>not</em> normally recommended, except as an example (or perhaps for a game application).</p>
+<pre>
+API.attachLinkScrollEvents({
+  duration: 1000,
+  ease: API.ease.circle
+});
+</pre>
+<p>This example allows interruption of the animation by the mousewheel.</p>
+<pre>
+API.attachLinkScrollEvents({
+  duration: 1000,
+  ease: API.ease.circle,
+  wheelInterrupts: true
+});
+</pre>
+<p>This example will not update the hash on navigation.</p>
+<pre>
+API.attachLinkScrollEvents({
+  duration: 1000,
+  ease: API.ease.circle,
+  updateHash: false
+});
+</pre>
+<p>This example will animate on back and forward actions when possible.</p>
+<pre>
+API.attachLinkScrollEvents({
+  duration: 1000,
+  ease: API.ease.circle,
+  animateBackForward: true
+});
+</pre>
+<h3 id="sidebars">Sidebar</h3>
+<p>The Sidebar widgets are panels arranged around the edges of the viewport. The inner rectangle created can be retrieved with the <code>getWorkspaceRectangle</code> API function and is used for centering and maximizing other widgets (e.g. <a href="#myalert">alert</a>).</p>
+<fieldset>
+<legend>Create</legend>
+<input type="button" id="createsidebarleft" value="Left" disabled>
+<input type="button" id="createsidebartop" value="Top" disabled>
+<input type="button" id="createsidebarbottom" value="Bottom" disabled>
+<input type="button" id="createsidebarright" value="Right" disabled>
+</fieldset>
+<pre id="codesidebar">
+(Code will appear on creation)
+</pre>
+<h3 id="toast">Toast</h3>
+<p>The Toast widget corners elements.</p>
+<fieldset>
+<legend>Create</legend>
+<label for="createtoasttext" id="createtoasttextlabel" class="disabled">Text:</label>
+<textarea rows="5" cols="80" id="createtoasttext" disabled>This just in...
+Toast is ready!</textarea>
+<fieldset>
+<legend>Options</legend>
+<div class="aside"><input id="createtoastiniframe" type="checkbox" disabled><label for="createtoastiniframe" id="createtoastiniframelabel" class="disabled">in <code>iframe</code></label></div>
+<label class="disabled" for="createtoastduration" id="createtoastdurationlabel">Duration:</label><input id="createtoastduration" class="textinput" value="5" disabled><span id="createtoastdurationdecoration" class="disabled">seconds</span>
+<input type="checkbox" id="createtoastfixed"><label class="disabled" for="createtoastfixed" id="createtoastfixedlabel">Fixed</label>
+</fieldset>
+<fieldset>
+<legend><label class="disabled" id="animatetoastlabel" for="animatetoast">Animate:</label><select id="animatetoast" disabled><option>[None]</option></select></legend>
+<label for="durationtoast" id="durationtoastlabel" class="disabled">Duration:</label><input id="durationtoast" class="textinput" value=".7" disabled>
+<label for="easetoast" id="easetoastlabel" class="disabled">Ease:</label><select id="easetoast" disabled><option selected>[None]</option></select>
+<input type="checkbox" id="addfadetoast" disabled><label for="addfadetoast" id="addfadetoastlabel" class="disabled">Add Fade</label>
+</fieldset>
+<input type="button" id="createtoasttopleft" value="Top Left" disabled>
+<input type="button" id="createtoasttopright" value="Top Right" disabled>
+<input type="button" id="createtoastbottomleft" value="Bottom Left" disabled>
+<input type="button" id="createtoastbottomright" value="Bottom Right" disabled>
+</fieldset>
+<script type="text/javascript">
+if (API && API.isHostMethod && API.isHostMethod(this.document, 'write')) {
+  this.document.write('<iframe class="test" id="createtoastframe" src="blank.html"><\/iframe>');
+}
+</script>
+<pre id="codetoast">
+(Code will appear on creation)
+</pre>
+<h3 id="mytoolbar">Toolbar</h3>
+<div class="toolbar panel" id="skintoolbar">
+<div id="skinblues" title="Change to Blues skin (disabled)" class="commandbutton button disabled iconic">Blues</div><div title="Change to Doom skin (disabled)" id="skindoom" class="commandbutton button disabled iconic separator">Doom</div><div title="Change to Froggy skin (disabled)" id="skinfroggy" class="commandbutton button disabled iconic separator">Froggy</div><div title="Change to Hades skin (disabled)" id="skinhades" class="commandbutton button disabled iconic separator">Hades</div>
+</div>
+<p>This lovely toolbar was created from static markup with the Toolbar add-on. By default it is disabled. When skin changing features are available, it is enabled. When scripting is disabled, it still functions as an indicator of the current skin. Double-click to display an <a href="#myalert">alert</a>.</p>
+<pre>
+var el = enhanceToolbar(el, {
+  oncustomize: function() {
+    API.alert('No customization available', {
+      className: 'alert caution rounded shadowed',
+      title: 'Toolbar',
+      effects: API.effects && API.effects.drop,
+      ease: API.ease && API.ease.bounce
+    });
+  },
+  onclick: function(el, elButton) {
+   API.setActiveStyleSheet(elButton.id.substring(4));
+   if (API.setWaiProperty) {
+     API.forEach(getToolbarButtons(el), function(el) {
+       if (el != elButton) {
+         API.setWaiProperty(el, 'checked', 'false');
+       }
+     });
+     API.setWaiProperty(elButton, 'checked', 'true');
+   }
+ }
+});
+API.attachDragToToolbar(el);
+</pre>
+<h4>Application</h4>
+<div id="apptoolbar" class="toolbar panel"><div id="apptoolbarnew" title="New (disabled)" class="commandbutton button nocaption iconic new disabled"></div><div id="apptoolbaropen" title="Open (disabled)" class="commandbutton button nocaption iconic open disabled"></div><div title="Save (disabled)" class="iconic nocaption commandbutton button save disabled"></div><div title="Cut (disabled)" class="iconic button commandbutton nocaption cut disabled separator"></div><div title="Copy (disabled)" class="iconic commandbutton button nocaption copy disabled"></div><div title="Paste (disabled)" class="iconic nocaption button commandbutton paste disabled"></div></div>
+<p>What a cool application toolbar!</p>
+<pre>
+API.enhanceToolbar(API.getEBI('apptoolbar'), {
+ onclick:function(el, elButton) {
+  myAlert(elButton.id.slice(10), {
+   title:'Application',
+   className:'alert wrap rounded shadowed'
+  });
+ } 
+});
+</pre>
+<h4>As Tabstrip</h4>
+<div class="toolbar panel tabstrip rounded" id="tabstrip">
+<div title="This is a test (checked) (disabled)" class="commandbutton button disabled checked" id="testtab1a">This</div><div title="This is a test (disabled)" class="commandbutton button disabled" id="testtab2a">is</div><div title="This is a test (disabled)" class="commandbutton button disabled" id="testtab3a">a</div><div title="This is a test (disabled)" class="commandbutton button disabled" id="testtab4a">Test</div>
+</div>
+<div class="toolbar panel propertysheet">
+<span id="testtab1acontent" class="highlighted">This</span> <span id="testtab2acontent">is</span> <span id="testtab3acontent">a</span> <span id="testtab4acontent">test</span>
+</div>
+<p>And this stunning entry was created from static markup with the Toolbar add-on. It is two toolbars stacked.</p>
+<pre>
+enhanceToolbar(el, {
+  radio: true,
+  onclick: function(el, elButton, elPreviousButton) {
+    API.forEach(API.getToolbarButtons(el), function(el) {
+      var elContent = API.getEBI(el.id + 'content');
+
+      if (el.id == elButton.id) {
+        API.addClass(elContent, 'highlighted');
+        API.removeClass(elContent, 'lowlighted');
+      } else {
+        API.removeClass(elContent, 'highlighted');
+        API.removeClass(elContent, 'lowlighted');
+      }
+    });
+    if (elPreviousButton) {
+       el = API.getEBI(elPreviousButton.id + 'content');
+       API.addClass(el, 'lowlighted');
+    }
+  }
+});
+</pre>
+
+<h5>Advanced</h5>
+<div class="toolbar panel tabstrip rounded" id="tabstrip2">
+<div title="This is a test (checked) (disabled)" class="commandbutton button disabled checked" id="testtab1">This</div><div title="This is a test (disabled)" class="commandbutton button disabled" id="testtab2">is</div><div title="This is a test (disabled)" class="commandbutton button disabled" id="testtab3">a</div><div title="This is a test (disabled)" class="commandbutton button disabled" id="testtab4">Test</div>
+</div>
+<div class="toolbar panel propertysheet">
+<div id="confirmchanges"><input type="checkbox" id="tabstripconfirm" disabled><label for="tabstripconfirm" id="tabstripconfirmlabel" class="disabled">Confirm changes</label></div><span id="testtab1content" class="highlighted">This</span> <span id="testtab2content">is</span> <span id="testtab3content">a</span> <span id="testtab4content">test</span>
+</div>
+<p>This example demonstrates canceling the default click action.</p>
+<pre>
+if (API.alert) {
+  myConfirm = function(text, options, cb) {
+    options.onpositive = cb;
+    options.decision = 'confirm';
+    API.alert(text, options);
+  };
+} else if (API.isHostMethod(window, 'confirm')) {
+  myConfirm = function(text, options, cb) {
+    if (window.confirm(text)) {
+      cb();
+    }
+  };
+}
+
+enhanceToolbar(el, {
+  radio: true,
+  onclick: function(el, elButton, elPreviousButton) {
+    if (elButton == elPreviousButton) {
+      return;
+    }
+
+    var fn = function() {
+      API.forEach(API.getToolbarButtons(el), function(el) {
+        var elContent = API.getEBI(el.id + 'content');
+
+        API.removeClass(elContent, 'lowlighted');
+        if (el.id == elButton.id) {
+          API.addClass(elContent, 'highlighted');
+        } else {
+          API.removeClass(elContent, 'highlighted');
+        }
+      });
+      API.checkControl(elPreviousButton, false);
+      API.checkControl(elButton);
+
+      if (elPreviousButton) {
+        el = API.getEBI(elPreviousButton.id + 'content');
+        API.addClass(el, 'lowlighted');
+      }               
+    };
+    if (API.getEBI('tabstripconfirm').checked) {
+      myConfirm('Changing to tab ' + elButton.id.slice(7), {
+        title:'Tabstrip',
+        effects:API.effects && API.effects.drop,
+        ease:API.ease && API.ease.sigmoid2,
+        className:'alert shadowed rounded'
+      }, fn);
+      return false;
+    }
+    fn();
+  }
+});
+</pre>
+
+<h4>Creation</h4>
+<p>Creating toolbars is fun and easy!</p>
+<div id="toolbarlanding"></div>
+<fieldset>
+<legend>Create</legend>
+<input type="button" id="createtoolbar" value="Toolbar" disabled>
+<fieldset class="abrupt">
+<legend><input type="button" id="createbutton" value="Button" disabled></legend>
+<div class="dialognote">
+Creating buttons is pretty cool too.
+</div>
+<label for="createbuttontext" id="createbuttontextlabel" class="disabled">Text:</label><input id="createbuttontext" value="Test" disabled>
+<label for="createbuttontitle" id="createbuttontitlelabel" class="disabled">Title:</label><input id="createbuttontitle" value="This is a test" disabled>
+<fieldset class="abrupt">
+<legend>Class</legend>
+<input type="checkbox" disabled checked id="createbuttoncommandbutton"><label for="createbuttoncommandbutton" id="createbuttoncommandbuttonlabel" class="disabled">Command</label>
+<input type="checkbox" disabled id="createbuttonchecked"><label for="createbuttonchecked" id="createbuttoncheckedlabel" class="disabled">Checked</label>
+<input type="checkbox" disabled id="createbuttonpressed"><label for="createbuttonpressed" id="createbuttonpressedlabel" class="disabled">Pressed</label>
+<input type="checkbox" disabled id="createbuttondisabled"><label for="createbuttondisabled" id="createbuttondisabledlabel" class="disabled">Disabled</label>
+<input type="checkbox" disabled id="createbuttonseparator"><label for="createbuttonseparator" id="createbuttonseparatorlabel" class="disabled">Separator</label>
+<fieldset>
+<legend>
+<input type="checkbox" disabled id="createbuttoniconic"><label for="createbuttoniconic" id="createbuttoniconiclabel" class="disabled">Iconic</label>
+</legend>
+<input type="checkbox" disabled id="createbuttonskin"><label for="createbuttonskin" id="createbuttonskinlabel" class="disabled">Skin</label>
+</fieldset>
+</fieldset>
+<input id="createbuttonremoveall" type="button" value="Remove All" disabled>
+</fieldset>
+</fieldset>
+<pre id="codecreatetoolbar">
+(Code will appear here on creation)
+</pre>
+<h3 id="transform">Transform</h3>
+<p>The Transform add-on adds CSS3 2D transform functions to the API, as well as adding several new <a href="mylib-doc.asp#effects">effects</a> and augmenting the <a href="mylib-doc0.html#objects">object wrappers</a> when available.</p>
+<p>These examples have been tested in Internet Explorer 5.5-8, Firefox 3.6, Safari 4, Chrome 3 and Opera 10.5. They were found to degrade properly in older or otherwise incompatible browsers.</p>
+<p><strong>Note</strong> that the results are not <em>identical</em> in IE when compared to the others, but should be perfectly acceptable for these special effects as end-users don't often run multiple browsers side by side to compare minute rendering differences (that is the realm of Web developers). Also, the elements transformed all have static position styles, which highlights an additional difference between IE8 and the olders versions (transforms can push down the contents below). For the most consistent results (if older versions of IE are a concern), positioned elements are recommended.</p>
+<p><strong>Note</strong> that off-brand multiple IE simulations will throw exceptions for some of the demos. This is the usual "library not registered" DirectX problem that exists with these setups. Tested with IETester and MultipleIEs.</p>
+<h4 id="transformbasic">Basic</h4>
+<p>This example demonstrates basic transforms.</p>
+<div id="testtransform">
+<img src="images/painting1.jpg" height="194" width="297" alt="">
+<em>Birds of a Feather</em>
+</div>
+<fieldset id="transformfields" class="abrupt">
+<legend>Transform</legend>
+<label id="rotatelabel" for="rotate" class="disabled">Rotation:</label><input id="rotate" class="textinput" value="0" disabled><span id="rotatedecoration" class="disabled">&deg;</span>
+<label id="skewlabel" for="skew" class="disabled">Skew:</label><input id="skew" class="textinput" value="0" disabled><span id="skewdecoration" class="disabled">&deg;</span>
+<label id="scalelabel" for="scale" class="disabled">Scale:</label><input id="scale" class="textinput" value="100" disabled><span id="scaledecoration" class="disabled">%</span>
+<fieldset class="abrupt">
+<legend>Flip</legend>
+<input id="flipnone" name="flipit" type="radio" checked disabled><label id="flipnonelabel" for="flipnone" class="disabled">None</label>
+<input id="fliph" name="flipit" type="radio" disabled><label id="fliphlabel" for="fliph" class="disabled">Horizontal</label>
+<input id="flipv" name="flipit" type="radio" disabled><label id="flipvlabel" for="flipv" class="disabled">Vertical</label>
+<input id="flip" name="flipit" type="radio" disabled><label id="fliplabel" for="flip" class="disabled">Both</label>
+</fieldset>
+<fieldset>
+<legend>Origin</legend>
+<div class="dialognote"><strong>Note</strong> that the origin changes can be animated, but are not in this example.</div>
+<label id="xoriginlabel" for="xorigin" class="disabled">X:</label><input id="xorigin" class="textinput" value="50%" disabled>
+<label id="yoriginlabel" for="yorigin" class="disabled">Y:</label><input id="yorigin" class="textinput" value="50%" disabled>
+</fieldset>
+<fieldset>
+<legend>Matrix</legend>
+<label for="matrixa">a:</label><input id="matrixa" value="1" class="matrix flat" readonly>
+<label for="matrixb">b:</label><input id="matrixb" value="0" class="matrix flat" readonly>
+<label for="matrixc">c:</label><input id="matrixc" value="0" class="matrix flat" readonly>
+<label for="matrixd">d:</label><input id="matrixd" value="1" class="matrix flat" readonly>
+<input id="copymatrix" type="button" value="Copy to Matrix Example" disabled>
+</fieldset>
+<fieldset>
+<legend><input id="animate" type="checkbox" disabled><label for="animate" id="animatelabel" class="disabled">Animate</label></legend>
+<label for="duration" id="durationlabel" class="disabled">Duration:</label><input id="duration" class="textinput" value="1" disabled><span id="durationdecoration" class="disabled">seconds</span>
+<label for="ease" id="easelabel" class="disabled">Easing:</label><select id="ease" disabled><option>[None]</option></select>
+</fieldset>
+<input type="button" id="apply" value="Apply" disabled><input type="button" id="reset" value="Reset" disabled>
+</fieldset>
+<pre id="code">(Code will appear here when the transform is applied)</pre>
+<h4 id="transformbymatrix">By Matrix</h4>
+<p>This example demonstrates transforming by matrix.</p>
+<div id="testtransformadvanced">
+<img src="images/painting2.jpg" height="194" width="297" alt="">
+<em>Run Rabbit, Run</em>
+</div>
+<fieldset id="transformfieldsadvanced" class="abrupt">
+<legend>Transform</legend>
+<fieldset>
+<legend>Matrix</legend>
+<label id="matrixaadvancedlabel" for="matrixaadvanced" class="disabled">a:</label><input id="matrixaadvanced" class="matrix" value="1" disabled>
+<label id="matrixbadvancedlabel" for="matrixbadvanced" class="disabled">b:</label><input id="matrixbadvanced" class="matrix" value="0" disabled>
+<label id="matrixcadvancedlabel" for="matrixcadvanced" class="disabled">c:</label><input id="matrixcadvanced" class="matrix" value="0" disabled>
+<label id="matrixdadvancedlabel" for="matrixdadvanced" class="disabled">d:</label><input id="matrixdadvanced" class="matrix" value="1" disabled>
+</fieldset>
+<fieldset>
+<legend>Origin</legend>
+<div class="dialognote"><strong>Note</strong> that the origin changes can be animated, but are not in this example.</div>
+<label id="xoriginadvancedlabel" for="xoriginadvanced" class="disabled">X:</label><input id="xoriginadvanced" class="textinput" value="50%" disabled>
+<label id="yoriginadvancedlabel" for="yoriginadvanced" class="disabled">Y:</label><input id="yoriginadvanced" class="textinput" value="50%" disabled>
+</fieldset>
+<fieldset>
+<legend><input id="animateadvanced" type="checkbox" disabled><label for="animateadvanced" id="animateadvancedlabel" class="disabled">Animate</label></legend>
+<label for="durationadvanced" id="durationadvancedlabel" class="disabled">Duration:</label><input id="durationadvanced" class="textinput" value="1" disabled><span id="durationadvanceddecoration" class="disabled">seconds</span>
+<label for="easeadvanced" id="easeadvancedlabel" class="disabled">Easing:</label><select id="easeadvanced" disabled><option>[None]</option></select>
+</fieldset>
+<input type="button" id="applyadvanced" value="Apply" disabled><input type="button" id="resetadvanced" value="Reset" disabled>
+</fieldset>
+<pre id="codeadvanced">(Code will appear here when the matrix is applied)</pre>
+<h4 id="transformreveal">Reveal</h4>
+<p>This example demonstrates the basic effects added by the Transform add-on, toggling the visibility of the image. There is a more complex <code>transform</code> effect that will be the subject of a future example.</p>
+<div>
+<img id="imagereveal" src="images/painting1.jpg" height="194" width="297" alt="">
+</div>
+<fieldset id="consolereveal">
+<legend>Reveal</legend>
+<fieldset>
+<legend><label for="animatereveal" id="animatereveallabel" class="disabled">Animate</label><select id="animatereveal" disabled><option selected>[None]</option></select></legend>
+<label for="durationreveal" id="durationreveallabel" class="disabled">Duration:</label><input id="durationreveal" class="textinput" value="1" disabled><span id="durationrevealdecoration" class="disabled">seconds</span>
+<label for="easereveal" id="easereveallabel" class="disabled">Easing:</label><select id="easereveal" disabled><option>[None]</option></select>
+<input type="checkbox" id="addfadereveal" disabled><label for="addfadereveal" id="addfadereveallabel" class="disabled">Add Fade</label>
+</fieldset>
+<input type="button" id="toggle" value="Toggle" disabled>
+</fieldset>
+<pre id="codereveal">(Code will appear here when the element is toggled)</pre>
+<h2 id="userexamples">User Examples</h2>
+<p>My Library has a vibrant and growing community of authors. Here are some examples of their work. Thanks to all who contribute!</p>
+<h3 id="slideshow">Slide Show</h3>
+<p>This <a href="http://souagil.com.br/gabriel/myimagegallery/">slide show application</a> was created by Gabriel Gilini.</p>
+<h3 id="tabbedpane">Tabbed Pane</h3>
+<p>This <a href="http://code.eblackwelder.com/demos/MyWidgetsLibrary/MyTabs/index.html">tabbed pane widget</a> was created by Ethan B.</p>
+<div id="logo"><a href="mylib.html" title="Home"><img src="images/mylibrarylogo.jpg" height="108" width="260" alt="My Library" title="Home"></a></div>
+<p class="meta">Last Modified: 6 May 2010 22:29:00 GMT</p>
+<address>By <a title="Send email to David Mark" href="mailto:dmark@cinsoft.net">David Mark</a></address>
+<div class="legal">Copyright &copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a>. All Rights Reserved.</div>
+</div>
+<script type="text/javascript" src="mylib-funpack-min.js"></script>
+<!--<script type="text/javascript" src="mylib-unclip.js"></script>
+<script type="text/javascript" src="mylib-fix.js"></script>
+<script type="text/javascript" src="mylib-transform-min.js"></script>
+<script type="text/javascript" src="mylib-widgets.js"></script>
+<script type="text/javascript" src="mylib-playlist.js"></script>
+<script type="text/javascript" src="mylib-alert.js"></script>
+<script type="text/javascript" src="mylib-toolbar.js"></script>
+<script type="text/javascript" src="mylib-sidebar.js"></script>
+<script type="text/javascript" src="mylib-toast.js"></script>-->
+<script type="text/javascript" src="mylib-anchorscroll-min.js"></script>
+<script type="text/javascript">
+var API;
+
+if (API && API.forEach && API.attachDocumentReadyListener) {
+  API.attachDocumentReadyListener(function() {
+    var el, i, missingElement, attachListener = API.attachListener, forEach = API.forEach, map = API.map, getEBI = API.getEBI, getKeyboardKey = API.getKeyboardKey, isHostMethod = API.isHostMethod, isOwnProperty = API.isOwnProperty, addOption = API.addOption, setElementText = API.setElementText, toggleElement = API.toggleElement, canAdjustStyle = API.canAdjustStyle, showElement = API.showElement;
+    var testTransform, transforms = ['skew', 'scale', 'rotate', 'flip', 'flipH', 'flipV'];
+    var matrixEntries = ['a', 'b', 'c', 'd'];
+    var reOrigin = /^\d+(\.\d+)?%?$/;
+
+    var showAlertStyle = function(e) {
+      var el = getEBI('examplealertstyle');
+      if (el) {
+
+        // For backward compatibility with agents that can't compute styles
+        // Ensures showElement will set the display style as well as visibility
+
+        el.style.display = 'none';
+
+        showElement(el, true, {
+          effects: API.effects && API.effects.fade,
+          ease: API.ease && API.ease.sigmoid2,
+          duration: 700
+        });
+        el = getEBI('examplealertstyleanchor');
+        el.href = el.title = '';
+	if (API.removeAttribute) {
+          API.removeAttribute(el, 'href');
+        }
+        API.detachListener(el, 'click', showAlertStyle);
+      }
+      return API.cancelDefault(e);
+    };
+
+    // Create link to show example alert style
+
+    if (attachListener && getEBI && canAdjustStyle && showElement && canAdjustStyle('display')) {
+      el = getEBI('examplealertstyleanchor');
+      if (el) {
+        el.href = '#';
+        el.tabIndex = 0;
+        el.title = 'Show example style';
+        attachListener(el, 'click', showAlertStyle);
+      }
+    }
+
+    var myAlert, myConfirm, playEventSound = API.playEventSound;
+
+    if (API.alert) {
+      myAlert = function(text, options) {
+        var elSoundIndicator = getEBI('eventsounds');
+        if (elSoundIndicator && elSoundIndicator.value == 'Enable') {
+          options.mute = true;
+        }
+        API.alert(text, options);
+      };
+    } else if (isHostMethod(window, 'alert')) {
+      myAlert = function(text) {
+        window.alert(text);
+      };
+    } else if (API.log) {
+      myAlert = function(text) {
+        API.log(text);
+      };
+    }
+
+    if (API.alert) {
+      myConfirm = function(text, options, cb) {
+        options.onpositive = cb;
+        options.decision = 'confirm';
+        var elSoundIndicator = getEBI('eventsounds');
+        if (elSoundIndicator && elSoundIndicator.value == 'Enable') {
+          options.mute = true;
+        }
+        API.alert(text, options);
+      };
+    } else if (isHostMethod(window, 'confirm')) {
+      myConfirm = function(text, options, cb) {
+        if (window.confirm(text)) {
+          cb();
+        }
+      };
+    }
+
+    var setDisabledClass = function(el, disabled) {
+      el.className = disabled ? 'disabled' : '';
+    };
+
+    var enableFormControl = function(el, disabled) {
+      var id = el.id;
+
+      el.disabled = !!disabled;
+      if (typeof el.title == 'string' && el.title) {
+        el.title = el.title.replace(/ \(disabled\)$/, disabled ? ' (disabled)' : '');
+      }
+      el = getEBI(id + 'label');
+      if (el) {
+        setDisabledClass(el, disabled);
+      }
+      el = getEBI(id + 'decoration');
+      if (el) {
+        setDisabledClass(el, disabled);
+      }
+    };
+
+    var updateEffectControls = function(name, disabled) {
+      forEach(['duration', 'ease'], function(id) {
+        el = getEBI(id + name);
+        enableFormControl(el, disabled);
+      });
+    };
+
+    var updateEffectControlsAfterward = function(name) {
+
+      // Set timeout as some browsers (e.g. Mac IE) update the checked property after the click event fires
+
+      var el = getEBI('animate' + name);
+
+      window.setTimeout(function() {
+        updateEffectControls(name, el.type == 'checkbox' ? !el.checked : (el.selectedIndex < 1));
+      }, 1);
+    };
+
+    var attachFocusListener;
+    var focusListener = function(e) {
+      if (API.isAlertModal()) {
+        window.setTimeout(function() {
+          API.focusAlert();
+        }, 1);
+        return API.cancelDefault(e);
+      }
+    };
+
+    if (API.alert) {
+      attachFocusListener = function(el) {
+        attachListener(el, 'focus', focusListener);
+      };
+    }
+
+    var elEnterKeyDown, attachDocumentListener = API.attachDocumentListener, getEventTarget = API.getEventTarget;
+
+    attachDocumentListener('keydown', function(e) {
+      var el = getEventTarget(e);
+      if (getKeyboardKey(e) == 13) {
+        elEnterKeyDown = el;
+      }
+    });
+
+    var attachEnterListener = function(el, fn) {
+      attachListener(el, 'keyup', function(e) {
+        var key = getKeyboardKey(e);
+        if (key == 13) {
+          if (this == elEnterKeyDown) {
+            elEnterKeyDown = null;
+            fn(this);
+            return API.cancelDefault(e);
+          }
+        }
+      });
+      if (attachFocusListener) {
+        attachFocusListener(el);
+      }
+    };
+
+    var enableAndAttachEnterListener = function(el, fn) {
+      enableFormControl(el);
+      if (el.type == 'text') {
+        attachEnterListener(el, fn);
+      } else if (attachFocusListener) {
+        attachFocusListener(el);
+      }
+    };
+
+    var enableAndAttachEnterListeners = function(names, fn) {
+      forEach(names, function(name) {
+        var el = getEBI(name.toLowerCase());
+        if (el) {
+          enableAndAttachEnterListener(el, fn);
+        } else {
+          return false;
+        }        
+      });
+      return true;
+    };
+
+    var enableOriginControls = function(names, fn) {
+      if (API.setElementTransformOrigin) {
+        return enableAndAttachEnterListeners(names, fn);
+      }
+      return true;
+    };
+
+    var populateEaseControl = function(name) {
+      var i, l, el = getEBI('ease' + name), easing = [];
+
+      for (i in API.ease) {
+        if (isOwnProperty(API.ease, i)) {
+          easing[easing.length] = i;
+        }
+      }
+      if (easing.sort) {
+        easing.sort();
+      }
+      for (i = 0, l = easing.length; i < l; i++) {
+        addOption(el, easing[i]);
+      }
+    };
+
+    var enableAnimationControls = function(name, fn) {
+      var el = getEBI('animate' + name);
+      if (el && getEBI('duration' + name) && getEBI('ease' + name)) {
+        enableFormControl(el);
+        attachListener(el, 'click', function() {
+          updateEffectControlsAfterward(name);   
+        });
+      } else {
+        return false;
+      }
+      if ((el = getEBI('ease' + name))) {
+        populateEaseControl(name);
+        el = getEBI('duration' + name);
+        if (el) {
+          attachEnterListener(el, fn);
+          updateEffectControlsAfterward(name);
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+      return true;
+    };
+
+    var validateOrigin = function(value) {
+      if (value.charAt(0) == '.') {
+        value = '0' + value;
+      }
+      if (reOrigin.test(value)) {
+        return true;
+      }
+      return false;
+    };
+
+    var originControlNames = function(name) {
+      return map(['x', 'y'], function(origin) {
+        return origin + 'origin' + name;
+      });
+    };
+
+    var matrixControlNames = function(name) {
+      return map(matrixEntries, function(entry) {
+        return 'matrix' + entry + name;
+      });
+    };
+
+    var originCode = function(origin) {
+      return "API.setElementTransformOrigin(el, ['" + origin[0] + "', '" + origin[1] + "']);\n";
+    };
+
+    var animationCode = function(options, easeName) {
+      var code = ', {\n  duration: ' + options.duration;
+      if (options.ease) {
+        code += ',\n  ease: API.ease.' + easeName;
+      }
+      code += '\n}';
+      return code;
+    };
+
+    var effectOptions = function(name) {
+      var options, el = getEBI('animate' + name);
+      if (el.checked) {
+        el = getEBI('duration' + name);
+        var duration = +el.value;
+        if (duration >= 0) {
+          options = { duration: duration * 1000 };
+
+          // Add easing option if applicable
+
+          el = getEBI('ease' + name);
+
+          if (el.selectedIndex > 0) {
+            options.ease = API.ease[el.options[el.selectedIndex].text];
+          }
+        } else {
+          options = null;
+        }
+      }
+      return options;
+    };
+
+    var showError = function(error, elError) {
+      if (isHostMethod(elError, 'blur')) {
+        elError.blur();
+      }
+      myAlert(error, {
+        duration:400,
+        effects:API.effects.fade,
+        ease:API.ease.sigmoid2,
+        className:'alert stop wrap',
+        title:'Demo',
+        onclose:function() {
+          if (isHostMethod(elError, 'focus')) {
+            if (!elError.disabled) {
+
+              // Use a timeout as some browsers close the alert on
+              // enter key down, causing the subsequent keyup to be fired
+              // for the control with the invalid value
+
+              window.setTimeout(function() {
+                elError.focus();
+                if (isHostMethod(elError, 'select')) {
+                  elError.select();
+                }
+              }, 100);
+            }
+          }
+        }
+      });
+
+      // Set focus back after host (synchronous) alert
+
+      if (!API.alert) {
+        window.setTimeout(function() {
+
+          // Check not disabled for safety (should not normally occur)
+
+          if (!elError.disabled) {
+            if (isHostMethod(elError, 'focus')) {
+              elError.focus();
+            }
+            if (isHostMethod(elError, 'select')) {
+              elError.select();
+            }
+          }
+        }, 1);
+      }
+    };
+
+    // Demonstrates the transform example
+
+    testTransform = function() {
+      var transform = {}, error = '', flip, matrix, origin, elError, el, options, easeName, code;
+
+      // Set up all but flips
+
+      forEach(transforms.slice(0, 3), function(id) {
+        var transformValue = getEBI(id).value;
+        if (transformValue) {
+          transform[id] = +transformValue;
+        } else {
+          transform[id] = NaN;
+        }
+      });
+
+      transform.scale /= 100;
+
+      // Set up flips
+
+      forEach(transforms.slice(-3), function(id) {
+        el = getEBI(id.toLowerCase());
+        if (el.checked) {
+          transform[id] = true;
+          flip = id;
+        }
+      });
+
+      // Validate transform
+
+      forEach(transforms.slice(0, 3), function(id) {
+        var transformValue = transform[id];
+        if (isNaN(transformValue) || id == 'scale' && transformValue < 0) {
+          error += 'Invalid ' + id + ' value\n';
+          elError = getEBI(id);
+        }
+      });
+
+      // Set up and validate origin
+
+      if (API.setElementTransformOrigin) {
+        origin = [];
+        forEach(originControlNames(''), function(id, i) {
+          var el = getEBI(id), value = el.value;
+          if (validateOrigin(value)) {
+            origin[i] = value;
+          } else {
+            error += 'Invalid origin\n';
+            elError = el;
+          }
+        });
+      }
+
+      // Set up animation options
+
+      options = effectOptions('');
+      if (options) {
+        if (options.ease) {
+          el = getEBI('ease');
+          easeName = el.options[el.selectedIndex].text;
+        }
+      } else if (options === null) {
+        elError = getEBI('duration');
+        error += 'Invalid duration\n';
+      }
+
+      if (error) {
+        showError(error, elError);
+      } else {
+        code = '';
+        el = getEBI('testtransform');
+        if (origin) {
+          API.setElementTransformOrigin(el, origin);
+          code += originCode(origin);
+        }
+        API.setElementTransform(el, transform, options, function(el) {
+          matrix = API.getElementTransformMatrix(el);
+          if (matrix) {
+            forEach(matrixControlNames(''), function(id, i) {
+              el = getEBI(id);
+              if (el) {
+                el.value = matrix[i].toFixed(8).replace(/(\.\d)0+$/, '$1').replace(/\.0$/, '');
+              }
+            });
+          }
+        });
+        code += 'API.setElementTransform(el, {\n  rotate: ' + transform.rotate + ',\n  skew: '  + transform.skew + ',\n  scale: ' + transform.scale;
+        if (flip) {
+          code += ', ' + flip + ':true';
+        }
+        code += '\n}';
+        if (options) {
+          code += animationCode(options, easeName);
+        }
+        code += ');';
+        setElementText(getEBI('code'), code);
+      }
+    };
+
+    // Demonstrates the transform matrix example
+
+    var testTransformMatrix = function() {
+      var matrix = [], error = '', origin, elError, el, options, easeName, code;
+
+      // Set up and validate matrix
+
+      forEach(matrixControlNames('advanced'), function(id, i) {
+        var matrixValue = getEBI(id).value;
+
+        if (matrixValue && !isNaN(+matrixValue)) {
+          matrix[i] = +matrixValue;
+        } else {
+          error += 'Invalid ' + id.replace(/^matrix(.)advanced$/, '$1') + ' value\n';
+          elError = getEBI(id);
+        }
+      });
+
+      // Set up and validate origin
+
+      if (API.setElementTransformOrigin) {
+        origin = [];
+        forEach(originControlNames('advanced'), function(id, i) {
+          var el = getEBI(id), value = el.value;
+          if (validateOrigin(value)) {
+            origin[i] = value;
+          } else {
+            error += 'Invalid origin\n';
+            elError = el;
+          }
+        });
+      }
+
+      // Set up animation options
+
+      options = effectOptions('advanced');
+      if (options) {
+        if (options.ease) {
+          el = getEBI('easeadvanced');
+          easeName = el.options[el.selectedIndex].text;
+        }
+      } else if (options === null) {
+        elError = getEBI('durationadvanced');
+        error += 'Invalid duration\n';
+      }
+
+      if (error) {
+        showError(error, elError);
+      } else {
+        code = '';
+        el = getEBI('testtransformadvanced');
+        if (origin) {
+          API.setElementTransformOrigin(el, origin);
+          code += originCode(origin);
+        }
+        API.setElementTransformMatrix(el, matrix, options);
+        code += 'API.setElementTransformMatrix(el, [' + matrix.toString() + ']';
+        if (options) {
+          code += animationCode(options, easeName);
+        }
+        code += ');';
+        setElementText(getEBI('codeadvanced'), code);
+      }      
+    };
+
+    var revealEffectOptions = function(name) {
+      var options, duration, el = getEBI('animate' + name);
+
+      if (el.selectedIndex > 0) {
+        var effect = API.effects[el.options[el.selectedIndex].text];
+        options = { effects:effect };
+        el = getEBI('duration' + name);
+        duration = +el.value;
+        if (duration >= 0) {
+          options.duration = duration * 1000;
+        } else {
+          options.duration = 0;
+        }
+        el = getEBI('ease' + name);
+        if (el.selectedIndex > 0) {          
+          options.ease = API.ease[el.options[el.selectedIndex].text];
+        }
+        el = getEBI('addfade' + name);
+
+        if (el && el.checked && effect != API.effects.fade) {
+          options.effects = [API.effects.fade, effect];
+        }
+      }
+      return options;
+    };
+
+    var testTransformReveal = function() {
+      var el, code, effectName, easeName, options = revealEffectOptions('reveal');
+      if (options) {
+        el = getEBI('animatereveal');
+        effectName = el.options[el.selectedIndex].text;
+        if (options.ease) {
+          el = getEBI('easereveal');
+          easeName = el.options[el.selectedIndex].text;
+        }
+      }
+      toggleElement(getEBI('imagereveal'), options);
+
+      if (options) {
+        if (typeof options.effects != 'function') {
+          effectName = '[API.effects.' + effectName + ', API.effects.fade]';
+        } else {
+          effectName = 'API.effects.' + effectName;
+        }
+      }
+
+      code = 'API.toggleElement(el';
+      if (options) {
+        code += ', {\n effects: ' + effectName + ',\n duration: ' + options.duration;
+        if (easeName) {
+          code += ',\n ease: API.ease.' + easeName;
+        }
+        code += '\n}';
+      }
+      code += ');';
+      setElementText(getEBI('codereveal'), code);
+    };
+
+    var resetConsole = function(name) {
+      var i, els, el, elContainer = getEBI('transformfields' + name);
+      if (elContainer) {
+        els = elContainer.getElementsByTagName('input');
+        for (i = els.length; i--;) {
+          el = els[i];
+          switch(el.type) {
+          case 'text':
+            el.value = el.defaultValue;
+          break;
+          case 'radio':
+          case 'checkbox':
+            el.checked = el.defaultChecked;
+          }
+        }
+        els = elContainer.getElementsByTagName('select');
+        for (i = els.length; i--;) {
+          els[i].options[0].selected = true;
+        }
+      }
+    };
+
+    var setupButtons = function(name, fn) {
+      el = getEBI('apply' + name);
+      if (el) {
+        el.disabled = false;
+        attachListener(el, 'click', fn);
+      }
+      el = getEBI('reset' + name);
+      if (el) {
+        el.disabled = false;
+        attachListener(el, 'click', function() {
+          resetConsole(name);
+          updateEffectControls(name, true);
+          fn();
+        });
+      }
+    };
+
+    if (attachListener && forEach && getEBI && API.setElementTransform) {
+
+      // Set up basic transform example
+
+      // Enable transform controls
+
+      missingElement = !enableAndAttachEnterListeners(transforms, testTransform);
+
+      el = getEBI('flipnone');
+      if (el) {
+        enableFormControl(el);
+      } else {
+        missingElement = true;
+      }
+
+      // Enable origin controls
+
+      if (!enableOriginControls(originControlNames(''), testTransform)) {
+        missingElement = true;
+      }
+
+      // Set up animation controls
+
+      if (API.effects) {
+        if (!enableAnimationControls('', testTransform)) {
+          missingElement = true;
+        }
+      }
+
+      // If all input elements found, enable buttons
+
+      if (!missingElement) {
+        setupButtons('', testTransform);
+      }
+
+      // Set up transform matrix example
+
+      // Enable matrix controls
+
+      missingElement = !enableAndAttachEnterListeners(map(matrixEntries, function(i) {
+        return ['matrix', i, 'advanced'].join('');
+      }), testTransformMatrix);
+
+      // Enable origin controls
+
+      if (!enableOriginControls(originControlNames('advanced'), testTransformMatrix)) {
+        missingElement = true;
+      }
+
+      // Set up animation controls
+
+      if (API.effects) {
+        if (!enableAnimationControls('advanced', testTransformMatrix)) {
+          missingElement = true;
+        }
+      }
+
+      // If all input elements found, enable buttons
+
+      if (!missingElement) {
+        setupButtons('advanced', testTransformMatrix);
+
+        // Setup button to copy matrix from transform example
+
+        el = getEBI('copymatrix');
+        if (el) {
+          el.disabled = false;
+          attachListener(el, 'click', function() {
+            forEach(matrixControlNames(''), function(id) {
+              var el = getEBI(id);
+
+              if (el) {
+                getEBI(id + 'advanced').value = el.value;
+              }
+            });
+          });
+        }
+      }
+    }
+
+    missingElement = false;
+
+    var enableAnimationSelectionControls = function(name, fn, effects, simple) {
+      var i, el, missing;
+
+      if (!effects) {
+        effects = API.effects;
+      }
+
+      forEach(['animate', 'ease', 'duration'], function(i) {
+        if (!getEBI(i + name)) {
+          missing = true;
+        }
+      });
+
+      if (!missing) {
+        el = getEBI('animate' + name);
+        enableFormControl(el);
+
+        if (!simple) {
+          if (effects.sort) {
+            effects.sort().reverse();
+          }
+	  for (i = effects.length; i--;) {
+            addOption(el, effects[i]);
+          }
+        }
+
+        attachListener(el, simple ? 'click' : 'change', function() {
+          var effectName;
+
+          updateEffectControlsAfterward(name);
+          if (!simple) {
+            var el = getEBI('animate' + name);
+            if (el.selectedIndex > 0) {
+              effectName = el.options[el.selectedIndex].text;
+            }
+            el = getEBI('addfade' + name);
+            if (el && API.effects.fade) {
+              enableFormControl(el, !effectName || effectName == 'fade');
+            }
+          }
+        });
+        updateEffectControlsAfterward(name, true);
+        el = getEBI('duration' + name);
+        if (fn) {
+          attachEnterListener(el, fn);
+        }
+        populateEaseControl(name);
+      }
+      return !missing;
+    };
+
+    if (toggleElement && API.setElementTransform) {
+      missingElement = !enableAnimationSelectionControls('reveal', testTransformReveal, ['spin', 'skewX', 'skewY', 'skew', 'scaleX', 'scaleY', 'scale', 'rotate', 'flip', 'flipH', 'flipV']);
+      if (!missingElement) {
+        el = getEBI('toggle');
+        if (el) {
+          el.disabled = false;
+          attachListener(el, 'click', testTransformReveal);
+          attachFocusListener(el);
+        }
+      }
+    }
+
+    // Set up alert examples
+
+    missingElement = false;
+
+    var encodeCode = function(code) {
+      return code.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '');
+    };
+
+    var updateAlertMessageControls = function() {
+      var el = getEBI('testalerttype');
+      var type = el.options[el.selectedIndex].text, sizable = getEBI('testalertsizable').checked;
+
+      enableFormControl(getEBI('testalertpositivemessage'), type == 'alert');
+      enableFormControl(getEBI('testalertnegativemessage'), type == 'alert');
+      enableFormControl(getEBI('testalertindeterminatemessage'), type != 'yes/no/cancel');
+      enableFormControl(getEBI('testalertsavemessage'), type != 'dialog');
+      enableFormControl(getEBI('testalertstepmessage'), type != 'dialog');
+      enableFormControl(getEBI('testalerticon'), !getEBI('testalertcaptionbuttons').checked);
+      enableFormControl(getEBI('testalertmaximizable'), !sizable);
+      enableFormControl(getEBI('testalertminimizable'), !sizable);
+      enableFormControl(getEBI('testalertsteps'), type != 'dialog');
+    };
+
+    var dirtyButtons = ['dirty', 'dirtyexternal'];
+
+    var alertEffects, testAlert = function(control) {
+      var code = '', optionsCode = '', el = getEBI('testalerttype'), alertType = el.options[el.selectedIndex].text;
+      var options, decision, steps, effectName, easeName, text = getEBI('testalerttext').value, title = getEBI('testalerttitle').value || null, sizable = getEBI('testalertsizable').checked, maximizable = getEBI('testalertmaximizable').checked, minimizable = getEBI('testalertminimizable').checked, buttons = getEBI('testalertbuttons').checked, captionButtons = getEBI('testalertcaptionbuttons').checked, icon = getEBI('testalerticon').checked, fixable = getEBI('testalertfixable').checked, modal = getEBI('testalertmodal').checked, curtainOptions, curtainEaseName, messages = {}, position, autoDismiss = getEBI('testalertautodismiss').checked;
+
+      forEach(['positive', 'negative', 'indeterminate', 'help', 'save', 'step'], function(i) {
+        messages[i] = getEBI('testalert' + i + 'message').value;
+      });
+
+      forEach(['focus', 'blur', 'flash'], function(i) {
+        var el = getEBI('testalert' + i);
+
+        enableFormControl(el);
+      });
+
+      options = alertEffects ? revealEffectOptions('alert') || {} : {};
+
+      switch(alertType) {
+      case 'confirm':
+        decision = 'confirm';
+        break;
+      case 'yes/no':
+        decision = 'yesno';
+        break;
+      case 'yes/no/cancel':
+        decision = 'yesnocancel';
+        break;
+      case 'dialog':        
+        decision = 'dialog';
+	steps = getEBI('testalertsteps').value;
+        if (steps) {
+          steps = +steps;
+          if (!steps) {
+            showError('Invalid steps', getEBI('testalertsteps'));
+            return;
+          }
+          if (steps > 1) {
+            options.steps = steps;
+            options.onstep = function() {
+              if (messages.step) {
+                window.alert(messages.step);
+              }
+            };
+          }
+        }
+
+        if (messages.save) {
+          options.onsave = function() {
+            window.alert(messages.save);
+          };
+        }
+      }
+
+      if (!steps || steps == 1) {
+        forEach(dirtyButtons, function(i) {
+          el = getEBI('testalert' + i);
+          if (el) {
+            el.disabled = alertType != 'dialog';
+          }
+        });
+      }
+
+      if (autoDismiss) {
+        autoDismiss = +getEBI('testalertautodismissseconds').value;
+        if (autoDismiss) {
+          options.autoDismiss = autoDismiss * 1000;
+        } else {
+          showError('Invalid duration', getEBI('testalertautodismissseconds'));
+          return;
+        }
+      }
+
+      el = getEBI('testalertcorner');
+      if (el.checked) {
+        el = getEBI('testalertcornerposition');
+        if (el.selectedIndex != -1) {
+          position = el.options[el.selectedIndex].text.toLowerCase().replace(/ /, '');
+        }
+      } else {
+        el = getEBI('testalertoffset');
+        if (el.checked) {
+          var top = +getEBI('testalerttop').value;
+          var left = +getEBI('testalertleft').value;
+          if (!isNaN(top) && !isNaN(left)) {
+            position = [top, left];
+          } else {
+            showError('Invalid position', getEBI('testalerttop'));
+            return;
+          }
+        }
+      }
+
+      options.position = position;
+
+      options.removeOnHide = true;
+
+      options.decision = decision;
+      options.modal = modal;
+      options.fixable = fixable;
+      if (options.fixable) {
+        options.fixed = getEBI('testalertfixed').checked;
+      }
+      options.title = title;
+      options.sizable = sizable;
+      options.maximizable = maximizable;
+      options.minimizable = minimizable;
+      options.captionButtons = captionButtons;
+      options.icon = captionButtons && icon;
+      options.buttons = buttons;
+      
+      if (getEBI('testalertclasswarning').checked) {
+        options.className = 'alert caution';
+      } else if (getEBI('testalertclasserror').checked) {
+        options.className = 'alert stop';
+      } else {
+        options.className = 'alert';
+      }
+
+      if (modal && alertEffects) {
+        curtainOptions = effectOptions('curtain');
+        if (curtainOptions === null) {
+          showError('Invalid curtain duration', getEBI('durationcurtain'));
+          return;
+        }
+
+        if (curtainOptions) {
+          if (curtainOptions.ease) {
+            el = getEBI('easecurtain');
+            curtainEaseName = el[el.selectedIndex].text;
+          }
+          if (getEBI('testalerttransitionedalways').checked) {
+            curtainOptions.useCSSTransitions = true;
+          } else if (getEBI('testalerttransitionednever').checked) {
+            curtainOptions.useCSSTransitions = false;
+          }
+          curtainOptions.effects = API.effects.fade;
+        }
+
+        options.curtain = curtainOptions;
+      }
+
+      if (getEBI('testalertclassrounded').checked) {
+        options.className += ' rounded';
+      }
+
+      if (getEBI('testalertclassshadowed').checked) {
+        options.className += ' shadowed';
+      }
+
+      if (getEBI('testalertclasswrapped').checked) {
+        options.className += ' wrap';
+      }
+
+      options.onclose = function() {
+        forEach(dirtyButtons.concat(['focus', 'blur', 'hide', 'flash']), function(i) {
+          var el = getEBI('testalert' + i);
+          if (el) {
+            enableFormControl(el, true);
+          }
+        });
+        if (control) {
+          if (!control.disabled && isHostMethod(control, 'focus')) {
+            window.setTimeout(function() {
+              control.focus();
+              if (control.type == 'text' && isHostMethod(control, 'select')) {
+                control.select();
+              }
+            }, (options.effects && options.duration) || 100);
+          }
+        }
+      };
+
+      if (messages.help) {
+        options.onhelp = function() {
+          window.alert(messages.help);
+        };
+      }
+
+      if (decision) {
+        if (messages.positive) {
+          options.onpositive = function() {
+            window.alert(messages.positive);
+          };
+        }
+
+        if (messages.negative) {
+          options.onnegative = function() {
+            window.alert(messages.negative);
+          };
+        }
+
+        if (messages.indeterminate && decision == 'yesnocancel') {
+          options.onindeterminate = function() {
+            window.alert(messages.indeterminate);
+          };
+        }
+      }
+
+      code += "API.alert('" + encodeCode(text) + "'";
+
+      if (options.className && options.className != 'alert') {
+        optionsCode += ",\n className: '" + options.className + "'";
+      }
+
+      if (!sizable) {
+        optionsCode += ',\n sizable: false';
+      } else {
+        if (!maximizable) {
+          optionsCode += ',\n maximizable: false';
+        }
+        if (!minimizable) {
+          optionsCode += ',\n minimizable: false';
+        }
+      }
+
+      if (!captionButtons) {
+        optionsCode += ',\n captionButtons: false';
+      } else if (!icon) {
+        optionsCode += ',\n icon: false';
+      }
+
+      if (!buttons) {
+        optionsCode += ',\n buttons: false';
+      }
+
+      if (title) {
+        optionsCode += ",\n title: '" + encodeCode(title) + "'";
+      }
+
+      if (decision) {
+        optionsCode += ",\n decision: '" + decision + "'";
+      }
+
+      if (modal) {
+        optionsCode += ",\n modal: true";
+      }
+
+      if (!fixable) {
+        optionsCode += ",\n fixable: false";
+      } else {
+        optionsCode += ",\n fixed: " + options.fixed;
+      }
+
+      if (autoDismiss) {
+        optionsCode += ",\n autoDismiss: " + options.autoDismiss;
+      }
+
+      if (position) {
+        optionsCode += ",\n position: " + (typeof position == 'string' ? position : '[' + position + ']');
+      }
+
+      if (curtainOptions) {
+        optionsCode += ",\n curtain: {\n  effects: API.effects.fade,\n  duration: " + curtainOptions.duration;
+        if (curtainOptions.ease) {
+          optionsCode += ",\n  ease: API.ease." + curtainEaseName;
+        }
+        if (typeof curtainOptions.useCSSTransitions != 'undefined') {
+          optionsCode += ',\n  useCSSTransitions: ' + curtainOptions.useCSSTransitions;
+        }
+        optionsCode += "\n }";
+      }
+
+      if (options.onstep && messages.step) {
+        optionsCode += ",\n onstep: function() {\n  window.alert('" + encodeCode(messages.step) + "'); \n }";
+      }
+
+      if (options.onpositive) {
+        optionsCode += ",\n onpositive: function() {\n  window.alert('" + encodeCode(messages.positive) + "'); \n }";
+      }
+
+      if (options.onnegative) {
+        optionsCode += ",\n onnegative: function() {\n  window.alert('" + encodeCode(messages.negative) + "'); \n }";
+      }
+
+      if (options.onindeterminate) {
+        optionsCode += ",\n onindeterminate: function() {\n  window.alert('" + encodeCode(messages.indeterminate) + "'); \n }";
+      }
+
+      if (options.onsave) {
+        optionsCode += ",\n onsave: function() {\n  window.alert('" + encodeCode(messages.save) + "'); \n }";
+      }
+
+      if (options.onhelp) {
+        optionsCode += ",\n onhelp: function() {\n  window.alert('" + encodeCode(messages.help) + "'); \n }";
+      }
+
+      if (options.effects) {
+        el = getEBI('animatealert');
+        effectName = el.options[el.selectedIndex].text;
+        if (options.ease) {
+          el = getEBI('easealert');
+          easeName = el.options[el.selectedIndex].text;
+        }
+
+        if (typeof options.effects != 'function') {
+          effectName = '[API.effects.' + effectName + ', API.effects.fade]';
+        } else {
+          effectName = 'API.effects.' + effectName;
+        }
+
+        optionsCode += ',\n effects: ' + effectName + ',\n duration: ' + options.duration;
+        if (easeName) {
+          optionsCode += ',\n ease: API.ease.' + easeName;
+        }
+      }
+
+      if (optionsCode) {
+        code += ', {' + optionsCode.replace(/^,/, '') + '\n}';
+      }
+
+      code += ");";
+
+      el = getEBI('codealert');
+      if (el) {
+        setElementText(el, code);
+      }
+
+      el = getEBI('testalerthide');
+      if (el) {
+        el.disabled = false;
+      }
+
+      el = getEBI('eventsounds');
+
+      if (el && el.value == 'Enable') {
+        options.mute = true;
+      }
+
+      el = API.getAlertElement();
+
+      // Workaround for IE8 (standards mode) issue that affects DirectX effects (e.g. spin)
+      // Flashes finished animation state initially in some cases
+      // Not a problem when effects are combined (e.g. spin + fade)
+
+      if (options.effects && API.effects.fade && !API.isAlertOpen()) {
+        API.setOpacity(el, 0);
+      }
+
+      API.alert(text, options);
+
+      // Put the opacity back to normal per above workaround
+      // Leave it alone if effect is fade
+
+      if (options.effects && API.effects.fade && typeof options.effects == 'function' && options.effects != API.effects.fade) {
+        API.setOpacity(el, 1);
+      }
+    };
+
+    if (API.effects) {
+      alertEffects = [];
+      for (i in API.effects) {
+        if (isOwnProperty(API.effects, i) && !/^(shake|transform|transformOrigin|transformMatrix|move|scroll|scrollElement)$/.test(i)) {
+          alertEffects[alertEffects.length] = i;
+        }
+      }
+    }
+
+    var updateAutoDismissControls = function() {
+      window.setTimeout(function() {
+        enableFormControl(getEBI('testalertautodismissseconds'), !getEBI('testalertautodismiss').checked);
+      }, 1);
+    };
+
+    var updateFixedControls = function() {
+      window.setTimeout(function() {
+        enableFormControl(getEBI('testalertfixed'), !getEBI('testalertfixable').checked);
+      }, 1);
+    };
+
+    var updatePositionControls = function() {
+      window.setTimeout(function() {
+        var b = !getEBI('testalertoffset').checked;
+
+        enableFormControl(getEBI('testalertcornerposition'), !getEBI('testalertcorner').checked);
+        enableFormControl(getEBI('testalertleft'), b);
+        enableFormControl(getEBI('testalerttop'), b);
+      }, 1);
+    };
+
+    if (attachListener && getEBI && API.alert) {
+      forEach(['type', 'title', 'sizable', 'maximizable', 'minimizable', 'positivemessage', 'negativemessage', 'indeterminatemessage', 'savemessage', 'helpmessage', 'buttons', 'captionbuttons', 'icon', 'classinformational', 'classwarning', 'classerror', 'classrounded', 'classshadowed', 'classwrapped', 'transitionedalways', 'transitionedonanimation', 'transitionednever', 'modal', 'fixable', 'steps', 'autodismiss', 'center', 'corner', 'offset'], function(i) {
+        el = getEBI('testalert' + i);
+        if (el) {
+          enableAndAttachEnterListener(el, testAlert);
+          attachListener(el, el.type == 'checkbox' ? 'click' : 'change', updateAlertMessageControls);
+        } else {
+          missingElement = true;
+        }
+      });
+
+      var findProprietaryStyle = API.findProprietaryStyle;
+
+      if (!missingElement) {
+        if (findProprietaryStyle) {
+          if (!findProprietaryStyle('transition')) {
+            enableFormControl(getEBI('testalerttransitionedalways'), true);
+            enableFormControl(getEBI('testalerttransitionedonanimation'), true);
+            enableFormControl(getEBI('testalerttransitionednever'), true);
+          }
+          if (!findProprietaryStyle('boxShadow')) {
+            enableFormControl(getEBI('testalertclassshadowed'), true);
+          }
+          if (!findProprietaryStyle('borderRadius')) {
+            enableFormControl(getEBI('testalertclassrounded'), true);
+          }
+        }      
+        updateAlertMessageControls();
+      }
+
+      el = getEBI('testalerttext');
+      if (el) {
+        enableFormControl(el);
+      } else {
+        missingElement = true;
+      }
+
+      if (!missingElement) {
+        el = getEBI('testalertfixable');
+        if (getEBI('testalertfixed')) {
+          attachListener(el, 'click', updateFixedControls);
+          updateFixedControls();
+        }
+
+        el = getEBI('testalertautodismiss');
+        if (el && getEBI('testalertautodismissseconds')) {
+          attachListener(el, 'click', updateAutoDismissControls);
+          attachEnterListener(getEBI('testalertautodismissseconds'), testAlert);
+          updateAutoDismissControls();
+        }
+
+        var updateCurtainEffectControls = function(el) {
+          window.setTimeout(function() {
+            var b = !el.checked;
+
+            el = getEBI('animatecurtain');
+            enableFormControl(el, b);          
+            updateEffectControls('curtain', b || !el.checked);          
+          }, 1);
+        };
+
+        forEach(['corner', 'offset', 'center'], function(i) {
+          var el = getEBI('testalert' + i);
+          if (el) {
+            attachListener(el, 'click', updatePositionControls);
+            attachListener(el, 'change', updatePositionControls);
+          }
+          updatePositionControls();
+        });
+
+        forEach(['top', 'left'], function(i) {
+          el = getEBI('testalert' + i);
+          if (el) {
+            attachEnterListener(el, testAlert);
+          }
+        });
+
+        if (alertEffects) {
+          enableAnimationSelectionControls('alert', testAlert, alertEffects);
+          if (API.effects.fade) {
+            enableAnimationSelectionControls('curtain', testAlert, alertEffects, true);
+            el = getEBI('testalertmodal');
+            attachListener(el, 'click', function() {
+              updateCurtainEffectControls(this);
+            });
+            updateCurtainEffectControls(el);
+          }
+        }
+        
+        el = getEBI('testalert');
+        if (el) {
+          enableFormControl(el);
+          attachFocusListener(el);
+          attachListener(el, 'click', function() {
+            testAlert(this);
+          });
+        }
+
+        el = getEBI('testalerthide');
+        if (el) {
+          attachListener(el, 'click', function() {
+            var el = getEBI('codealert');
+
+            API.dismissAlert();
+            if (el) {
+              setElementText(el, 'API.dismissAlert();');
+            }
+          });
+        }
+
+        if (API.focusAlert) {
+          el = getEBI('testalertfocus');
+          if (el) {
+            attachListener(el, 'click', function() {
+              API.focusAlert();
+              var el = getEBI('codealert');
+              if (el) {
+                setElementText(el, 'API.focusAlert();');
+              }
+            });
+          }
+          el = getEBI('testalertblur');
+          if (el) {
+            attachListener(el, 'click', function() {
+              API.blurAlert();
+              var el = getEBI('codealert');
+              if (el) {
+                setElementText(el, 'API.blurAlert();');
+              }
+            });
+          }
+        }
+
+        if (API.flashAlert) {
+          el = getEBI('testalertflash');
+          if (el) {
+            attachListener(el, 'click', function() {
+              API.flashAlert();
+              var el = getEBI('codealert');
+              if (el) {
+                setElementText(el, 'API.flashAlert();');
+              }
+            });
+          }
+        }
+
+        el = getEBI('testalertdirty');
+        if (el) {
+          attachListener(el, 'click', function() {
+            var el = getEBI('codealert');
+
+            API.setAlertDirty(true);
+            if (el) {
+              setElementText(el, 'API.setAlertDirty(true);');
+            }
+          });
+        }
+        el = getEBI('testalertdirtyexternal');
+        if (el) {
+          attachListener(el, 'click', function() {
+            var el = getEBI('codealert');
+
+            API.setAlertDirty(true, true);
+            if (el) {
+              setElementText(el, 'API.setAlertDirty(true, true);');
+            }
+          });
+        }
+
+        // Enforce modality for links
+
+        if (API.isHostObjectProperty(global.document, 'links')) {
+          var links = global.document.links;
+          for (i = links.length; i--;) {
+            attachFocusListener(links[i]);
+          }
+        }
+      }
+    }
+
+    // Enable scrolling anchors
+
+    var attachedLinkScrollEvents;
+
+    if (API.attachLinkScrollEvents) {
+      attachedLinkScrollEvents = API.attachLinkScrollEvents({
+        duration: 1000,
+        ease: API.ease.circle
+      });
+    }
+
+    // Check if operation was successful
+
+    if (!attachedLinkScrollEvents) {
+
+      // Cross out line about starting automatically
+
+      el = getEBI('autoscroll');
+      if (el) {
+        el.className = 'snuff';
+      }
+    }
+
+    var setWaiProperty = API.setWaiProperty, setActiveStyleSheet = API.setActiveStyleSheet, enhanceToolbar = API.enhanceToolbar, getToolbarButtons = API.getToolbarButtons, disableControl = API.disableControl;
+    var buttonClasses = ['checked', 'disabled', 'commandbutton', 'iconic', 'pressed', 'skin', 'separator'];
+    var addClass = API.addClass, removeClass = API.removeClass, checkControl = API.checkControl;
+
+    var onclick = function(el, elButton, elPreviousButton) {
+      var confirmed;
+
+      if (elButton == elPreviousButton) { return; }
+
+      var fn = function() {
+        forEach(API.getToolbarButtons(el), function(el) {
+          var elContent = getEBI(el.id + 'content');
+
+          removeClass(elContent, 'lowlighted');
+          if (el.id == elButton.id) {
+            addClass(elContent, 'highlighted');
+          } else {
+            removeClass(elContent, 'highlighted');
+          }
+        });
+        if (confirmed) {
+          checkControl(elPreviousButton, false);
+          checkControl(elButton);
+        }
+        if (elPreviousButton) {
+          el = getEBI(elPreviousButton.id + 'content');
+          API.addClass(el, 'lowlighted');
+        }               
+      };
+      if (el.id == 'tabstrip2' && getEBI('tabstripconfirm').checked) {
+        confirmed = true;
+        myConfirm('Changing to tab ' + elButton.id.slice(7), {
+          title:'Tabstrip',
+          effects:API.effects && API.effects.drop,
+          ease:API.ease && API.ease.sigmoid2,
+          className:'alert shadowed rounded'
+        }, fn);
+        return false;
+      }
+      fn();
+    };
+
+    if (getEBI) {
+        el = getEBI('tabstrip');
+        if (el && addClass && myConfirm && enhanceToolbar) {
+          enhanceToolbar(el, {
+            radio:true,
+            onclick:onclick
+          }, global.document);
+          
+          var buttons = getToolbarButtons(el);
+          forEach(buttons, function(el) {
+            disableControl(el, false);
+          });
+
+          el = getEBI('tabstrip2');
+          if (el) {
+            enhanceToolbar(el, {
+              radio:true,
+              onclick:onclick
+            }, global.document);
+            buttons = getToolbarButtons(el);
+            el = getEBI('tabstripconfirm');
+            if (el) {
+              enableFormControl(el);
+              forEach(buttons, function(el) {
+                disableControl(el, false);
+              });
+            }
+          }
+	}
+        el = getEBI('apptoolbar');
+        if (el && myAlert && enhanceToolbar) {
+          enhanceToolbar(el, { onclick:function(el, elButton) { myAlert(elButton.id.slice(10), { title:'Application', className:'alert wrap rounded shadowed' }); } }, global.document);
+          disableControl(getEBI('apptoolbarnew'), false);
+          disableControl(getEBI('apptoolbaropen'), false);
+        }
+
+        el = getEBI('createtoolbar');
+        if (el && getEBI('createbutton') && API.createToolbar) {
+          el.disabled = false;
+          attachListener(el, 'click', function() {
+            var el = getEBI('createbutton');
+            var elLanding = getEBI('toolbarlanding');            
+            var elToolbar = API.createToolbar({ id:'demotoolbar', className:'toolbar panel' }, global.document);
+            var fn = function() {
+              var text = getEBI('createbuttontext').value;
+              var title = getEBI('createbuttontitle').value;
+              var className = 'button';
+
+              var el = getEBI('createbuttonremoveall');
+              if (el) {
+                enableFormControl(el);
+              }
+
+              forEach(buttonClasses, function(i) {
+                var el = getEBI('createbutton' + i);
+                if (el && el.checked) {
+                  if (i != 'skin' || getEBI('createbuttoniconic').checked) {
+                    className += ' ' + i;
+                  }
+                }
+              });                  
+              API.addToolbarButton(elToolbar, { text:text, className:className, title:title });
+              var code = "API.addToolbarButton(el, {\n text: '" + encodeCode(text) + "',\n id:'demotoolbar',\n title: '" + encodeCode(title) + "'";
+              if (className != 'button') {
+                code += ",\n className: '" + className + "'";
+              }
+              code += '\n});';
+              el = getEBI('codecreatetoolbar');
+              if (el) {
+                setElementText(el, code);
+              }                  
+            };
+
+            var updateIconCheckboxes = function() {
+              window.setTimeout(function() { getEBI('createbuttonskin').disabled = !getEBI('createbuttoniconic').checked; }, 1);
+            };
+
+            if (elToolbar) {
+              if (elLanding && el) {
+                el.disabled = false;
+                attachListener(el, 'click', fn);
+                elLanding.appendChild(elToolbar);
+                elLanding = null;
+
+                missingElement = false;
+
+                forEach(buttonClasses, function(i) {
+                  var el = getEBI('createbutton' + i);
+                  if (el) {
+                    enableFormControl(el);
+                  } else {
+                    missingElement = true;
+                  }
+                });
+
+                if (!missingElement) {
+                  el = getEBI('createbuttoniconic');
+                  if (el) {
+                    attachListener(el, 'click', updateIconCheckboxes);
+                  }
+                  updateIconCheckboxes();
+                }
+
+                el = getEBI('createbuttontext');
+                if (el) {                   
+                   enableAndAttachEnterListener(el, fn);
+                } else {
+                  missingElement = true;
+                }
+                el = getEBI('createbuttontitle');
+                if (el) {                   
+                   enableAndAttachEnterListener(el, fn);
+                } else {
+                  missingElement = true;
+                }
+                el = getEBI('createbuttonremoveall');
+                if (el) {
+                  attachListener(el, 'click', function() {
+                    var elToolbar = getEBI('demotoolbar');
+                    if (elToolbar) {
+                      forEach(getToolbarButtons(elToolbar), function(el) {
+                        API.removeToolbarButton(elToolbar, el);
+                      });
+                    }
+                    this.disabled = true;
+
+                    el = getEBI('codecreatetoolbar');
+                    if (el) {
+                      setElementText(el, "API.forEach(API.getToolbarButtons(el), function(elButton) {\n API.removeToolbarButton(el, elButton);\n});");
+                    }
+                  });
+                }
+                el = getEBI('codecreatetoolbar');
+                if (el) {
+                  setElementText(el, "el = API.getEBI('toolbarlanding').appendChild(API.createToolbar({ id:'demotoolbar', className:'toolbar panel' }));");
+                }
+              } else {
+                if (myAlert) {
+                  myAlert("Unable to find toolbar's environment", { className:'alert stop', title:'Demo' });
+                }
+              }
+              el = null;
+              this.disabled = true;
+            } else {
+              if (myAlert) {
+                myAlert('Unable to create toolbar', { className:'alert stop', title:'Demo' } );
+              }
+            }
+          });
+        }
+    }
+
+    missingElement = false;
+
+    if (getEBI && attachListener && myAlert && API.createToast) {
+        forEach(['text', 'duration', 'iniframe'], function(i) {
+            el = getEBI('createtoast' + i);
+            if (el) {
+              enableFormControl(el);
+              attachFocusListener(el);
+            }      
+        });
+
+        el = getEBI('createtoastfixed');
+        if (el) {
+          if (API.fixElement) {
+            enableFormControl(el);
+            attachFocusListener(el);
+          }
+        } else {
+          missingElement = true;
+        }
+
+        el = getEBI('animatetoast');
+        if (el) {
+          if (alertEffects) {
+            missingElement = !enableAnimationSelectionControls('toast', null, alertEffects);
+            if (!missingElement) {
+              attachFocusListener(el);
+            }
+          }
+        } else {
+          missingElement = true;
+        }
+
+        if (!missingElement) {
+          forEach(['topleft', 'topright', 'bottomleft', 'bottomright'], function(i) {
+            el = getEBI('createtoast' + i);
+            if (el) {
+              enableFormControl(el);
+              attachFocusListener(el);
+              attachListener(el, 'click', function() {
+                var testTransformEffect = /(transform|skew|spin|rotate|scale|flip)/;
+                var position = this.id.slice(11);
+                var el = getEBI('createtoastduration');
+                var duration = +el.value;
+                var text = getEBI('createtoasttext').value;
+                var effectName, easeName;
+
+		var createInFrame = getEBI('createtoastiniframe').checked;
+
+                if (duration) {
+                  var options = API.effects ? revealEffectOptions('toast') || {} : {};
+                  options.position = position;
+                  options.pause = duration * 1000;
+                  options.className = 'rounded panel toast translucent';
+                  options.fixed = getEBI('createtoastfixed').checked;
+
+                  el = getEBI('animatetoast');
+                  if (el.selectedIndex > 0) {
+                     effectName = el.options[el.selectedIndex].text;
+                  }
+
+                  el = getEBI('easetoast');
+                  if (el.selectedIndex > 0) {
+                     easeName = el.options[el.selectedIndex].text;
+                  }
+
+                  if (options.fixed && options.effects && testTransformEffect.test(effectName)) {
+                    myAlert('Transform effects do not work with fixed positioning.', {
+                      title:'Toast',
+                      className:'alert stop rounded shadowed wrap',
+                      effects:API.effects && API.effects.drop,
+                      ease:API.ease && API.ease.bounce
+                    });
+                  } else {
+                    options.text = text;
+                    var elSoundIndicator = getEBI('eventsounds');
+                    if (elSoundIndicator && elSoundIndicator.value == 'Enable') {
+                      options.mute = true;
+                    }
+                    options.autoDestroy = true;
+
+                    if (API.createToast(options, createInFrame ? API.getFrameById('createtoastframe') : null)) {
+                      el = getEBI('codetoast');
+                      if (el) {
+                        if (options.effects) {
+                          if (typeof options.effects != 'function') {
+                            effectName = '[API.effects.' + effectName + ', API.effects.fade]';
+                          } else {
+                            effectName = 'API.effects.' + effectName;
+                          }
+                        }
+                        var code = "API.createToast({\n position: '" + position + "',\n pause: " + (duration * 1000) + ",\n text: '" + encodeCode(text) + "',\n className: 'rounded panel translucent toast'";
+                        if (effectName) {
+                          code += ",\n effects: " + effectName;
+                        }
+                        if (easeName) {
+                          code += ",\n ease: API.ease." + easeName;
+                        }
+                        code += ',\n autoDestroy: true\n}';
+                        if (createInFrame) {
+                          code += ", API.getFrameById('createtoastframe')";
+                        }
+                        code += ');';
+                        setElementText(el, code);
+                      }
+                    } else {
+                      myAlert('Unable to make toast.', {
+                        title:'Toast',
+                        className:'alert stop rounded shadowed wrap',
+                        effects:API.effects && API.effects.drop,
+                        ease:API.ease && API.ease.bounce
+                      });
+                    }
+                  }
+                } else {
+                  showError('Invalid duration', el);
+                }
+              });
+            } else {
+              missingElement = true;
+            }
+          });
+        }
+    }
+
+    if (getEBI && attachListener && API.createSideBar) {
+        var sideBarShowOptions = (API.effects && API.effects.slide) ? { effects:API.effects.slide, duration:400, ease:API.ease && API.ease.sigmoid2 } : {};
+
+        forEach(['top', 'left', 'bottom', 'right'], function(i) {
+          var onautohidecollision, el = getEBI('createsidebar' + i);
+          if (el) {
+            enableFormControl(el);
+
+            if (API.autoHideSideBar && myAlert) {
+              onautohidecollision = function() {
+                myAlert('Only one sidebar per edge may be hidden.', {
+                  title:'Sidebar',
+                  className:'alert stop rounded shadowed wrap',
+                  effects:API.effects && API.effects.drop,
+                  ease:API.ease && API.ease.sigmoid2
+                });
+                return false;
+              };
+            }
+
+            attachListener(el, 'click', function() {
+              var side = this.id.slice(13);
+              
+              el = API.createSideBar({ side:side, buttons:true, onclose:function() {
+
+              }, onautohidecollision:onautohidecollision, effects:sideBarShowOptions.effects, ease:sideBarShowOptions.ease, duration:sideBarShowOptions.duration });
+
+
+              if (API.fixElement) {
+                API.fixElement(el);
+              }
+              var code = "var el = API.createSideBar({\n side: '" + side + "',\n buttons: true";
+              if (sideBarShowOptions.effects) {
+                code += ',\n effects: API.effects.slide';
+                code += ',\n duration: ' + sideBarShowOptions.duration;
+                if (sideBarShowOptions.ease) {
+                  code += ',\n ease: API.ease.sigmoid2';
+                }
+                if (onautohidecollision) {
+                  code += ",\n onautohidecollision: function() {\n  API.alert('Only one sidebar per edge may be hidden.', {\n   title: 'Sidebar',\n   className: 'alert stop rounded shadowed wrap',\n   effects: API.effects.drop,\n   ease: API.ease.sigmoid2\n  });  \n  return false;\n }";
+                }
+              }
+              code += "\n});";
+
+              if (API.fixElement) {
+                code += '\n\nAPI.fixElement(el);';
+              }
+
+              // Set code
+
+              var elCode = getEBI('codesidebar');
+              if (elCode) {
+                global.setTimeout(function() {
+                  setElementText(elCode, code);
+                }, 10);
+              }
+            });
+          }
+          el = null;
+        });
+    }
+
+    var skins = ['blues', 'froggy', 'doom', 'hades'];
+
+    if (setActiveStyleSheet && enhanceToolbar && myAlert) {
+      el = getEBI('skintoolbar');
+      if (el) {
+        enhanceToolbar(el, {
+          oncustomize:function() {
+            myAlert('No customization available', {
+              className:'alert caution rounded shadowed',
+              title:'Toolbar',
+              effects:API.effects && API.effects.drop,
+              ease:API.ease && API.ease.bounce
+            });
+          },
+          onclick:function(el, elButton) {
+            setActiveStyleSheet(elButton.id.substring(4));
+            if (setWaiProperty) {
+              forEach(getToolbarButtons(el), function(el) {
+                if (el != elButton) {
+                  setWaiProperty(el, 'checked', 'false');
+                }
+              });
+              setWaiProperty(elButton, 'checked', 'true');
+            }
+          }
+        }, global.document);
+        forEach(skins, function(i) {
+          disableControl(getEBI('skin' + i), false);
+        });
+        if (API.attachDragToToolbar) {
+          API.attachDragToToolbar(el);
+        }
+      }
+    }
+
+    var backgroundMusicDurationTimer, convertDuration = function(sofar) {
+      var caption;
+
+      if (sofar < 10) {
+        caption = '00:0' + Math.floor(sofar);
+      } else if (sofar < 60) {
+        caption = '00:' + Math.floor(sofar);
+      } else {
+        var minutes = Math.floor(sofar / 60);
+        var seconds = Math.floor(sofar % 60);
+
+        if (seconds < 10) {
+          seconds = '0' + seconds;
+        }
+        if (minutes < 10) {
+          minutes = '0' + minutes;
+        }
+        caption = minutes + ':' + seconds;
+      }
+      return caption;
+    };
+
+    var updatePlaylistControls = function(disabled) {
+      var el = getEBI('backgroundmusicautorepeat');
+
+      if (el) {
+        enableFormControl(el, !disabled);
+      }
+
+      forEach(['previous', 'next', 'first', 'last'], function(i) {
+        var el = getEBI('backgroundmusic' + i);
+        if (el) {
+          enableFormControl(el, disabled);
+        }
+      });
+      var index = API.getPlaylistIndex();
+      el = getEBI('backgroundmusicprevious');
+      if (el) {
+        el.disabled = !index || disabled;
+      }
+      el = getEBI('backgroundmusicfirst');
+      if (el) {
+        el.disabled = !index || disabled;
+      }
+      var length = API.getPlaylist().length;
+      el = getEBI('backgroundmusicnext');
+      if (el) {
+        el.disabled = index == length - 1 || disabled;
+      }
+      el = getEBI('backgroundmusiclast');
+      if (el) {
+        el.disabled = index == length - 1 || disabled;
+      }
+
+      el = getEBI('backgroundmusicstatus');
+
+      if (el) {
+        setElementText(el, disabled ? '' : API.getPlaylist()[API.getPlaylistIndex()].name);
+      }
+
+      var effects;
+      if (!disabled && API.createToast) {
+        if (API.effects && API.effects.slide) {
+          effects = [API.effects.slide];
+          if (API.effects.fade) {
+            effects[1] = API.effects.fade;
+          }
+        }
+        API.createToast({ position:'bottomleft', pause:5000, text:API.getPlaylist()[API.getPlaylistIndex()].name, className:'rounded panel toast translucent music', duration:700, effects:effects, ease:API.ease && API.ease.sigmoid2, fixed:true, mute:true, effectParams:{ side:'top' }, autoDestroy:true });
+      }
+
+      el = getEBI('backgroundmusicstatusduration');
+
+      if (el) {
+        if (disabled) {
+          if (backgroundMusicDurationTimer) {
+            window.clearInterval(backgroundMusicDurationTimer);
+            backgroundMusicDurationTimer = 0;
+          }
+          setElementText(getEBI('backgroundmusicstatusduration'), '');
+        } else {
+          backgroundMusicDurationTimer = window.setInterval(function() {
+            if (backgroundMusicDurationTimer) {
+              var track = API.getPlaylist()[API.getPlaylistIndex()];
+              var progress = API.getPlaylistTrackProgress();
+              var sofar = Math.round((track.duration * progress) / 1000);
+              var caption = convertDuration(sofar);
+              var el = getEBI('backgroundmusicstatusduration');
+
+              if (el) {
+                el.title = convertDuration((track.duration * (1 - progress)) / 1000) + ' remaining';
+                setElementText(el, disabled ? '' : caption);
+              }
+            }
+          }, 1000);
+        }
+      }
+
+      el = getEBI('backgroundmusiccontrols');
+      if (el) {
+        el.className = disabled ? '' : 'playing';
+      }
+    };
+
+    var playSounds, playlistControlClick = function() {
+      var name = this.id.slice(15);
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+
+      API['gotoPlaylistTrack' + name]();
+      //updatePlaylistControls();
+
+      el = getEBI('codemusic');
+      if (el) {
+        setElementText(el, "API.gotoPlaylistTrack" + name + "();");
+      }
+
+    };
+
+    var playlistStarted = function() {
+      var el = getEBI('backgroundmusic');
+      el.value = 'Disable';
+      el.title = 'Disable background music';
+      updatePlaylistControls();
+    };
+
+    var playlistStopped = function() {
+      var el = getEBI('backgroundmusic');
+      el.value = 'Enable';
+      el.title = 'Enable background music';
+      updatePlaylistControls(true);
+    };
+
+    if (API.playEventSound && API.audioFileTypeSupported('wav')) {
+      el = getEBI('eventsounds');
+      if (el) {
+        enableFormControl(el);
+        attachFocusListener(el);
+        if (API.preloadEventSound) {
+            API.preloadEventSound('startup');
+        }
+        attachListener(el, 'click', function() {
+          playSounds = !playSounds;
+          var eventSound = playSounds ? 'startup' : 'shutdown';
+
+          this.value = playSounds ? 'Disable' : 'Enable';
+          this.title = this.value + ' event sounds';
+          if (API.preloadEventSound) {
+            API.preloadEventSound('shutdown');
+            API.preloadEventSound('info');
+            API.preloadEventSound('caution');
+            API.preloadEventSound('stop');
+            API.preloadEventSound('toast');
+          }
+          window.setTimeout(function() {
+            playEventSound(eventSound);
+          }, 700);
+          el = getEBI('codeaudio');
+          if (el) {
+            setElementText(el, "API.playEventSound('" + eventSound + "');");
+          }
+          var effects;
+          if (API.createToast) {
+            if (API.effects && API.effects.slide) {
+              effects = [API.effects.slide];
+              if (API.effects.fade) {
+                effects[1] = API.effects.fade;
+              }
+            }
+            API.createToast({ position:'bottomleft', pause:5000, text:'Event sounds ' + (playSounds ? 'enabled' : 'disabled'), className:'rounded panel toast translucent sounds', duration:700, effects:effects, ease:API.ease && API.ease.sigmoid2, fixed:true, mute:true, effectParams:{ side:'top' }, autoDestroy:true });
+          }
+        });
+      }
+
+      el = getEBI('backgroundmusic');
+      if (el && API.audioFileTypeSupported('mid')) {
+        enableFormControl(el);
+        attachFocusListener(el);
+        attachListener(el, 'click', function() {
+          var autoRepeat, el = getEBI('backgroundmusicautorepeat');
+
+          if (el) {
+            autoRepeat = el.checked;
+          }
+
+          if (this.value == 'Enable') {
+            enableFormControl(el, true);
+            API.loadPlaylist({ name:'Bach', source:'audio/bach.mid',duration: 320000}, { name:'Escape from New York', source:'audio/escapeny.mid', duration:194000}, { name:'Country Roads', source:'audio/takehome.mid', duration:176000 }, { name:'Candyman', source:'audio/candyman.mid', duration:369000 }, { name:'Iron Man', source:'audio/ironbs.mid', duration:307000 }, { name:'Eye in the Sky', source:'audio/eyeinsky.mid', duration:383000 });
+            API.playPlaylist({ onstart:playlistStarted, onstop:playlistStopped, autoRepeat:autoRepeat });
+            el = getEBI('codemusic');
+            if (el) {
+              setElementText(el, "API.loadPlaylist({\n name: 'Bach',\n source: 'audio/bach.mid',\n duration: 320000\n}, {\n name: 'Escape from New York',\n source: 'audio/escapeny.mid',\n duration: 194000\n}, {\n name: 'Country Roads',\n source: 'audio/takehome.mid',\n duration: 176000\n}, {\n name: 'Candyman',\n source: 'audio/candyman.mid',\n duration: 369000\n}, {\n name: 'Iron Man',\n source: 'audio/ironbs.mid',\n duration: 307000\n}, {\n name: 'Eye in the Sky',\n source: 'audio/eyeinsky.mid',\n duration: 383000\n});\nAPI.playPlaylist(" + (autoRepeat ? ' { autoRepeat: true }' : '') + ");");
+            }
+            this.value = 'Disable';            
+          } else {
+            enableFormControl(el);
+            API.stopPlaylist();
+            el = getEBI('codemusic');
+            if (el) {
+              setElementText(el, "API.stopPlaylist();");
+            }
+            this.value = 'Enable';
+          }
+        });
+      }
+      el = getEBI('backgroundmusicautorepeat');
+      if (el) {
+        enableFormControl(el);
+        attachFocusListener(el);
+      }
+      forEach(['previous', 'next', 'first', 'last'], function(i) {
+          el = getEBI('backgroundmusic' + i);
+          if (el) {
+            attachListener(el, 'click', playlistControlClick);
+            attachFocusListener(el);
+          }
+      });
+    }
+
+    // Discard unneeded host object reference
+
+    el = null;
+  });
+}
+</script>
+<script type="text/javascript" src="mylib-domready.js"></script>
+</body> 
+</html>

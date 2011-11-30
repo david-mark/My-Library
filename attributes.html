@@ -1,0 +1,1303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head profile="mylib.html">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Cache-Control" content="no-cache">
+<title>A is for Attributes</title>
+<link rel="home" href="mylib.html">
+<link rel="up" href="mylib.html">
+<link rel="next" href="host.html" title="H is for Host">
+<link rel="stylesheet" type="text/css" media="all" href="style/mylib.css">
+<link rel="stylesheet" type="text/css" media="all" href="style/tester.css">
+</head>
+<body>
+<h1>A is for Attributes</h1>
+<p>The goal of this exercise is to produce a consistent, canonical and symmetrical interface for reading and mutating documents. Host implemenations provide two interfaces: <a href="#attributemethods">attribute methods</a> and <a href="#domproperties">DOM properties</a>. Both vary cross-browser and DOM properties provide only an obscured view.</p>
+<h2><a name="attributemethods">Attributes are Awful</a></h2>
+<p>The <a href="#firstset">first set</a> <em>directly</em> tests the implementation of <a href="https://developer.mozilla.org/en/DOM/element.getAttribute">get</a>/<a href="https://developer.mozilla.org/en/DOM/element.setAttribute">set</a>/<a href="https://developer.mozilla.org/en/DOM/element.removeAttribute">removeAttribute</a>.  Cross-browser results vary.  Changing compatibility modes in IE8 affects the results as well.  Invoking the Compatibility View command (conveniently located on the toolbar next to Refresh) may show an improved view on the surface due to CSS quirks, but with bugs hiding beneath.</p>
+<p>See the <a href="#domnotes">notes</a> for more information about this DOM implementation.</p>
+<h2>Wrappers Can Compensate</h2>
+<p>The <a href="#secondset">second set</a> uses wrappers to achieve consistent cross-browser results.</p>
+<h3>Known Exceptions</h3>
+<ul>
+<li>IE6/7 and IE8 compatibility mode return default for missing form <code>enctype</code> attribute</li>
+<li>IE6/7 and IE8 compatibility mode fail to create <em>default</em> (1) <code>rowspan</code> attributes.</li>
+<li>Opera 9.27 returns <em>resolved</em> form <code>action</code> URI attribute.</li>
+<li>Opera 8.54 returns <em>resolved</em> form <code>action</code> URI attributes, as well as several others.</li>
+</ul>
+<h2><a name="domproperties">Properties are not Perfect</a></h2>
+<p>The <a href="#thirdset">third set</a> attempts to reproduce the same interface with DOM properties, skipping tests that are impossible (and a few that are superfluous).  Cross-browser results vary.  See the <a href="#domnotes2">notes</a> for more information about this DOM implementation</p>
+<h2>Hybrid Solution Works Best</h2>
+<p>The <a href="#fourthset">fourth set</a> retrieves DOM property values by attribute name.  This is the basic concept botched by the various <code>attr</code> methods found in "major" libraries.  It features the same utility of the attribute-based interfaces.  Missing attributes return <code>null</code> rather than property defaults.  The style set is skipped as the style property is read only.  This is the fastest and most robust solution.  Like the attribute wrapper, it is 100% consistent in the latest major browsers (as well as several others tested).</p>
+<h3>Known Exceptions</h3>
+<ul>
+<li>IE6/7 and IE8 compatibility mode return <em>unresolved</em> paths for the <code>action</code>, <code>usemap</code>, <code>longdesc</code>, <code>cite</code>, <code>classid</code>, <code>codebase</code> and <code>link</code> <code>href</code> attributes.</li>
+<li>IE6/7 and IE8 compatibility mode fail to create <em>default</em> (1) <code>rowspan</code> attributes.</li>
+</ul>
+<h2>Common Quirks</h2>
+<p>There are many cross-browser differences related to attributes and properties.</p>
+<h3>Booleans</h3>
+<p>Outside of the broken MSHTML implementations, inconsistencies with attributes corresponding to boolean properties require the most feature testing.  The workaround to present a consistent interface for these attributes is to refer to the corresponding DOM properties, returning '' for true and <code>null</code> for false.  Note that this loses some precision as we cannot discriminate between these two:-</p>
+<pre>
+&lt;input readonly&gt;
+&lt;input readonly="readonly"&gt;
+</pre>
+<p>The wrapper returns '' for both of these and <code>null</code> if the attribute is missing.  These attributes would be created by setting '' or the name of the attribute (e.g. <code>readonly</code>).  For the sake of symmetry, the former is recommended.</p>
+<h3>Paths</h3>
+<p>URI's are resolved for some attributes in older versions of major browsers (e.g. Opera).  Even anchor <code>href</code> attributes can be affected (e.g. Opera 8.54), in violation of the spotty DOM2 specifications.</p>
+<h2>Result Map</h2>
+<div onclick="if (typeof progressClick == 'function') { progressClick(event); }">
+<div id="progress1" class="progress"><div>Attributes</div></div>
+<div id="progress2" class="progress"><div>Attributes Wrapped</div></div>
+<div id="progress3" class="progress"><div>Properties</div></div>
+<div id="progress4" class="progress"><div>Properties Wrapped</div></div>
+</div>
+<div id="legend">
+Legend:
+<span class="pass">Pass</span>
+<span class="fail">Fail</span>
+<span class="indeterminate">Indeterminate</span>
+<span class="error"><em>Error</em></span>
+</div>
+<hr>
+<h2 id="firstset">First Set</h2>
+
+<div id="test1" style="display:none">
+
+<a href="images/cinsoft.gif"><img class="test" onclick="window.alert('test')" src="images/cinsoft.gif" height="32" width="32" alt="Cinsoft" longdesc="images/cinsoft.gif" usemap="images/cinsoft.gif"></a>
+
+<table>
+<colgroup span="2">
+<col span="1">
+<col span="1">
+</colgroup>
+<tbody><tr><td colspan="2"></td></tr><tr><td></td><td></td></tr></tbody></table>
+
+<form enctype="application/x-www-form-urlencoded" action="images/cinsoft.gif" accept-charset="windows-1252"><fieldset><legend>test</legend><label for="testinput1"></label><input id="testinput1" name="testinput"><input type="checkbox" tabindex="1"><select><option>Test</option><option value="test">Test</option><option value="">Test</option></select></fieldset></form>
+
+<form enctype="multipart/form-data" action="../index.html" accept-charset="windows-1252">
+<fieldset>
+<legend>test</legend>
+</fieldset>
+</form>
+<object codebase="images/cinsoft.gif" classid="images/cinsoft.gif" data="images/cinsoft.gif"></object>
+<textarea rows="1" cols="1"></textarea>
+<a name="testanchor1" tabindex="0"></a>
+<map name="testmap1">
+<area shape="rect" coords="0,0,32,32" href="images/cinsoft.gif" alt="">
+</map>
+<blockquote cite="images/cinsoft.gif"><p>Test</p></blockquote>
+<div tabindex="1"></div>
+</div>
+
+<div id="test2" style="display:none">
+<a href="images/cinsoft.gif"><img class="test" onclick="window.alert('test')" src="images/cinsoft.gif" height="32" width="32" alt="Cinsoft" longdesc="images/cinsoft.gif" usemap="images/cinsoft.gif"></a>
+<table>
+<colgroup span="2">
+<col span="1">
+<col span="1">
+</colgroup>
+<tbody><tr><td colspan="2"></td></tr><tr><td></td><td></td></tr></tbody></table>
+<form enctype="application/x-www-form-urlencoded" action="images/cinsoft.gif" accept-charset="windows-1252">
+<fieldset>
+<legend>test</legend>
+<label for="testinput2"></label><input id="testinput2" name="testinput2"><input type="checkbox" tabindex="1">
+<select><option>Test</option><option value="test">Test</option><option value="">Test</option></select>
+</fieldset>
+</form>
+<form enctype="multipart/form-data" action="../index.html">
+<fieldset>
+<legend>test</legend>
+</fieldset>
+</form>
+<object codebase="images/cinsoft.gif" classid="images/cinsoft.gif" data="images/cinsoft.gif"></object>
+<textarea rows="1" cols="1"></textarea>
+<a name="testanchor2" tabindex="0"></a>
+<map name="testmap2">
+<area shape="rect" coords="0,0,32,32" href="images/cinsoft.gif" alt="">
+</map>
+<blockquote cite="images/cinsoft.gif"><p>Test</p></blockquote>
+<div tabindex="2"></div>
+</div>
+
+<div id="test3" style="display:none">
+<a href="images/cinsoft.gif"><img class="test" onclick="window.alert('test')" src="images/cinsoft.gif" height="32" width="32" alt="Cinsoft" longdesc="images/cinsoft.gif" usemap="images/cinsoft.gif"></a>
+<table>
+<colgroup span="2">
+<col span="1">
+<col span="1">
+</colgroup>
+<tbody><tr><td colspan="2"></td></tr><tr><td></td><td></td></tr></tbody></table>
+<form enctype="application/x-www-form-urlencoded" action="images/cinsoft.gif" accept-charset="windows-1252">
+<fieldset>
+<legend>test</legend>
+<label for="testinput3"></label><input id="testinput3" name="testinput3"><input type="checkbox" tabindex="1">
+<select><option>Test</option><option value="test">Test</option><option value="">Test</option></select>
+</fieldset>
+</form>
+<form enctype="multipart/form-data" action="../index.html">
+<fieldset>
+<legend>test</legend>
+</fieldset>
+</form>
+<object codebase="images/cinsoft.gif" classid="images/cinsoft.gif" data="images/cinsoft.gif"></object>
+<textarea rows="1" cols="1"></textarea>
+<a name="testanchor3" tabindex="0"></a>
+<map name="testmap3">
+<area shape="rect" coords="0,0,32,32" href="images/cinsoft.gif" alt="">
+</map>
+<blockquote cite="images/cinsoft.gif"><p>Test</p></blockquote>
+<div tabindex="3"></div>
+</div>
+
+<div id="test4" style="display:none">
+<a href="images/cinsoft.gif"><img class="test" onclick="window.alert('test')" src="images/cinsoft.gif" height="32" width="32" alt="Cinsoft" longdesc="images/cinsoft.gif" usemap="images/cinsoft.gif"></a>
+<table>
+<colgroup span="2">
+<col span="1">
+<col span="1">
+</colgroup>
+<tbody><tr><td colspan="2"></td></tr><tr><td></td><td></td></tr></tbody></table>
+<form enctype="application/x-www-form-urlencoded" action="images/cinsoft.gif" accept-charset="windows-1252">
+<fieldset>
+<legend>test</legend>
+<label for="testinput4"></label><input id="testinput4" name="testinput4"><input type="checkbox" tabindex="1">
+<select><option>Test</option><option value="test">Test</option><option value="">Test</option></select>
+</fieldset>
+</form>
+<form enctype="multipart/form-data" action="../index.html">
+<fieldset>
+<legend>test</legend>
+</fieldset>
+</form>
+<object codebase="images/cinsoft.gif" classid="images/cinsoft.gif" data="images/cinsoft.gif"></object>
+<textarea rows="1" cols="1"></textarea>
+<a name="testanchor4" tabindex="0"></a>
+<map name="testmap4">
+<area shape="rect" coords="0,0,32,32" href="images/cinsoft.gif" alt="">
+</map>
+<blockquote cite="images/cinsoft.gif"><p>Test</p></blockquote>
+<div tabindex="4"></div>
+</div>
+
+<script type="text/javascript" src="scripts/tester.js"></script>
+<script type="text/javascript" src="scripts/prop.js"></script>
+
+<script type="text/javascript">
+
+if (typeof assertEquals == 'function' && typeof prop == 'function') {
+
+var el, elTest, elProgress, count, set, skips, failures, errors, 
+domSkips, domFailures, hostAttrTotals, hostPropTotals, wrapperAttrTotals, 
+wrapperPropTotals, doc = window.document, html = doc.documentElement;
+
+
+var startTime = new Date().getTime();
+elTest = doc.getElementById('test1');
+elProgress = doc.getElementById('progress1')
+count = failures = skips = errors = 0;
+hostAttrTotals = { failures: 0, skips:0, errors:0 };
+set = 1;
+
+el = elTest.getElementsByTagName('a')[0];
+docWrite('<h3>Anchor<\/h3>');
+
+assertEquals(el.getAttribute('tabindex'), null, 'Anchor tab index missing');
+el.setAttribute('tabindex', '0');
+assertEquals(el.getAttribute('tabindex'), '0', 'Anchor tab index added');
+
+if (assertNotEquals(el.getAttribute('href'), null, 'Anchor reference present')) {
+	assertEquals(el.getAttribute('href'), 'images/cinsoft.gif', 'Anchor reference unresolved');
+} else {
+	skipTest('Anchor reference unresolved');
+}
+
+
+el = elTest.getElementsByTagName('a')[1];
+assertEquals(el.getAttribute('tabindex'), '0', 'Anchor without reference tab index');
+el.removeAttribute('tabindex');
+assertEquals(el.getAttribute('tabindex'), null, 'Anchor without reference tab index removed');
+
+
+
+var el = elTest.getElementsByTagName('area')[0];
+docWrite('<h3>Area<\/h3>');
+if (assertNotEquals(el.getAttribute('href'), null, 'Area reference present')) {
+	assertEquals(el.getAttribute('href'), 'images/cinsoft.gif', 'Area reference unresolved');
+} else {
+	skipTest('Area reference unresolved');
+}
+
+el = elTest.getElementsByTagName('img')[0];
+docWrite('<h3>Image<\/h3>');
+assertEquals(el.getAttribute('src'), 'images/cinsoft.gif', 'Image source unresolved');
+assertEquals(el.getAttribute('longdesc'), 'images/cinsoft.gif', 'Image long description unresolved');
+el.removeAttribute('longdesc');
+assertEquals(el.getAttribute('longdesc'), null, 'Image longdesc removed');
+assertEquals(el.getAttribute('class'), 'test', 'Image class');
+assertEquals(el.getAttribute('id'), null, 'Image ID');
+el.setAttribute('id', 'testimage');
+assertEquals(el.getAttribute('id'), 'testimage', 'Image ID added');
+el.removeAttribute('id');
+assertEquals(el.getAttribute('id'), null, 'Image ID removed');
+assertEquals(el.getAttribute('style'), null, 'Image inline style');
+el.setAttribute('style', 'color:red');
+assertEquals(typeof el.getAttribute('style'), 'string', 'Image inline style added');
+assertEquals(el.getAttribute('ismap'), null, 'Image is map');
+assertEquals(typeof el.getAttribute('height'), 'string', 'Image height');
+assertEquals(typeof el.getAttribute('width'), 'string', 'Image width');
+el.removeAttribute('height');
+assertEquals(el.getAttribute('height'), null, 'Image height removed');
+el.removeAttribute('width');
+assertEquals(el.getAttribute('width'), null, 'Image width removed');
+
+
+
+assertEquals(typeof el.getAttribute('onclick'), 'string', 'Image onclick');
+assertEquals(el.getAttribute('onmouseover'), null, 'Image onmouseover');
+assertEquals(el.getAttribute('usemap'), 'images/cinsoft.gif', 'Image use map unresolved');
+assertEquals(el.getAttribute('xyz'), null, 'Image custom attribute');
+el.setAttribute('xyz', 'abc');
+assertEquals(el.getAttribute('xyz'), 'abc', 'Image custom attribute added');
+el.removeAttribute('xyz', 'abc');
+assertEquals(el.getAttribute('xyz'), null, 'Image custom attribute removed');
+el = elTest.getElementsByTagName('td')[0];
+docWrite('<h3>Table Cell<\/h3>');
+assertEquals(el.getAttribute('colspan'), '2', "Column span");
+assertEquals(el.getAttribute('rowspan'), null, "Row span");
+el.removeAttribute('colspan');
+assertEquals(el.getAttribute('colspan'), null, "Removed column span");
+el.setAttribute('rowspan', '1');
+assertEquals(el.getAttribute('rowspan'), '1', "Default row span added");
+
+el.removeAttribute(el, 'rowspan');
+assertEquals(el.getAttribute(el, 'rowspan'), null, "Removed row span");
+
+el = elTest.getElementsByTagName('colgroup')[0];
+docWrite('<h3>Table Column Group<\/h3>');
+assertEquals(el.getAttribute('span'), '2', "Column group span");
+el.removeAttribute('span');
+assertEquals(el.getAttribute('span'), null, "Column group span removed");
+
+
+el = doc.getElementsByTagName('meta')[0];
+docWrite('<h3>Meta<\/h3>');
+if (assertEquals(el.getAttribute('http-equiv'), 'Content-Type', "HTTP equivalent")) {
+	el.removeAttribute('http-equiv');
+	assertEquals(el.getAttribute('http-equiv'), null, "Removed HTTP equivalent");
+} else {
+	skipTest("Removed HTTP equivalent");
+}
+var el = elTest.getElementsByTagName('label')[0];
+docWrite('<h3>Label<\/h3>');
+assertEquals(el.getAttribute('for'), 'testinput1', "Label for");
+docWrite('<h3>Text Input<\/h3>');
+el = elTest.getElementsByTagName('input')[0];
+el.value = ''; // In case browser remembers previous value
+assertEquals(el.getAttribute('value'), null, 'Input value');
+el.setAttribute('value', 'test');
+assertEquals(el.getAttribute('value'), 'test', 'Input value set');
+assertEquals(el.getAttribute('maxlength'), null, 'Input maximum length');
+el.setAttribute('maxlength', '10');
+assertEquals(el.getAttribute('maxlength'), '10', 'Input maximum length added');
+docWrite('<h3>Checkbox Input<\/h3>');
+el = elTest.getElementsByTagName('input')[1];
+el.checked = false; // In case browser remembers previous checked state
+assertEquals(el.getAttribute('checked'), null, 'Input checked');
+el.setAttribute('checked', '');
+assertNotEquals(el.getAttribute('checked'), null, 'Input checked added');
+assertEquals(el.defaultChecked, true, 'Input defaultChecked property set');
+assertEquals(el.getAttribute('disabled'), null, 'Input disabled');
+assertEquals(el.getAttribute('readonly'), null, 'Input read only');
+el.setAttribute('readonly', '');
+assertEquals(el.getAttribute('readonly'), '', 'Input read only added');
+assertEquals(el.readOnly, true, 'Input read only property set');
+el.removeAttribute('readonly');
+assertEquals(el.getAttribute('readonly'), null, 'Input read only removed');
+assertEquals(el.getAttribute('tabindex'), '1', 'Input tab index');
+el.removeAttribute('tabindex');
+assertEquals(el.getAttribute('tabindex'), null, 'Input tab index removed');
+el = elTest.getElementsByTagName('select')[0];
+docWrite('<h3>Select<\/h3>');
+assertEquals(el.getAttribute('multiple'), null, 'Select multiple');
+el.setAttribute('multiple', '');
+assertEquals(el.getAttribute('multiple'), '', 'Select multiple added');
+assertEquals(el.multiple, true, 'Select multiple property set');
+
+assertEquals(el.getAttribute('size'), null, 'Select size missing');
+el.setAttribute('size', '1');
+assertEquals(el.getAttribute('size'), '1', 'Select size added');
+el.removeAttribute('size');
+assertEquals(el.getAttribute('size'), null, 'Select size removed');
+
+el = elTest.getElementsByTagName('option')[0];
+docWrite('<h3>Option<\/h3>');
+assertEquals(el.getAttribute('value'), null, 'Option value missing');
+var el = elTest.getElementsByTagName('option')[1];
+assertEquals(el.getAttribute('value'), 'test', 'Option value present');
+var el = elTest.getElementsByTagName('option')[2];
+assertEquals(el.getAttribute('value'), '', 'Option empty value present');
+
+docWrite('<h3>Form<\/h3>');
+el = elTest.getElementsByTagName('form')[0];
+assertEquals(el.getAttribute('enctype'), 'application/x-www-form-urlencoded', 'Form enctype');
+el.removeAttribute('enctype');
+assertEquals(el.getAttribute('enctype'), null, 'Form enctype removed');
+el.setAttribute('enctype', 'multipart/form-data');
+assertEquals(el.getAttribute('enctype'), 'multipart/form-data', 'Form enctype set');
+assertEquals(el.getAttribute('action'), 'images/cinsoft.gif', 'Form action unresolved');
+assertEquals(el.getAttribute('onsubmit'), null, 'Form onsubmit');
+el.setAttribute('onsubmit', 'window.alert("test");');
+assertNotEquals(typeof el.onsubmit, 'string', 'Form onsubmit added');
+assertEquals(el.getAttribute('accept-charset'), 'windows-1252', 'Form accept charset');
+el.removeAttribute('accept-charset');
+assertEquals(el.getAttribute('accept-charset'), null, 'Form accept charset removed');
+docWrite('<h3>Multi-part Form<\/h3>');
+el = elTest.getElementsByTagName('form')[1];
+assertEquals(el.getAttribute('enctype'), 'multipart/form-data', 'Form multi-part enctype');
+docWrite('<h3>Document Element<\/h3>');
+assertEquals(html.getAttribute('lang'), null, 'Document element language');
+el = doc.getElementsByTagName('link')[0];
+docWrite('<h3>Link<\/h3>');
+assertEquals(el.getAttribute('href'), 'mylib.html', 'Link reference unresolved');
+el = elTest.getElementsByTagName('object')[0];
+docWrite('<h3>Object<\/h3>');
+
+if (assertNotEquals(el.getAttribute('data'), null, 'Object data present')) {
+	assertEquals(el.getAttribute('data'), 'images/cinsoft.gif', 'Object data unresolved');
+} else {
+	skipTest('Object data unresolved');
+}
+el.removeAttribute('data');
+assertEquals(el.getAttribute('data'), null, 'Object data removed');
+
+
+if (assertNotEquals(el.getAttribute('codebase'), null, 'Object codebase present')) {
+	assertEquals(el.getAttribute('codebase'), 'images/cinsoft.gif', 'Object codebase unresolved');
+} else {
+	skipTest('Object codebase unresolved');
+}
+el.removeAttribute('codebase');
+assertEquals(el.getAttribute('codebase'), null, 'Object codebase removed');
+
+if (assertNotEquals(el.getAttribute('classid'), null, 'Object classid present')) {
+	assertEquals(el.getAttribute('classid'), 'images/cinsoft.gif', 'Object classid unresolved');
+} else {
+	skipTest('Object classid unresolved');
+}
+el.removeAttribute('classid');
+assertEquals(el.getAttribute('classid'), null, 'Object classid removed');
+
+docWrite('<h3>DIV<\/h3>');
+el = elTest.getElementsByTagName('div')[0];
+assertEquals(el.getAttribute('tabindex'), '1', 'DIV tab index');
+assertEquals(elTest.getAttribute('tabindex'), null, 'Missing DIV tab index');
+
+docWrite('<h3>Head<\/h3>');
+el = doc.getElementsByTagName('head')[0];
+assertEquals(el.getAttribute('profile'), 'mylib.html', 'Head profile unresolved');
+
+docWrite('<h3>Text Area<\/h3>');
+el = elTest.getElementsByTagName('textarea')[0];
+assertEquals(el.getAttribute('cols'), '1', 'Text area columns');
+assertEquals(el.getAttribute('cols'), '1', 'Text area rows');
+el.removeAttribute('cols');
+assertEquals(el.getAttribute('cols'), null, 'Text area columns removed');
+
+el = doc.getElementsByTagName('script')[0];
+docWrite('<h3>Script<\/h3>');
+if (assertNotEquals(el.getAttribute('src'), null, 'Script source present')) {
+	assertEquals(el.getAttribute('src'), 'scripts/tester.js', 'Script source unresolved');
+} else {
+	skipTest('Script source unresolved');
+}
+
+el = elTest.getElementsByTagName('blockquote')[0];
+docWrite('<h3>Block Quote<\/h3>');
+if (assertNotEquals(el.getAttribute('cite'), null, 'Block quote cite present')) {
+	assertEquals(el.getAttribute('cite'), 'images/cinsoft.gif', 'Block quote cite unresolved');
+} else {
+	skipTest('Block quote cite unresolved');
+}
+
+docWrite('<div>Time: ' + (new Date().getTime() - startTime) + '<\/div>');
+
+docWrite('<h3><a name="domnotes">Notes<\/a><\/h3>')
+
+if (!failures && !skips) {
+	docWrite('<div><em>Perfect!<\/em><\/div>');		
+} else {
+	if (attributesBad) {
+		docWrite('<div><em>Broken MSHTML implementation<\/em><\/div>');
+	} else {
+		if (numericAttributesBad) {
+			docWrite('<div><em>Numeric attributes bad<\/em><\/div>');
+		}
+		if (encTypeAttributeBad) {
+			docWrite('<div><em>Encoding type attribute bad<\/em><\/div>');
+		}
+	}
+}
+
+if (window.document.documentElement && typeof window.document.documentElement.outerHTML == 'string') {
+	docWrite('Supports <code>outerHTML<\/code> property');
+}
+
+
+writeResults('DOM Totals', 'Totals for DOM attribute methods');
+
+hostAttrTotals.failures += failures;
+hostAttrTotals.errors += errors;
+hostAttrTotals.skips += skips;
+
+domFailures = failures;
+domSkips = skips;
+
+count = failures = skips = errors = 0;
+wrapperAttrTotals = { failures: 0, skips:0, errors:0 };
+set = 2;
+docWrite('<h2 id="secondset">Second Set<\/h2>');
+
+startTime = new Date().getTime();
+
+elTest = doc.getElementById('test2');
+elProgress = doc.getElementById('progress2')
+el = elTest.getElementsByTagName('a')[0];
+docWrite('<h3>Anchor<\/h3>');
+
+assertEquals(attr(el, 'tabindex'), null, 'Anchor tab index missing');
+attr(el, 'tabindex', '0');
+assertEquals(attr(el, 'tabindex'), '0', 'Anchor tab index added');
+if (assertNotEquals(attr(el, 'href'), null, 'Anchor reference present')) {
+	assertEquals(attr(el, 'href'), 'images/cinsoft.gif', 'Anchor reference unresolved');
+} else {
+	skipTest('Anchor reference unresolved');
+}
+
+
+el = elTest.getElementsByTagName('a')[1];
+assertEquals(attr(el, 'tabindex'), '0', 'Anchor without reference tab index');
+removeAttr(el, 'tabindex');
+assertEquals(attr(el, 'tabindex'), null, 'Anchor without reference tab index removed');
+
+
+
+var el = elTest.getElementsByTagName('area')[0];
+docWrite('<h3>Area<\/h3>');
+if (assertNotEquals(attr(el, 'href'), null, 'Area reference present')) {
+	assertEquals(attr(el, 'href'), 'images/cinsoft.gif', 'Area reference unresolved');
+} else {
+	skipTest('Area reference unresolved');
+}
+el = elTest.getElementsByTagName('img')[0];
+docWrite('<h3>Image<\/h3>');
+assertEquals(attr(el, 'src'), 'images/cinsoft.gif', 'Image source unresolved');
+assertEquals(attr(el, 'longdesc'), 'images/cinsoft.gif', 'Image long description unresolved');
+removeAttr(el, 'longdesc');
+assertEquals(attr(el, 'longdesc'), null, 'Image long description removed');
+assertEquals(attr(el, 'id'), null, 'Image ID');
+attr(el, 'id', 'testimage');
+assertEquals(attr(el, 'id'), 'testimage', 'Image ID added');
+removeAttr(el, 'id');
+assertEquals(attr(el, 'id'), null, 'Image ID removed');
+assertEquals(attr(el, 'class'), 'test', 'Image class');
+assertEquals(attr(el, 'style'), null, 'Image inline style');
+attr(el, 'style', 'color:red');
+assertEquals(typeof attr(el, 'style'), 'string', 'Image inline style added');
+assertEquals(attr(el, 'ismap'), null, 'Image is map');
+assertEquals(typeof attr(el, 'height'), 'string', 'Image height');
+assertEquals(typeof attr(el, 'width'), 'string', 'Image width');
+removeAttr(el, 'height');
+assertEquals(attr(el, 'height'), null, 'Image height removed');
+removeAttr(el, 'width');
+assertEquals(attr(el, 'width'), null, 'Image width removed');
+
+assertEquals(typeof attr(el, 'onclick'), 'string', 'Image onclick');
+assertEquals(attr(el, 'onmouseover'), null, 'Image onmouseover');
+assertEquals(attr(el, 'usemap'), 'images/cinsoft.gif', 'Image use map unresolved');
+assertEquals(attr(el, 'xyz'), null, 'Image custom attribute');
+attr(el, 'xyz', 'abc');
+assertEquals(attr(el, 'xyz'), 'abc', 'Image custom attribute added');
+removeAttr(el, 'xyz', 'abc');
+assertEquals(attr(el, 'xyz'), null, 'Image custom attribute removed');
+el = elTest.getElementsByTagName('td')[0];
+docWrite('<h3>Table Cell<\/h3>');
+assertEquals(attr(el, 'colspan'), '2', "Column span");
+assertEquals(attr(el, 'rowspan'), null, "Row span");
+removeAttr(el, 'colspan');
+assertEquals(attr(el, 'colspan'), null, "Removed column span");
+attr(el, 'rowspan', '1');
+assertEquals(attr(el, 'rowspan'), '1', "Default row span added");
+
+removeAttr(el, 'rowspan');
+assertEquals(attr(el, 'rowspan'), null, "Removed row span");
+
+el = elTest.getElementsByTagName('colgroup')[0];
+docWrite('<h3>Table Column Group<\/h3>');
+assertEquals(attr(el, 'span'), '2', "Column group span");
+removeAttr(el, 'span');
+assertEquals(attr(el, 'span'), null, "Column group span removed");
+
+
+
+el = doc.getElementsByTagName('meta')[1];
+docWrite('<h3>Meta<\/h3>');
+if (assertEquals(attr(el, 'http-equiv'), 'Content-Language', "HTTP equivalent")) {
+	removeAttr(el, 'http-equiv');
+	assertEquals(attr(el, 'http-equiv'), null, "Removed HTTP equivalent");
+} else {
+	skipTest("Removed HTTP equivalent");
+}
+el = elTest.getElementsByTagName('label')[0];
+docWrite('<h3>Label<\/h3>');
+assertEquals(attr(el, 'for'), 'testinput2', "Label for");
+docWrite('<h3>Text Input<\/h3>');
+el = elTest.getElementsByTagName('input')[0];
+el.value = ''; // In case browser remembers previous value
+assertEquals(attr(el, 'value'), null, 'Input value');
+attr(el, 'value', 'test');
+assertEquals(attr(el, 'value'), 'test', 'Input value set');
+assertEquals(attr(el, 'maxlength'), null, 'Input maximum length');
+attr(el, 'maxlength', '10');
+assertEquals(attr(el, 'maxlength'), '10', 'Input maximum length added');
+docWrite('<h3>Checkbox Input<\/h3>');
+el = elTest.getElementsByTagName('input')[1];
+el.checked = false; // In case browser remembers previous checked state
+assertEquals(attr(el, 'checked'), null, 'Input checked');
+attr(el, 'checked', '');
+assertNotEquals(attr(el, 'checked'), null, 'Input checked added');
+assertEquals(el.defaultChecked, true, 'Input defaultChecked property set');
+assertEquals(attr(el, 'disabled'), null, 'Input disabled');
+assertEquals(attr(el, 'readonly'), null, 'Input read only');
+attr(el, 'readonly', '');
+assertEquals(attr(el, 'readonly'), '', 'Input read only added');
+assertEquals(el.readOnly, true, 'Input read only property set');
+removeAttr(el, 'readonly');
+assertEquals(attr(el, 'readonly'), null, 'Input read only removed');
+assertEquals(attr(el, 'tabindex'), '1', 'Input tab index');
+removeAttr(el, 'tabindex');
+assertEquals(attr(el, 'tabindex'), null, 'Input tab index removed');
+el = elTest.getElementsByTagName('select')[0];
+docWrite('<h3>Select<\/h3>');
+assertEquals(attr(el, 'multiple'), null, 'Select multiple');
+attr(el, 'multiple', '');
+assertEquals(attr(el, 'multiple'), '', 'Select multiple added');
+assertEquals(el.multiple, true, 'Select multiple property set');
+
+assertEquals(attr(el, 'size'), null, 'Select size missing');
+el.setAttribute('size', '1');
+assertEquals(attr(el, 'size'), '1', 'Select size added');
+el.removeAttribute('size');
+assertEquals(attr(el, 'size'), null, 'Select size removed');
+
+var el = elTest.getElementsByTagName('option')[0];
+docWrite('<h3>Option<\/h3>');
+assertEquals(attr(el, 'value'), null, 'Option value missing');
+var el = elTest.getElementsByTagName('option')[1];
+assertEquals(attr(el, 'value'), 'test', 'Option value present');
+var el = elTest.getElementsByTagName('option')[2];
+assertEquals(attr(el, 'value'), '', 'Option empty value present');
+
+
+el = elTest.getElementsByTagName('form')[0];
+docWrite('<h3>Form<\/h3>');
+
+if (assertEquals(attr(el, 'enctype'), 'application/x-www-form-urlencoded', 'Form enctype')) {
+	removeAttr(el, 'enctype');
+	assertEquals(attr(el, 'enctype'), null, 'Form enctype removed');
+} else {
+	skipTest('Form enctype removed');
+}
+
+attr(el, 'enctype', 'multipart/form-data');
+assertEquals(attr(el, 'enctype'), 'multipart/form-data', 'Form enctype set');
+
+assertEquals(attr(el, 'action'), 'images/cinsoft.gif', 'Form action unresolved');
+assertEquals(attr(el, 'onsubmit'), null, 'Form onsubmit');
+attr(el, 'onsubmit', 'window.alert("test");');
+assertNotEquals(typeof el.onsubmit, 'string', 'Form onsubmit added');
+assertEquals(attr(el, 'accept-charset'), 'windows-1252', 'Form accept charset');
+removeAttr(el, 'accept-charset');
+assertEquals(attr(el, 'accept-charset'), null, 'Form accept charset removed');
+
+docWrite('<h3>Multi-part Form<\/h3>');
+el = elTest.getElementsByTagName('form')[1];
+assertEquals(attr(el, 'enctype'), 'multipart/form-data', 'Form multi-part enctype');
+docWrite('<h3>Document Element<\/h3>');
+assertEquals(attr(html, 'lang'), null, 'Document element language');
+el = doc.getElementsByTagName('link')[1];
+docWrite('<h3>Link<\/h3>');
+assertEquals(attr(el, 'href'), 'mylib.html', 'Link reference unresolved');
+el = elTest.getElementsByTagName('object')[0];
+docWrite('<h3>Object<\/h3>');
+
+if (assertNotEquals(attr(el, 'data'), null, 'Object data present')) {
+	assertEquals(attr(el, 'data'), 'images/cinsoft.gif', 'Object data unresolved');
+} else {
+	skipTest('Object data unresolved');
+}
+removeAttr(el, 'data');
+assertEquals(attr(el, 'data'), null, 'Object data removed');
+
+
+if (assertNotEquals(attr(el, 'codebase'), null, 'Object codebase present')) {
+	assertEquals(attr(el, 'codebase'), 'images/cinsoft.gif', 'Object codebase unresolved');
+} else {
+	skipTest('Object codebase unresolved');
+}
+removeAttr(el, 'codebase');
+assertEquals(attr(el, 'codebase'), null, 'Object codebase removed');
+
+if (assertNotEquals(attr(el, 'classid'), null, 'Object classid present')) {
+	assertEquals(attr(el, 'classid'), 'images/cinsoft.gif', 'Object classid unresolved');
+} else {
+	skipTest('Object classid unresolved');
+}
+removeAttr(el, 'classid');
+assertEquals(attr(el, 'classid'), null, 'Object classid removed');
+
+docWrite('<h3>DIV<\/h3>');
+el = elTest.getElementsByTagName('div')[0];
+assertEquals(attr(el, 'tabindex'), '2', 'DIV tab index');
+assertEquals(attr(elTest, 'tabindex'), null, 'Missing DIV tab index');
+
+docWrite('<h3>Head<\/h3>');
+el = doc.getElementsByTagName('head')[0];
+assertEquals(attr(el, 'profile'), 'mylib.html', 'Head profile unresolved');
+
+docWrite('<h3>Text Area<\/h3>');
+el = elTest.getElementsByTagName('textarea')[0];
+assertEquals(attr(el, 'cols'), '1', 'Text area columns');
+assertEquals(attr(el, 'cols'), '1', 'Text area rows');
+removeAttr(el, 'cols');
+assertEquals(attr(el, 'cols'), null, 'Text area columns removed');
+
+
+el = doc.getElementsByTagName('script')[0];
+docWrite('<h3>Script<\/h3>');
+if (assertNotEquals(attr(el, 'src'), null, 'Script source present')) {
+	assertEquals(attr(el, 'src'), 'scripts/tester.js', 'Script source unresolved')
+} else {
+	skipTest('Script source unresolved');
+}
+
+el = elTest.getElementsByTagName('blockquote')[0];
+docWrite('<h3>Block Quote<\/h3>');
+if (assertNotEquals(attr(el, 'cite'), null, 'Block quote cite present')) {
+	assertEquals(attr(el, 'cite'), 'images/cinsoft.gif', 'Block quote cite unresolved');
+} else {
+	skipTest('Block quote cite unresolved');
+}
+
+docWrite('<div>Time: ' + (new Date().getTime() - startTime) + '<\/div>');
+
+writeResults('Wrapper Totals', 'Totals for attribute wrapper functions');
+
+docWrite('<h3>Analysis<\/h3>');
+
+var analyze = function() {
+if (!domFailures && !domSkips) {
+	if (!failures && !skips) {
+		docWrite('<div>As expected, all systems go<\/div>');
+	} else {
+		docWrite('<div>This <em>is<\/em> embarassing.  We messed up a pat hand.<\/div>');
+	}
+} else {
+	if (!failures && !skips) {
+		docWrite('<em>Good!<\/em>');
+	} else {
+
+		var domCasualtyRate = (domFailures + domSkips) / count;
+		var casualtyRate = (failures + skips) / count;
+		if (casualtyRate < domCasualtyRate) {
+			docWrite('<div>Better.  See <a href="#c1s' + set + '">individual test results<\/a>.<\/div>');
+		} else if (casualtyRate == domCasualtyRate) {
+			docWrite('<div>Same.  See individual test results.<\/div>');
+		} else {
+			docWrite('<div>This <em>is<\/em> embarassing.  We made things worse!<\/div>');
+		}
+	}
+}
+};
+
+analyze();
+
+wrapperAttrTotals.failures += failures;
+wrapperAttrTotals.errors += errors;
+wrapperAttrTotals.skips += skips;
+
+count = failures = skips = errors = 0;
+
+hostPropTotals = { failures: 0, skips:0, errors:0 };
+
+set = 3;
+docWrite('<h2 id="thirdset">Third Set<\/h2>');
+
+startTime = new Date().getTime();
+
+elTest = doc.getElementById('test3');
+elProgress = doc.getElementById('progress3')
+el = elTest.getElementsByTagName('a')[0];
+docWrite('<h3>Anchor<\/h3>');
+
+
+skipTest('Anchor reference present');
+
+assertNotEquals(el.href, 'images/cinsoft.gif', 'Anchor reference resolved');
+
+
+skipTest('Anchor tab index missing');
+skipTest('Anchor tab index added');
+el = elTest.getElementsByTagName('a')[1];
+assertEquals(el.tabIndex, 0, 'Anchor without reference tab index');
+skipTest('Anchor without reference tab index removed');
+
+
+
+var el = elTest.getElementsByTagName('area')[0];
+docWrite('<h3>Area<\/h3>');
+
+skipTest('Area reference present');
+
+assertNotEquals(el.href, 'images/cinsoft.gif', 'Area reference resolved');
+
+
+
+
+
+
+
+
+
+
+
+
+el = elTest.getElementsByTagName('img')[0];
+docWrite('<h3>Image<\/h3>');
+assertNotEquals(el.src, 'images/cinsoft.gif', 'Image source resolved');
+assertNotEquals(el.longDesc, 'images/cinsoft.gif', 'Image long description resolved');
+skipTest("Image long description removed");
+skipTest("Image ID");
+el.id = 'testimage';
+assertEquals(el.id, 'testimage', 'Image ID added');
+skipTest('Image ID removed');
+assertEquals(el.className, 'test', 'Image class');
+skipTest('Image inline style');
+skipTest('Image inline style added');
+
+assertEquals(el.isMap, false, 'Image is map');
+assertEquals(typeof el.height, 'number', 'Image height');
+assertEquals(typeof el.width, 'number', 'Image width');
+
+skipTest('Image height removed');
+skipTest('Image width removed');
+
+skipTest('Image onmouseover');
+
+assertNotEquals(typeof el.onclick, 'string', 'Image onclick');
+skipTest('Image onmouseover');
+
+assertNotEquals(el.useMap, 'images/cinsoft.gif', 'Image use map resolved');
+skipTest('Image custom attribute');
+skipTest('Image custom attribute added');
+skipTest('Image custom attribute removed');
+el = elTest.getElementsByTagName('td')[0];
+docWrite('<h3>Table Cell<\/h3>');
+assertEquals(el.colSpan, 2, "Column span");
+assertEquals(el.rowSpan, 1, "Row span");
+
+skipTest("Default row span added");
+skipTest("Removed row span");
+
+
+
+removeAttr(el, "Removed column span");
+
+
+el = elTest.getElementsByTagName('colgroup')[0];
+docWrite('<h3>Table Column Group<\/h3>');
+assertEquals(el.span, 2, "Column group span");
+skipTest("Column group span removed");
+
+
+el = doc.getElementsByTagName('meta')[2];
+docWrite('<h3>Meta<\/h3>');
+if (el) {
+	assertEquals(el.httpEquiv, 'Cache-Control', "HTTP equivalent");
+} else {
+	skipTest("HTTP equivalent");
+}
+skipTest("Removed HTTP equivalent");
+el = elTest.getElementsByTagName('label')[0];
+docWrite('<h3>Label<\/h3>');
+assertEquals(el.htmlFor, 'testinput3', "Label for");
+docWrite('<h3>Text Input<\/h3>');
+el = elTest.getElementsByTagName('input')[0];
+
+skipTest('Input value');
+skipTest('Input value set');
+skipTest('Input maximum length');
+skipTest('Input maximum length added');
+
+docWrite('<h3>Checkbox Input<\/h3>');
+el = elTest.getElementsByTagName('input')[1];
+el.checked = false; // In case browser remembers previous checked state
+assertEquals(el.checked, false, 'Input checked');
+skipTest('Input checked added');
+skipTest('Input defaultChecked property set');
+assertEquals(el.disabled, false, 'Input disabled');
+assertEquals(el.readOnly, false, 'Input read only');
+el.readOnly = true;
+skipTest('Input read only added');
+assertEquals(el.readOnly, true, 'Input read only property set');
+skipTest('Input read only removed');
+
+assertEquals(el.tabIndex, 1, 'Input tab index');
+
+skipTest('Input tab index removed');
+
+el = elTest.getElementsByTagName('select')[0];
+docWrite('<h3>Select<\/h3>');
+assertEquals(el.multiple, false, 'Select multiple');
+
+el.multiple = true;
+
+skipTest('Select multiple added');
+
+assertEquals(el.multiple, true, 'Select multiple property set');
+
+skipTest('Select size missing');
+skipTest('Select size added');
+skipTest('Select size removed');
+
+
+var el = elTest.getElementsByTagName('option')[0];
+docWrite('<h3>Option<\/h3>');
+skipTest('Option value missing');
+var el = elTest.getElementsByTagName('option')[1];
+assertEquals(el.value, 'test', 'Option value present');
+var el = elTest.getElementsByTagName('option')[2];
+assertEquals(el.value, '', 'Option empty value present');
+
+el = elTest.getElementsByTagName('form')[0];
+docWrite('<h3>Form<\/h3>');
+assertEquals(el.enctype, 'application/x-www-form-urlencoded', 'Form enctype');
+skipTest('Form enctype removed');
+el.enctype = 'multipart/form-data';
+assertEquals(el.enctype, 'multipart/form-data', 'Form enctype set');
+
+assertNotEquals(el.action, 'images/cinsoft.gif', 'Form action resolved');
+
+skipTest('Form onsubmit');
+
+el.onsubmit = function() { window.alert('test'); };
+
+assertNotEquals(typeof el.onsubmit, 'string', 'Form onsubmit added');
+assertEquals(el.acceptCharset, 'windows-1252', 'Form accept charset');
+skipTest('Form accept charset removed');
+docWrite('<h3>Multi-part Form<\/h3>');
+el = elTest.getElementsByTagName('form')[1];
+assertEquals(el.enctype, 'multipart/form-data', 'Form multi-part enctype');
+docWrite('<h3>Document Element<\/h3>');
+skipTest('Document element language');
+el = doc.getElementsByTagName('link')[1];
+docWrite('<h3>Link<\/h3>');
+assertNotEquals(el.href, 'mylib.html', 'Link reference resolved');
+el = elTest.getElementsByTagName('object')[0];
+docWrite('<h3>Object<\/h3>');
+
+if (assertNotEquals(el.data, undefined, 'Object data present')) {
+	assertNotEquals(el.data, 'images/cinsoft.gif', 'Object data resolved');
+} else {
+	skipTest('Object data resolved');
+}
+skipTest('Object data removed');
+
+// ***
+
+skipTest('Object codebase present');
+assertNotEquals(el.codeBase, 'images/cinsoft.gif', 'Object codebase resolved');
+skipTest('Object codebase removed');
+
+if (assertNotEquals(el.classid, undefined, 'Object classid present')) {
+	assertNotEquals(el.classid, 'images/cinsoft.gif', 'Object classid resolved');
+} else {
+	skipTest('Object classid resolved');
+}
+
+skipTest('Object classid removed');
+
+docWrite('<h3>DIV<\/h3>');
+el = elTest.getElementsByTagName('div')[0];
+
+var divTabIndexNotSupported;
+
+if (typeof el.tabIndex == 'number') {
+	assertEquals(el.tabIndex, 3, 'DIV tab index');
+} else {
+	skipTest('DIV tab index');
+	divTabIndexNotSupported = true;
+}
+skipTest('Missing DIV tab index');
+
+docWrite('<h3>Head<\/h3>');
+el = doc.getElementsByTagName('head')[0];
+assertNotEquals(el.profile, 'mylib.html', 'Head profile resolved');
+
+docWrite('<h3>Text Area<\/h3>');
+el = elTest.getElementsByTagName('textarea')[0];
+assertEquals(el.cols, 1, 'Text area columns');
+assertEquals(el.cols, 1, 'Text area rows');
+skipTest('Text area columns removed');
+
+el = doc.getElementsByTagName('script')[0];
+docWrite('<h3>Script<\/h3>');
+
+skipTest('Script source present');
+assertNotEquals(el.src, 'scripts/tester.js', 'Script source resolved')
+
+el = elTest.getElementsByTagName('blockquote')[0];
+docWrite('<h3>Block Quote<\/h3>');
+
+skipTest('Block quote cite present');
+assertNotEquals(el.cite, 'images/cinsoft.gif', 'Block quote cite resolved');
+
+
+docWrite('<div>Time: ' + (new Date().getTime() - startTime) + '<\/div>');
+
+docWrite('<h3><a name="domnotes2">Notes<\/a><\/h3>')
+
+if (!failures && !skips) {
+	docWrite('<div><em>Perfect!<\/em><\/div>');
+} else {
+	if (!failures) {		
+		docWrite('<div><em>Good as expected<\/em><\/div>');
+	} else {
+		if (divTabIndexNotSupported) {
+			docWrite('<div><code>DIV<\/code> tab index unsupported<\/div>');
+		}
+		if (badReflections) {
+			// *** Consolidate
+
+			if (badReflections.action) {
+				docWrite('<div><em>Form action unresolved<\/em><\/div>');
+			}
+			if (badReflections.src) {
+				docWrite('<div><em>Image source unresolved<\/em><\/div>');
+			}
+			if (badReflections.longdesc) {
+				docWrite('<div><em>Image description unresolved<\/em><\/div>');
+			}
+			if (badReflections.href) {
+				docWrite('<div><em>Link reference unresolved<\/em><\/div>');
+			}
+			if (badReflections.usemap) {
+				docWrite('<div><em>Image use map unresolved<\/em><\/div>');
+			}
+			if (badReflections.classid) {
+				docWrite('<div><em>Object class ID unresolved<\/em><\/div>');
+			}
+			if (badReflections.codebase) {
+				docWrite('<div><em>Object code base unresolved<\/em><\/div>');
+			}
+			if (badReflections.data) {
+				docWrite('<div><em>Object data unresolved<\/em><\/div>');
+			}
+			if (badReflections.profile) {
+				docWrite('<div><em>Head profile unresolved<\/em><\/div>');
+			}
+			if (badReflections.cite) {
+				docWrite('<div><em>Block quote cite unresolved<\/em><\/div>');
+			}
+		}
+	}
+}
+
+writeResults('DOM Totals', 'Totals for DOM properties');
+
+
+domFailures = failures;
+domSkips = skips;
+
+hostPropTotals.failures += failures;
+hostPropTotals.errors += errors;
+hostPropTotals.skips += skips;
+
+count = failures = skips = errors = 0;
+
+wrapperPropTotals = { failures: 0, skips:0, errors:0 };
+
+set = 4;
+docWrite('<h2 id="fourthset">Fourth Set<\/h2>');
+
+startTime = new Date().getTime();
+
+elTest = doc.getElementById('test4');
+elProgress = doc.getElementById('progress4');
+el = elTest.getElementsByTagName('a')[0];
+docWrite('<h3>Anchor<\/h3>');
+
+assertEquals(prop(el, 'tabindex'), null, 'Anchor tab index missing');
+prop(el, 'tabindex', '0');
+assertEquals(prop(el, 'tabindex'), 0, 'Anchor tab index added');
+if (assertNotEquals(prop(el, 'href'), null, 'Anchor reference present')) {
+	assertNotEquals(prop(el, 'href'), 'images/cinsoft.gif', 'Anchor reference resolved');
+} else {
+	skipTest('Anchor reference resolved');
+}
+
+
+el = elTest.getElementsByTagName('a')[1];
+assertEquals(prop(el, 'tabindex'), 0, 'Anchor without reference tab index');
+removeAttr(el, 'tabindex');
+assertEquals(prop(el, 'tabindex'), null, 'Anchor without reference tab index removed');
+
+
+
+var el = elTest.getElementsByTagName('area')[0];
+docWrite('<h3>Area<\/h3>');
+if (assertNotEquals(attr(el, 'href'), null, 'Area reference present')) {
+	assertEquals(attr(el, 'href'), 'images/cinsoft.gif', 'Area reference unresolved');
+} else {
+	skipTest('Area reference unresolved');
+}
+el = elTest.getElementsByTagName('img')[0];
+docWrite('<h3>Image<\/h3>');
+assertNotEquals(prop(el, 'src'), 'images/cinsoft.gif', 'Image source resolved');
+assertNotEquals(prop(el, 'longdesc'), 'images/cinsoft.gif', 'Image long description resolved');
+removeAttr(el, 'longdesc');
+assertEquals(prop(el, 'longdesc'), null, 'Image long description removed');
+assertEquals(prop(el, 'id'), null, 'Image ID');
+prop(el, 'id', 'testimage');
+assertEquals(prop(el, 'id'), 'testimage', 'Image ID added');
+removeAttr(el, 'id');
+assertEquals(prop(el, 'id'), null, 'Image ID removed');
+assertEquals(prop(el, 'class'), 'test', 'Image class');
+assertEquals(prop(el, 'style'), null, 'Image inline style');
+skipTest('Image inline style added');
+//assertEquals(typeof prop(el, 'style'), 'string', 'Image inline style added');
+assertEquals(prop(el, 'ismap'), false, 'Image is map');
+assertEquals(typeof prop(el, 'height'), 'number', 'Image height');
+assertEquals(typeof prop(el, 'width'), 'number', 'Image width');
+removeAttr(el, 'height');
+assertEquals(prop(el, 'height'), null, 'Image height removed');
+removeAttr(el, 'width');
+assertEquals(prop(el, 'width'), null, 'Image width removed');
+
+
+assertEquals(typeof prop(el, 'onclick'), 'function', 'Image onclick');
+assertEquals(prop(el, 'onmouseover'), null, 'Image onmouseover');
+assertNotEquals(prop(el, 'usemap'), 'images/cinsoft.gif', 'Image use map resolved');
+assertEquals(prop(el, 'xyz'), null, 'Image custom attribute');
+prop(el, 'xyz', 'abc');
+assertEquals(prop(el, 'xyz'), 'abc', 'Image custom attribute added');
+removeAttr(el, 'xyz');
+assertEquals(prop(el, 'xyz'), null, 'Image custom attribute removed');
+el = elTest.getElementsByTagName('td')[0];
+docWrite('<h3>Table Cell<\/h3>');
+assertEquals(prop(el, 'colspan'), 2, "Column span");
+assertEquals(prop(el, 'rowspan'), null, "Row span");
+removeAttr(el, 'colspan');
+assertEquals(prop(el, 'colspan'), null, "Removed column span");
+
+prop(el, 'rowspan', '1');
+if (assertEquals(prop(el, 'rowspan'), 1, 'Default row span added')) {
+	removeAttr(el, 'rowspan');
+	assertEquals(prop(el, 'rowspan'), null, "Removed row span");
+} else {
+	skipTest("Removed row span");
+}
+
+el = elTest.getElementsByTagName('colgroup')[0];
+docWrite('<h3>Table Column Group<\/h3>');
+assertEquals(prop(el, 'span'), 2, "Column group span");
+removeAttr(el, 'span');
+assertEquals(prop(el, 'span'), null, "Column group span removed");
+
+
+el = doc.getElementsByTagName('meta')[2];
+docWrite('<h3>Meta<\/h3>');
+if (el && assertEquals(prop(el, 'http-equiv'), 'Cache-Control', "HTTP equivalent")) {
+	removeAttr(el, 'http-equiv');
+	assertEquals(prop(el, 'http-equiv'), null, "Removed HTTP equivalent");
+} else {
+	skipTest("Removed HTTP equivalent");
+}
+el = elTest.getElementsByTagName('label')[0];
+docWrite('<h3>Label<\/h3>');
+assertEquals(prop(el, 'for'), 'testinput4', "Label for");
+docWrite('<h3>Text Input<\/h3>');
+el = elTest.getElementsByTagName('input')[0];
+el.value = ''; // In case browser remembers previous value
+assertEquals(prop(el, 'value'), null, 'Input value');
+prop(el, 'value', 'test');
+assertEquals(prop(el, 'value'), 'test', 'Input value set');
+assertEquals(prop(el, 'maxlength'), null, 'Input maximum length');
+prop(el, 'maxlength', '10');
+assertEquals(prop(el, 'maxlength'), 10, 'Input maximum length added');
+docWrite('<h3>Checkbox Input<\/h3>');
+el = elTest.getElementsByTagName('input')[1];
+el.checked = false; // In case browser remembers previous checked state
+assertEquals(prop(el, 'checked'), false, 'Input checked');
+prop(el, 'checked', true);
+assertEquals(prop(el, 'checked'), true, 'Input checked added');
+assertEquals(el.defaultChecked, true, 'Input defaultChecked property set');
+assertEquals(prop(el, 'disabled'), false, 'Input disabled');
+assertEquals(prop(el, 'readonly'), false, 'Input read only');
+prop(el, 'readonly', true);
+assertEquals(prop(el, 'readonly'), true, 'Input read only added');
+assertEquals(el.readOnly, true, 'Input read only property set');
+removeAttr(el, 'readonly');
+assertEquals(prop(el, 'readonly'), false, 'Input read only removed');
+assertEquals(prop(el, 'tabindex'), 1, 'Input tab index');
+removeAttr(el, 'tabIndex');
+assertEquals(prop(el, 'tabindex'), null, 'Input tab index removed');
+el = elTest.getElementsByTagName('select')[0];
+docWrite('<h3>Select<\/h3>');
+assertEquals(prop(el, 'multiple'), false, 'Select multiple');
+prop(el, 'multiple', true);
+assertEquals(prop(el, 'multiple'), true, 'Select multiple added');
+assertEquals(el.multiple, true, 'Select multiple property set');
+
+assertEquals(prop(el, 'size'), null, 'Select size missing');
+prop(el, 'size', '1');
+assertEquals(prop(el, 'size'), 1, 'Select size added');
+el.removeAttribute('size');
+assertEquals(prop(el, 'size'), null, 'Select size removed');
+
+var el = elTest.getElementsByTagName('option')[0];
+docWrite('<h3>Option<\/h3>');
+assertEquals(prop(el, 'value'), null, 'Option value missing');
+var el = elTest.getElementsByTagName('option')[1];
+assertEquals(prop(el, 'value'), 'test', 'Option value present');
+var el = elTest.getElementsByTagName('option')[2];
+assertEquals(prop(el, 'value'), '', 'Option empty value present');
+
+el = elTest.getElementsByTagName('form')[0];
+docWrite('<h3>Form<\/h3>');
+
+if (assertEquals(prop(el, 'enctype'), 'application/x-www-form-urlencoded', 'Form enctype')) {
+	removeAttr(el, 'enctype');
+	assertEquals(prop(el, 'enctype'), null, 'Form enctype removed');
+} else {
+	skipTest('Form enctype removed');
+}
+
+prop(el, 'enctype', 'multipart/form-data');
+assertEquals(prop(el, 'enctype'), 'multipart/form-data', 'Form enctype set');
+
+assertNotEquals(prop(el, 'action'), 'images/cinsoft.gif', 'Form action resolved');
+assertEquals(prop(el, 'onsubmit'), null, 'Form onsubmit');
+prop(el, 'onsubmit', function() { window.alert("test"); });
+assertNotEquals(typeof el.onsubmit, 'string', 'Form onsubmit added');
+assertEquals(prop(el, 'accept-charset'), 'windows-1252', 'Form accept charset');
+removeAttr(el, 'accept-charset');
+assertEquals(prop(el, 'accept-charset'), null, 'Form accept charset removed');
+
+docWrite('<h3>Multi-part Form<\/h3>');
+el = elTest.getElementsByTagName('form')[1];
+assertEquals(prop(el, 'enctype'), 'multipart/form-data', 'Form multi-part enctype');
+docWrite('<h3>Document Element<\/h3>');
+assertEquals(prop(html, 'lang'), null, 'Document element language');
+el = doc.getElementsByTagName('link')[1];
+docWrite('<h3>Link<\/h3>');
+assertNotEquals(prop(el, 'href'), 'mylib.html', 'Link reference resolved');
+el = elTest.getElementsByTagName('object')[0];
+docWrite('<h3>Object<\/h3>');
+
+if (assertNotEquals(prop(el, 'data'), null, 'Object data present')) {
+	assertNotEquals(prop(el, 'data'), 'images/cinsoft.gif', 'Object data resolved');
+} else {
+	skipTest('Object data resolved');
+}
+removeAttr(el, 'data');
+assertEquals(prop(el, 'data'), null, 'Object data removed');
+
+if (assertNotEquals(prop(el, 'codebase'), null, 'Object codebase present')) {
+	assertNotEquals(prop(el, 'codebase'), 'images/cinsoft.gif', 'Object codebase resolved');
+} else {
+	skipTest('Object codebase resolved');
+}
+removeAttr(el, 'codebase');
+assertEquals(prop(el, 'codebase'), null, 'Object codebase removed');
+
+if (assertNotEquals(prop(el, 'classid'), null, 'Object classid present')) {
+	assertNotEquals(prop(el, 'classid'), 'images/cinsoft.gif', 'Object classid resolved');
+} else {
+	skipTest('Object classid unresolved');
+}
+removeAttr(el, 'classid');
+assertEquals(prop(el, 'classid'), null, 'Object classid removed');
+
+
+docWrite('<h3>DIV<\/h3>');
+el = elTest.getElementsByTagName('div')[0];
+if (typeof el.tabIndex == 'number') {
+	assertEquals(prop(el, 'tabindex'), 4, 'DIV tab index');
+} else {
+	skipTest('DIV tab index');
+}
+assertEquals(prop(elTest, 'tabindex'), null, 'Missing DIV tab index');
+
+docWrite('<h3>Head<\/h3>');
+el = doc.getElementsByTagName('head')[0];
+assertNotEquals(prop(el, 'profile'), 'mylib.html', 'Head profile resolved');
+
+docWrite('<h3>Text Area<\/h3>');
+el = elTest.getElementsByTagName('textarea')[0];
+assertEquals(prop(el, 'cols'), 1, 'Text area columns');
+assertEquals(prop(el, 'cols'), 1, 'Text area rows');
+removeAttr(el, 'cols');
+assertEquals(prop(el, 'cols'), null, 'Text area columns removed');
+
+el = doc.getElementsByTagName('script')[0];
+docWrite('<h3>Script<\/h3>');
+
+if (assertNotEquals(prop(el, 'src'), undefined, 'Script source present')) {
+	assertNotEquals(prop(el, 'src'), 'scripts/tester.js', 'Script source resolved')
+} else {
+	skipTest('Script source unresolved');
+}
+
+el = elTest.getElementsByTagName('blockquote')[0];
+docWrite('<h3>Block Quote<\/h3>');
+if (assertNotEquals(prop(el, 'cite'), null, 'Block quote cite present')) {
+	assertNotEquals(prop(el, 'cite'), 'images/cinsoft.gif', 'Block quote cite resolved');
+} else {
+	skipTest('Block quote cite resolved');
+}
+
+docWrite('<div>Time: ' + (new Date().getTime() - startTime) + '<\/div>');
+
+docWrite('<h3>Analysis<\/h3>');
+
+analyze();
+
+writeResults('Wrapper Totals', 'Totals for property wrapper functions');
+
+
+wrapperPropTotals.failures += failures;
+wrapperPropTotals.errors += errors;
+wrapperPropTotals.skips += skips;
+
+
+docWrite('<hr><h2>Final Analysis<\/h2>');
+
+writeAggregateResults('DOM Totals', 'Totals for DOM methods', hostPropTotals, hostAttrTotals);
+writeAggregateResults('Wrapper Totals', 'Totals for wrapper methods', wrapperPropTotals, wrapperAttrTotals);
+
+docWrite('<hr>');
+
+docOut();
+
+}
+
+</script>
+<h2>Other Primers</h2>
+<ul><li><a rel="next" href="host.html">H is for Host</a></li><li><a href="keyboard.html">K is for Keyboard</a></li><li><a href="position.html">P is for Position</a></li><li><a href="size.html">S is for Size</a></li><li><a href="viewport.asp">V is for Viewport</a></li></ul>
+<div id="legal">&copy; 2007-2009 by <a href="mailto:dmark@cinsoft.net">David Mark</a></div>
+<div><a href="mylib.html" id="home" title="Home"><img src="images/logo.gif" height="20" width="22" alt="Home"></a></div>
+<address><a href="mailto:dmark@cinsoft.net">dmark@cinsoft.net</a></address>
+</body>
+</html>

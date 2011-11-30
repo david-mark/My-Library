@@ -1,0 +1,426 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>K is for Keyboard</title>
+<link rel="home" href="mylib.html">
+<link rel="up" href="mylib.html">
+<link rel="previous" href="host.html" title="H is for Host">
+<link rel="next" href="position.html" title="P is for Position">
+<link rel="stylesheet" type="text/css" media="all" href="style/mylib.css">
+<link rel="stylesheet" type="text/css" media="all" href="style/tester.css">
+<style type="text/css" media="all">
+#log { color:inherit; background-color:#eee }
+#test6 { border:none; color:inherit; background-color:#fff; text-align:right; float:right }
+#test6.caution { color:inherit; color: #880000 }
+#test6.stop { color:inherit; color: #ff0000 }
+</style>
+</head>
+<body>
+<h1>K is for Keyboard</h1>
+<p>The third in a popular series of DOM scripting primers. This example demonstrates a consistent cross-browser, cross-platform interface for keyboard input monitoring. The very simple example script is inline, commented and should need little explanation (though at least <em>some</em> will follow in the near future). The pivotal function is <code>attachKeyboardListeners</code>. An example:</p>
+<pre>
+attachKeyboardListeners(<em>el</em>, <em>charListener</em>, <em>keyListener</em>, <em>shortcutCharListener</em>, <em>navKeyPressListener</em>, <em>thisObject</em>, <em>suppressControlKeyAutoRepeat</em>);
+</pre>
+<p>The first argument is the element in question, which is typically an input control, but may also be another type of element that has been made editable or a document. The next four arguments are listener functions for key actions, characters rendered, shortcut combinations (e.g. Ctrl+C on Windows and Meta+C on Mac) and navigation key presses (typically canceled by widgets as seen in the spinner demo). The last two arguments set the <code>this</code> identifier for the listeners and prevent duplicate key actions to pass through to the key listener. All but the first three arguments are optional.</p>
+<h2>You Can't Do That with<span class="snuff">out</span> <a href="http://www.jibbering.com/faq/faq_notes/not_browser_detect.html">Browser Sniffing</a></h2>
+<p>Once again, there is no need to date scripts with logic that branches based on <em>observations</em> about currently used browsers (cross-browser scripting is largely about abstractions, not observations). It should be clear that scripts that are dated in such a way will invariably need to be changed and re-tested as new browsers and browser versions are introduced. The idea that such a strategy would <em>save</em> time is patently absurd. Anyone making that pitch is either confused or trying to sell something while investing as little of <em>their</em> current time as possible (with the possibility of selling more time in the future, of course).
+<h2>Uses and Abuses</h2>
+<p>There are numerous legitimate uses for such a script, including monitoring and/or reporting the length and/or content of user input in something approaching an <em>efficient</em> manner. Unfortunately there are lots of possibilities for abuse as well (e.g. stealing credit card numbers).</p>
+<p>As for efficiency, the typical auto-complete feature (usually a canned solution) found on the Web today is so inefficient as to slow down the entry of characters, which can be extremely annoying to proficient typists. Furthermore, such solutions are usually built on top of huge, complicated and often dubious libraries or frameworks, which will likely need periodic maintenance just to keep pace with the latest versions of four or five browsers. For instance, the author recently attempted to sign up with a "Web 2.0" music site, but was unable to enter his name into the first input on the sign-up form due to the age of the browser in use at the time. This is the perfect example of overzealous script developers (or cobblers) getting in the way of a site's primary goal (to sign up visitors in this case). What was the problem? Some wacky special effect that was triggered by keyboard activity seemed to be the culprit. It wasn't investigated thoroughly as it was preferable to just find another site.</p>
+<h2>Known Issues</h2>
+<p>This code has been tested successfully (meaning consistent results) in Firefox 1&#8211;3.6, Opera 7&#8211;10.5, IE5.5&#8211;8, Netscape 6.2&#8211;9, Safari 3&#8211;4 and Chrome 3&#8211;4 for Windows. Some of the browsers have also been tested on Macs. Note that key actions that cause an input control to lose focus (e.g. S shortcut typically loads the OS Save As dialog) will usually result in a loss of <code>keyup</code> events as the test callbacks do not attempt to prevent the default action.</p>
+<h2>Observation <em>after</em> Abstraction</h2>
+<p>The following tests are a proving ground as empirical data <em>is</em> useful to ferret out design <em>failures</em> and this problem is widely believed to be impossible to solve in cross-browser fashion. <del>Once it has been determined that the design is sound (as best that such a thing can be determined on the Web), the code will be added to <a href="mylib.html">My Library</a>.</del></p>
+<script type="text/javascript">
+
+// Feature detect native apply and required host methods for creation and retrieval
+// If any are missing, skip writing test controls
+
+if (Function.prototype.apply && typeof this.document.write != 'undefined' && typeof this.document.getElementById != 'undefined') {
+	this.document.write('<h3>Tests<\/h3><p>Type into the text input or text area and observe the results in the log below.<\/p><p><strong>Note<\/strong> the default actions are not prevented for any events, which can lead to odd results (e.g. lost <code>keyup<\/code> events on blur).<\/p><fieldset><legend>Tests<\/legend><fieldset><legend>Control Keys Auto-repeat<\/legend><input id="test1" disabled><textarea id="test2" rows="5" cols="80" disabled><\/textarea><\/fieldset><fieldset><legend>Control Keys do <em>not<\/em> Auto-repeat<\/legend><input id="test3" disabled><textarea id="test4" rows="5" cols="80" disabled><\/textarea><\/fieldset><\/fieldset><h3>Demos<\/h3><p><strong>Note<\/strong> that the character counter is not meant as a practical example (so don\'t copy it verbatim). It\'s purpose is to demonstrate the ability of the monitoring script to differentiate between the various types of keys and key combinations (i.e. it does not update the status on <em>every<\/em> <code>keyup<\/code> event).<\/p><fieldset><legend>Character Counter<\/legend><textarea id="test5" disabled><\/textarea><input id="test6" tabindex="-1" readonly><\/fieldset><fieldset><legend>Number Spinner<\/legend><input id="test7" value="0"><\/fieldset>');
+}
+</script>
+<script type="text/javascript">
+var global = this;
+if (Function.prototype.apply && typeof this.document.getElementById != 'undefined' && typeof this.document.write != 'undefined') {
+	(function() {
+
+	// Tracks characters that fire keypress events
+
+	var keyPressMap = [];
+
+	// Keeps track of pushed keys
+
+	var keyDownMap = [];
+
+	// Determines auto-repeat model
+
+	var autoRepeatModel;
+
+	var shortcutCharactersPressed;
+
+	// Mapping for unique extended ASCII key codes (found in old versions of WebKit)
+
+	var extendedAsciiKeyCodes = {
+		'63232': 38,
+		'63233': 40,
+		'63234': 37,
+		'63235': 39,
+		'63236': 112,
+		'63237': 113,
+		'63238': 114,
+		'63239': 115,
+		'63240': 116,
+		'63241': 117,
+		'63242': 118,
+		'63243': 119,
+		'63244': 120,
+		'63245': 121,
+		'63246': 122,
+		'63247': 123,
+		'63273': 36, 
+		'63275': 35,
+		'63276': 33,
+		'63277': 34
+	};
+
+	var attachKeyboardListeners = function(el, onchar, onkey, onshortcutchar, onnavkeypress, context, suppressControlKeyAutoRepeat) {
+		var lastKeyDown, lastKeyDownRepeat = 0, lastControlKeyPress, lastControlKeyPressRepeat = 0;
+
+		el.onkeypress = function(e) {
+			var charCode, which, keyCode;
+
+			if (!e) {
+				e = (((this.ownerDocument && this.ownerDocument.parentWindow) || this.parentWindow) || global.window).event;
+			}
+
+			which = e.which;
+			keyCode = e.keyCode;
+
+			// Determine which character
+
+			charCode = typeof which == 'number' ? which : keyCode;
+
+			// Fix bug for browsers that report control characters
+
+			if (e.charCode === 0 && charCode != 8 && charCode != 13) {
+				charCode = 0;
+			}
+
+			// Track
+
+			keyPressMap[charCode] = true;
+
+			if (charCode > 31 || charCode == 13 || charCode == 8) {
+
+				// Call character listener for printable characters
+
+				var upperCaseCharCode = (charCode > 96 && charCode < 123) ? charCode - 32 : charCode;
+
+				if (onshortcutchar && (e.ctrlKey || e.metaKey) && (e.ctrlKey !== e.metaKey) && ((upperCaseCharCode > 47 && upperCaseCharCode < 91) || key == 13) && !e.altKey && !e.shiftKey) {
+					shortcutCharactersPressed = true;
+					onshortcutchar.apply(context || this, [e, (charCode > 96 && charCode < 123) ? charCode - 32 : charCode]);
+					return;
+				}
+				if (!e.ctrlKey && !e.altKey && !e.metaKey) {
+
+					// Opera < 10.5 botches home, end, insert and delete
+
+					if (lastKeyDown != charCode || (charCode != 35 && charCode != 36 && charCode != 45 && charCode != 46)) {
+						return onchar.apply(context || this, [e, charCode]);
+					}
+				}
+			} else if (!charCode && !suppressControlKeyAutoRepeat) {
+
+				// Escape and Tab are not considered for auto-repeat detection
+				// as they can cause the focus to change, possibly losing a keyup event
+
+				if (keyCode != 27 && keyCode != 9) {
+					if (lastControlKeyPress == keyCode) {
+						lastControlKeyPressRepeat++;
+					}
+					if (typeof autoRepeatModel == 'undefined') {
+						if (lastKeyDownRepeat) {
+							autoRepeatModel = lastControlKeyPressRepeat ? 'both' : 'down';
+						} else if (lastControlKeyPressRepeat) {
+							autoRepeatModel = 'press';
+						}
+
+						// For debugging only
+
+						if (autoRepeatModel) {
+							global.document.getElementById('log').value += 'Autorepeat model: ' + autoRepeatModel + '\n';
+						}
+					}
+				}
+
+				// Call key listener for repeated control keys
+
+				if (autoRepeatModel == 'press' && lastControlKeyPressRepeat > 1) {
+					onkey.apply(context || this, [e, keyCode]);
+				}
+
+				if (keyCode != 27 && keyCode != 9) {
+					lastControlKeyPress = keyCode;
+				}
+
+				if (keyCode > 36 && keyCode < 41 || (keyCode == 33 || keyCode == 34) || keyCode == 27) {
+					if (onnavkeypress) {
+						return onnavkeypress.apply(context || this, [e, keyCode]);
+					}
+				}
+			}
+		};
+		el.onkeydown = el.onkeyup = function(e) {
+			var key, duration, result = true;
+
+			if (!e) {
+				e = (((this.ownerDocument && this.ownerDocument.parentWindow) || this.parentWindow) || global.window).event;
+			}
+			key = typeof e.which == 'number' ? e.which : e.keyCode;
+
+			key = extendedAsciiKeyCodes[key] || key;
+
+			if (e.type == 'keyup') {
+
+				// Backspace or enter failed to fire keypress event
+
+				if ((key == 8 && !keyPressMap[8] || key == 13 && !keyPressMap[13]) && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+
+					// Call character listener just in time
+
+					onchar.apply(context || this, [e, key]);
+				} else if (((key == 189 && !keyPressMap[45]) || (key == 190 && !keyPressMap[46])) && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+					onchar.apply(context || this, [e, key - 144]);
+				} else if (onshortcutchar && !shortcutCharactersPressed && (e.ctrlKey || e.metaKey) && (e.ctrlKey !== e.metaKey) && ((key > 47 && key < 91) || key == 13) && !e.altKey && !e.shiftKey) {
+					onshortcutchar.apply(context || this, [e, key]);
+				}
+
+				if (keyDownMap[key]) {
+					duration = new Date().getTime() - keyDownMap[key];
+				}
+			} else {
+				var time = new Date().getTime();
+
+				if (suppressControlKeyAutoRepeat) {
+					if (keyDownMap[key]) {
+						return;
+					}
+				} else if (lastKeyDown === key && key != 27 && key != 9) {
+					lastKeyDownRepeat++;
+				}
+
+				if (autoRepeatModel == 'press') {
+					lastControlKeyPressRepeat = 0;
+				}
+
+				if (lastKeyDown !== key || !lastKeyDownRepeat) {
+					keyDownMap[key] = time;
+				}
+				lastKeyDown = key;
+			}
+
+			// Call key listener
+
+			if (!lastKeyDownRepeat || autoRepeatModel != 'press' || e.type == 'keyup') {
+				result = onkey.apply(context || this, [e, key, duration]);
+			}
+
+			if (e.type == 'keyup') {
+				keyDownMap[key] = lastKeyDown = lastControlKeyPress = lastKeyDownRepeat = lastControlKeyPressRepeat = 0;
+			}
+
+			return result;
+		};
+		el = null;
+	};
+
+	// Event type is indicator
+
+	var keyListener = function(e, key, duration) {
+		global.document.getElementById('log').value += ('Key ' + ( e.type == 'keyup' ? 'up' : 'down' ) + ' at ' + this.id + ': ' + key + (e.type == 'keyup' ? ' duration: ' + duration : '') + '\n');
+	};
+
+	// NOTE: Event type is meaningless in charListener (usually keypress, sometimes keyup)
+
+	var charListener = function(e, charCode) {
+		global.document.getElementById('log').value += 'Character at ' + this.id + ': "' + String.fromCharCode(charCode) + '" (' + charCode + ')\n';
+	};
+
+	var shortcutCharListener = function(e, charCode) {
+		global.document.getElementById('log').value += ('Shortcut character at ' + this.id + ': "' + String.fromCharCode(charCode) + '"\n');
+	};
+
+	var missingElement, el, els = [], doc = global.document;
+
+	for (var i = 4; !missingElement && i--;) {
+		el = doc.getElementById('test' + (i + 1));
+
+		if (el) {
+			els[i] = el;			
+		} else {
+			missingElement = true;
+		}
+	}
+
+	if (!missingElement) {
+		for (i = 4; i--;) {
+			els[i].disabled = false;
+			attachKeyboardListeners(els[i], charListener, keyListener, shortcutCharListener, null, null, i > 1);
+		}
+		doc.write('<fieldset><legend>Log<\/legend><textarea id="log" rows="20" cols="40" tabindex="-1" readonly><\/textarea><input value="Clear" type="button" onclick="window.document.getElementById(\'log\').value = \'\'"><\/fieldset>');
+	}
+
+	missingElement = false;
+
+	var attachClipboardListeners = function(el, listener) {
+		var deferredListener = function() {
+			window.setTimeout(listener, 1);
+		};
+
+		el.onpaste = deferredListener;
+		el.oncut = deferredListener;
+	};
+
+	var CharacterCounter = function(elContent, elCounter, maxCharacters) {
+		this.update = function() {
+			var characters = elContent.value.length, charactersLeft = maxCharacters - characters;
+
+			if (charactersLeft < 0) {
+				elCounter.className = 'stop';
+				elCounter.value = characters + ' (' + -charactersLeft + ' over)';
+			} else {
+				elCounter.className = (charactersLeft < 20) ? 'caution'  : '';
+				elCounter.value = characters + ' (' + charactersLeft + ' left)';
+			}
+		};
+
+		attachKeyboardListeners(elContent, this.onchar, this.onkey, this.onshortcutchar, null, this);
+		attachClipboardListeners(elContent, this.update);
+
+		this.update();
+	};
+
+	CharacterCounter.prototype.onkey = function(e, keyCode) {
+
+		// Backspace (8) is included for keydown auto-repeats, which do not
+            // fire keypress events in all browsers
+
+		if (keyCode == 45 || keyCode == 46 || keyCode == 127 || keyCode == 8) {
+			this.update();
+		}
+	};
+
+	CharacterCounter.prototype.onchar = function(e, charCode) {
+		var that = this;
+
+		window.setTimeout(function() {
+			that.update();
+		}, 1);
+	};
+
+	CharacterCounter.prototype.onshortcutchar = function(e, charCode) {
+		var that = this;
+
+		if (!charCode || charCode == 68 || charCode == 86 || (charCode > 87 && charCode < 91)) {
+
+			// Clipboard, undo/redo operations may not have completed yet
+
+			window.setTimeout(function() {
+				that.update();
+			}, 1);
+		}
+	};
+
+	for (i = 5; !missingElement && i < 7; i++) {
+		el = doc.getElementById('test' + i);
+		if (el) {
+			el.disabled = false;
+			els[i] = el;
+		} else {
+			missingElement = true;
+		}
+	}
+
+	if (!missingElement) {
+		new CharacterCounter(els[5], els[6], 100);
+	}
+
+	var NumberSpinner = function(el, options) {
+		var min = options.min || 0, max = options.max;
+		var step = options.step || 1, stepLarge = options.stepLarge;
+
+		if (options.fractions) {
+			this.onchar = function(e, charCode) {
+				if (charCode == 46) {
+					return el.value.indexOf('.') == -1;
+				}
+				return NumberSpinner.prototype.onchar.call(this, e, charCode);				
+			};
+		}
+
+		this.onnavkeypress = function(e, keyCode) {
+			return keyCode != 38 && keyCode != 40 && keyCode != 33 && keyCode != 34;
+		};
+
+		this.onkey = function(e, keyCode) {
+			var val = +(el.value || '0'), processed;
+
+			if (!isNaN(val) && e.type != 'keyup') {
+				if (keyCode == 38 || keyCode == 40) {					
+					val += (keyCode == 38 ? 1 : -1) * step;
+					processed = true;
+				} else if (stepLarge && (keyCode == 33 || keyCode == 34)) {
+					val += (keyCode == 33 ? 1 : -1) * stepLarge;
+					processed = true;
+				}
+
+				if (processed) {
+					val = Math.max(val, min);
+
+					if (max) {
+						val = Math.min(val, max);
+					}
+					el.value = '' + val;
+
+					if (el.select) {
+						el.select();
+					}
+					return false;
+				}
+			}
+		};
+
+		attachKeyboardListeners(el, this.onchar, this.onkey, null, this.onnavkeypress, this, false);
+	};
+
+	NumberSpinner.prototype.onchar = function(e, charCode) {
+		return (charCode > 47 && charCode < 58) || charCode == 8;
+	};	
+
+	el = doc.getElementById('test7');
+
+	if (el) {
+		new NumberSpinner(el, {
+			fractions: true,
+			max: 100,
+			stepLarge: 5
+		});
+	}
+
+	doc = els = el = null;
+
+	})();
+}
+</script>
+<h2>Add-on for <a href="mylib.html">My Library</a></h2>
+<p>This example code has now been packaged as an <a href="mylib-keyboard.html">add-on for My Library</a>, featuring a simpler interface additional options.</p>
+<h2>Other Primers</h2>
+<ul><li><a href="attributes.html">A is for Attributes</a></li><li><a rel="previous" href="host.html">H is for Host</a></li><li><a href="position.html">P is for Position</a></li><li><a href="size.html">S is for Size</a></li><li><a href="viewport.asp">V is for Viewport</a></li></ul>
+<div id="legal">&copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a></div>
+<div><a href="mylib.html" id="home" title="Home"><img src="images/logo.gif" height="20" width="22" alt="Home"></a></div>
+<address><a href="mailto:dmark@cinsoft.net">dmark@cinsoft.net</a></address>
+</body>
+</html>

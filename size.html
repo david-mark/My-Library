@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>S is for Size</title>
+<link rel="home" href="mylib.html">
+<link rel="up" href="mylib.html">
+<link rel="previous" href="position.html" title="P is for Position">
+<link rel="next" href="viewport.asp" title="V is for Viewport">
+<link rel="stylesheet" type="text/css" media="all" href="style/mylib.css">
+<link rel="stylesheet" type="text/css" media="all" href="style/tester.css">
+<style media="all" type="text/css">
+#secondone, #thirdone { border: solid 10px #000033; }
+#thirdone { height: 214px; width: 317px; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box }
+</style>
+</head>
+<body>
+<h1>S is for Size</h1>
+<p>The fifth in a popular series of DOM scripting primers. This example demonstrates retrieving element style sizes <em>without</em> computed styles.</p>
+<h2>Size Does Matter</h2>
+<p>This is useful for figuring the starting point for a size animation, drag resize operation or anything that must modify the size of the element relative to its current size. This is important as computed styles are sometimes unavailable or unusable (particularly in Internet Explorer).</p>
+<h2>How it Works</h2>
+<p>The very simple example script is inline and should need little explanation (though at least <em>some</em> will follow in the near future). The pivotal function is <code>getElementSizeStyles</code>.</p>
+<pre>
+o = getElementSizeStyles(el);
+</pre>
+<p>The function returns an object with <code>height</code> and <code>width</code> properties containing numbers that indicate the dimensions in pixels.</p>
+<h2>Trial by (Lack of) Style</h2>
+<p>These are the only styles declared for the example images:</p>
+<pre>
+#secondone {
+  border: solid 10px #000033
+}
+#thirdone {
+  height: 214px;
+  width: 317px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -webkit-box-sizing: border-box
+}
+</pre>
+<p><strong>Note</strong> that none of the test elements has inline styles, and other than the third, they have no dimensions specified <em>anywhere</em> (except for the standard <code>height</code> and <code>width</code> attributes). Pixel units are used to make the results easily verifiable, but any units can be used with this technique. As demonstrated, any box model may be used as well, whether it is supported or not. The reported dimensions may surprise you (particularly in IE quirks mode), but rest assured they are <em>exactly</em> what the browser expects (i.e. <em>setting</em> the dimensions to match the results will not affect the layout).</p>
+<h2>Great Expectations</h2>
+<p>For those who do not care to wade through the style declarations, the expected results are:</p>
+<ol>
+<li>Height: 194, Width: 297</li>
+<li>Height: 194, Width: 297</li>
+<li>Height: 214, Width: 317</li>
+</ol>
+<p>Despite the fact that IE8 in Compatibility View (for example) does not parse the box-sizing rules and therefore renders the third image slightly differently than the latest quasi-standards-based browsers, as expected, the computed dimensions remain the same. However, it did strike the author as odd that the middle example (which has no declared <code>height</code> or <code>width</code> styles) came up with the same numbers in IE quirks mode as that mode uses the border-box model. Correct answers are always expected with this technique, but they are not always expected to be identical answers in all browsers (though it is convenient for testing when they are). Apparently the unexpected but welcome result is unique to images with height/width attributes. Blissfully, there is no reason to know or care about the myriad rendering inconsistencies. What matters for most scripts when it comes to dimensions is that GIGO (and its inverse of garbage out, garbage in) holds true, because otherwise cross-browser animations, drag resizes and similar operations can have an initial twitch.</p>
+<h2>Missed Opportunities</h2>
+<p>For an example at the opposite (inept) end of the spectrum, see the first example on the <a href="jquerysucks.html">jQuery test page</a>. What can a script possibly do with such results? The truth hurts, but <em>somebody</em> has to say it. The rest of the "major" libraries are no better as the abstractions nearest to the DOM level are too confused to ever be effective. That's what happens when software is built per <em>today's</em> observations with guesswork to fill in the cracks. Suffice to say, such construction crumbles over time, which is why in an era where browsers are closer than ever, pages are still falling apart, requiring constant "upgrades" (huge wastes of time and money) to stay "current". That's the inescapable truth of the matter.</p>
+<div>
+<img id="firstone" src="images/painting1.jpg" alt="" height="194" width="297">
+<img id="secondone" src="images/painting2.jpg" alt="" height="194" width="297">
+<img id="thirdone" src="images/painting1.jpg" alt="" height="194" width="297">
+</div>
+<fieldset>
+<legend>Report</legend>
+<input type="button" id="testsize" value="Show Me" disabled>
+</fieldset>
+<script type="text/javascript">
+var global = this;
+(function() {
+var doc = global.document;
+
+if (doc && doc.documentElement && typeof doc.documentElement.style != 'undefined' && typeof doc.documentElement.offsetWidth == 'number' && typeof doc.documentElement.style.width == 'string' && typeof doc.getElementById != 'undefined') {
+  var getElementSizeStyles = (function() {
+    var dimensions = ['height', 'width'], inlineStyles = {};
+
+    return function(el) {
+      var i, dimension, result, offsetHeight = el.offsetHeight, offsetWidth = el.offsetWidth;
+
+      result = { height:offsetHeight, width:offsetWidth };
+
+      for (i = 2; i--;) {
+        dimension = dimensions[i];
+        inlineStyles[dimension] = el.style[dimension];
+      }
+
+      el.style.height = offsetHeight + 'px';
+
+      if (el.offsetHeight != offsetHeight) {
+        result.height -= el.offsetHeight - offsetHeight;
+      }
+
+      el.style.height = inlineStyles.height;
+
+      el.style.width = offsetWidth + 'px';
+
+      if (el.offsetWidth != offsetWidth) {
+        result.width -= el.offsetWidth - offsetWidth;
+      }
+
+      el.style.width = inlineStyles.width;
+
+      return result;
+    };
+  })();
+
+  var el = global.document.getElementById('testsize');
+  if (el) {
+    el.disabled = false;
+    el.onclick = function() {
+      var i, sizes, result = '', ids = ['thirdone', 'secondone', 'firstone'];
+
+      for (i = 3; i--;) {
+        el = global.document.getElementById(ids[i]);
+        if (el) {
+          result += (3 - i) + '. ';
+          sizes = getElementSizeStyles(el);
+          result += 'Height: ' + sizes.height + ', Width: ' + sizes.width + '\n';
+        }
+      }
+      global.window.alert(result);
+    };
+    el = null;
+  }
+}
+doc = null;
+})();
+</script>
+<h2>Other Primers</h2>
+<ul><li><a href="attributes.html">A is for Attributes</a></li><li><a href="host.html">H is for Host</a></li><li><a href="keyboard.html">K is for Keyboard</a></li><li><a rel="previous" href="position.html">P is for Position</a></li><li><a rel="next" href="viewport.asp">V is for Viewport</a></li></ul>
+<div id="legal">&copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a></div>
+<div><a href="mylib.html" id="home" title="home"><img src="images/logo.gif" height="20" width="22" alt="Home"></a></div>
+<address><a href="mailto:dmark@cinsoft.net">dmark@cinsoft.net</a></address>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Last-Modified" content="6 May 2010 22:29:00 GMT">
+<meta name="description" content="Examples of My Library, a cross-browser scripting library, written in Javascript">
+<meta name="keywords" content="My Library, Javascript, library, project, repository, builder, browser scripting, Ajax, comp.lang.javascript, newsgroup, editor">
+<meta name="author" content="David Mark">
+<title>My Library Editor</title>
+<link rel="home" href="mylib.html" title="Home">
+<link rel="bookmark" href="#content" title="Content">
+<link rel="stylesheet" type="text/css" href="style/mylib.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-widgets.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-skin-blues.css" media="all" title="Blues">
+<link rel="alternate stylesheet" type="text/css" href="style/mylib-skin-doom.css" media="all" title="Doom">
+<link rel="alternate stylesheet" type="text/css" href="style/mylib-skin-froggy.css" media="all" title="Froggy">
+<link rel="alternate stylesheet" type="text/css" href="style/mylib-skin-hades.css" media="all" title="Hades">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="style/mylib-ie.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-widgets-ie.css" media="all">
+<script type="text/javascript">
+(function() {
+	var doc = this.document;
+
+	if (doc && typeof doc.documentMode == 'number' && doc.documentMode < 8 && typeof doc.write != 'undefined') {
+		doc.write('<link rel="stylesheet" type="text/css" href="style/mylib-widgets-ieold.css" media="all">');
+	}
+
+	if (typeof doc.compatMode == 'undefined' || doc.compatMode.toLowerCase().indexOf('css') == -1 && typeof doc.write != 'undefined') {
+		doc.write('<link rel="stylesheet" type="text/css" media="all" href="style/mylib-widgets-ie5.css">');
+	}
+})();
+</script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="style/mylib-alert.css" media="all">
+<!--[if lt IE 8]>
+<link rel="stylesheet" type="text/css" href="style/mylib-widgets-ieold.css" media="all">
+<![endif]-->
+<!--[if lt IE 6]>
+<link rel="stylesheet" type="text/css" media="all" href="style/mylib-widgets-ie5.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="style/mylib-handheld.css" media="handheld">
+<link rel="stylesheet" type="text/css" href="style/mylib-print.css" media="print">
+<link rel="stylesheet" type="text/css" href="style/mylib-widgets-print.css" media="print">
+<script type="text/javascript">
+var API = { deferAudio:true };
+</script>
+<style type="text/css" media="all">
+#myeditor, #myeditorenhanced, #inserthtmltext { display:block; width:99%; height:6em; border:inset 1px }
+#selectall { float:none }
+input.numeric { width:3em }
+input.color { width:4.5em }
+ul { display:inline-block }
+</style>
+<script type="text/javascript" src="mylib-example-build.js"></script>
+</head>
+<body>
+<div id="sidebar">
+<a href="#content" id="skipnav">Skip Navigation</a>
+<h2>Resources</h2>
+<h3>Contents</h3>
+<ul><li><a href="mylib.html" accesskey="1" title="Home [1]">Home</a></li><li><a href="mylib-downloads.html">Downloads</a></li><li><a href="mylib-doc0.html">Documentation</a></li><li><span id="current">Examples</span></li><li><a href="mylib-builder.asp">Builder</a></li><li><a href="mylib-test.asp?version=1.0&amp;requester=on&amp;array=on&amp;script=on&amp;mouseposition=on&amp;drag=on&amp;every=on&amp;cookie=on&amp;contextclick=on&amp;adjacent=on&amp;ajaxlink=on&amp;ajax=on&amp;event=on&amp;audio=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;filter=on&amp;dispatch=on&amp;help=on&amp;flash=on&amp;opacity=on&amp;maximize=on&amp;ashtml=on&amp;foreach=on&amp;query=on&amp;serialize=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;bookmark=on&amp;collections=on&amp;html=on&amp;offset=on&amp;size=on&amp;fx=on&amp;ajaxform=on&amp;overlay=on&amp;some=on&amp;crumb=on&amp;text=on&amp;dom0=on&amp;mousewheel=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;dom=on&amp;setattribute=on&amp;stylesheets=on&amp;style=on&amp;coverdocument=on&amp;dollar=on&amp;objects=on&amp;import=on&amp;rollover=on&amp;locationquery=on&amp;border=on&amp;updater=on&amp;form=on&amp;image=on&amp;plugin=on&amp;directx=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;gethtml=on&amp;mode=HTML" title="Test full build">Build Test</a></li><li><a href="mylib-testspeed.html" title="Compare the performance of the query feature to three popular libraries">Speed Tests</a></li><li><a href="mylib-sponsors.html" title="List of our benefactors">Sponsors</a></li></ul>
+<h3>Related Links</h3>
+<ul><li><a href="http://www.pledgie.com/campaigns/9768" title="Please make a donation today!">Donations</a></li><li><a href="http://groups.google.com/group/my-library-general-discussion/">Discussion</a></li><li><a href="http://code.google.com/p/ourlibrary/source/checkout">Repository</a></li></ul>
+<h3>Primers</h3>
+<ul><li><a href="attributes.html" title="A is for Attributes primer">Attributes</a></li><li><a href="host.html" title="H is for Host primer">Host</a></li><li><a href="keyboard.html" title="K is for Keyboard primer">Keyboard</a></li><li><a href="position.html" title="P is for Position primer">Position</a></li><li><a href="size.html" title="S is for Size primer">Size</a></li><li><a href="viewport.asp" title="V is for Viewport primer">Viewport</a></li></ul>
+<h3>Bookmark</h3>
+<ul><li><a title="Digg this" href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-downloads.html&amp;title=My%20Library&amp;bodytext=Build%20your%20own%20browser%20scripting%20library&amp;topic=programming">Digg This</a></li><li><a title="Add bookmark to deli.cio.us" href="http://del.icio.us/post?url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-downloads.html">Add to deli.cio.us</a></li></ul>
+<h3>Javascript Help</h3>
+<ul><li><a href="http://groups.google.com/group/comp.lang.javascript/topics" title="comp.lang.javascript newsgroup">Newsgroup</a></li><li><a href="http://jibbering.com/faq/index.html" title="comp.lang.javascript newsgroup FAQ">FAQ</a></li></ul>
+<script type="text/javascript">
+google_ad_client = "pub-0919891272636534";
+google_ad_slot = "6037707224";
+google_ad_width = 120;
+google_ad_height = 90;
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<div>
+<a name="content"></a>
+<h1><span class="redundant">My Library </span>Editor</h1>
+<p>This is a test of the My Library editor.<p>
+<h2>To Do</h2>
+<ul><li>Custom undo stack (broken in IE, Webkit)</li><li>Normalize tab handling with callback (default indent/outdent)</li><li>Speed up example <code>updateInterface</code> function (too much <code>getEBI</code>)</li><li>Example toolbars and property sheets</li></ul>
+<h2>How To</h2>
+<p>This is how it's done.<p>
+<pre>
+el = API.enhanceEditor(API.getEBI('myeditor'), {
+  id: 'myeditorenhanced',
+  autoUpdate: true,
+  onupdateinterface: updateInterface
+});
+</pre>
+
+<fieldset>
+<legend>Document</legend>
+<textarea id="myeditor" cols="40" rows="10">This is a test</textarea>
+<div>
+<input id="viewsource" type="button" value="View Source" disabled>
+<input id="properties" type="button" value="Properties" disabled>
+</div>
+<input id="cut" type="button" value="Cut" disabled>
+<input id="copy" type="button" value="Copy" disabled>
+<input id="paste" type="button" value="Paste" disabled>
+<input id="delete" type="button" value="Delete" disabled>
+<input id="undo" type="button" value="Undo" disabled>
+<input id="redo" type="button" value="Redo" disabled>
+<input id="selectall" type="button" value="Select All" disabled>
+<fieldset>
+<legend>Text</legend>
+<div>
+<input id="bold" type="button" value="Bold" disabled>
+<input id="italic" type="button" value="Italic" disabled>
+<input id="underline" type="button" value="Underline" disabled>
+<input id="strikethrough" type="button" value="Strikethrough" disabled>
+</div>
+<div>
+<input id="subscript" type="button" value="Subscript" disabled>
+<input id="superscript" type="button" value="Superscript" disabled>
+</div>
+<input id="indent" type="button" value="Indent" disabled>
+<input id="outdent" type="button" value="Outdent" disabled>
+<div>
+<label for="formatblock" class="disabled" id="formatblocklabel">Block:</label><input id="formatblock" disabled>
+</div>
+<fieldset>
+<legend>Font</legend>
+<label for="fontname" class="disabled" id="fontnamelabel">Name:</label><input id="fontname" disabled>
+<label for="fontsize" class="disabled" id="fontsizelabel">Size:</label><input id="fontsize" class="numeric" disabled>
+</fieldset>
+<fieldset>
+<legend>Color</legend>
+<label for="forecolor" class="disabled" id="forecolorlabel">Foreground:</label><input id="forecolor" class="color" disabled>
+<label for="backcolor" class="disabled" id="backcolorlabel">Background:</label><input id="backcolor" class="color" disabled>
+</fieldset>
+<input id="removeformat" type="button" value="Remove Format" disabled>
+</fieldset>
+<fieldset>
+<legend>Align</legend>
+<input id="left" type="button" value="Left" disabled>
+<input id="center" type="button" value="Center" disabled>
+<input id="right" type="button" value="Right" disabled>
+<input id="justify" type="button" value="Justify" disabled>
+</fieldset>
+<fieldset>
+<legend>List</legend>
+<input id="orderedlist" type="button" value="Ordered" disabled>
+<input id="unorderedlist" type="button" value="Unordered" disabled>
+</fieldset>
+<fieldset>
+<legend>Insert</legend>
+<fieldset>
+<legend><input id="insertimage" type="button" value="Image" disabled></legend>
+<label for="insertimagetext" id="insertimagetextlabel">Source:</label><input id="insertimagetext">
+</fieldset>
+<fieldset>
+<legend><input id="inserttable" type="button" value="Table" disabled></legend>
+<div>
+<label for="inserttablerows" id="inserttablerowslabel" class="disabled">Rows:</label><input id="inserttablerows" class="numeric" value="2" disabled>
+<label for="inserttablecolumns" id="inserttablecolumnslabel" class="disabled">Columns:</label><input id="inserttablecolumns" class="numeric" value="2" disabled>
+</div>
+<div>
+<label for="inserttableheight" id="inserttableheightlabel" class="disabled">Height:</label><input id="inserttableheight" class="numeric" disabled>
+<label for="inserttablewidth" id="inserttablewidthlabel" class="disabled">Width:</label><input id="inserttablewidth" class="numeric" disabled>
+</div>
+<label for="inserttableborder" id="inserttableborderlabel" class="disabled">Border:</label><input id="inserttableborder" class="numeric" value="1" disabled>
+<fieldset>
+<legend>Cell</legend>
+<label for="inserttablepadding" id="inserttablepaddinglabel" class="disabled">Padding:</label><input id="inserttablepadding" class="numeric" disabled>
+<label for="inserttablespacing" id="inserttablespacinglabel" class="disabled">Spacing:</label><input id="inserttablespacing" class="numeric" disabled>
+</fieldset>
+</fieldset>
+<fieldset>
+<legend><input id="inserthtml" type="button" value="HTML" disabled></legend>
+<label for="inserthtmltext" id="inserthtmltextlabel">Source:</label><textarea rows="10" cols="40" id="inserthtmltext"></textarea>
+</fieldset>
+<input id="insertparagraph" type="button" value="Paragraph" disabled>
+<input id="inserthorizontalrule" type="button" value="Horizontal Rule" disabled>
+</fieldset>
+<fieldset>
+<legend>Link</legend>
+<fieldset>
+<legend><input id="createlink" type="button" value="Add" disabled></legend>
+<label for="createlinktext" id="createlinktextlabel">Resource:</label><input id="createlinktext">
+</fieldset>
+<input id="unlink" type="button" value="Remove" disabled>
+</fieldset>
+</fieldset>
+</div>
+<div id="logo"><a href="mylib.html" title="Home"><img src="images/mylibrarylogo.jpg" height="108" width="260" alt="My Library" title="Home"></a></div>
+<p class="meta">Last Modified: 6 May 2010 22:58:00 GMT</p>
+<address>By <a title="Send email to David Mark" href="mailto:dmark@cinsoft.net">David Mark</a></address>
+<div class="legal">Copyright &copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a>. All Rights Reserved.</div>
+<!--<script type="text/javascript" src="mylib-alert.js"></script>-->
+<script type="text/javascript" src="mylib-unclip.js"></script>
+<script type="text/javascript" src="mylib-textselection-min.js"></script>
+<script type="text/javascript" src="mylib-editor.js"></script>
+<!--<script type="text/javascript" src="mylib-toolbar.js"></script>-->
+<!--<script type="text/javascript" src="mylib-editortoolbars.js"></script>-->
+<script type="text/javascript">
+var API, global = this;
+
+if (API && API.areFeatures && API.areFeatures('attachDocumentReadyListener', 'getEBI')) {
+  API.attachDocumentReadyListener(function() {
+    var i, el, elControl, getEBI = API.getEBI, attachListener = API.attachListener;
+    var commands = ['bold', 'italic', 'strikethrough', 'underline', 'cut', 'copy', 'paste', 'selectall', 'undo', 'redo', 'delete', 'left', 'center', 'right', 'justify', 'orderedlist', 'unorderedlist', 'subscript', 'superscript', 'indent', 'outdent', 'insertparagraph', 'inserthorizontalrule', 'removeformat', 'unlink'];
+    var commandsWithArguments = ['createlink', 'insertimage', 'inserthtml'];
+    var fields = ['formatblock', 'fontsize', 'fontname', 'forecolor', 'backcolor'];
+    var tableFieldSuffixes = ['rows', 'columns', 'border', 'padding', 'spacing', 'height', 'width'];
+
+    var setDisabledClass = function(el, enabled) {
+      el.className = enabled ? '' : 'disabled';
+    };
+
+    var enableFormControl = function(el, enabled) {
+      var id = el.id;
+
+      if (typeof enabled == 'undefined') {
+        enabled = true;
+      }
+
+      el.disabled = !enabled;
+      el = getEBI(id + 'label');
+      if (el) {
+        setDisabledClass(el, enabled);
+      }
+      el = getEBI(id + 'decoration');
+      if (el) {
+        setDisabledClass(el, enabled);
+      }
+    };
+
+    var updateTableFields = function(b) {
+      getEBI('inserttable').disabled = !b;
+      for (var i = tableFieldSuffixes.length; i--;) {
+        enableFormControl(getEBI('inserttable' + tableFieldSuffixes[i]), b);
+      }
+    };
+
+    var updateInterface = function() {
+      var i, value, command, commandName;
+
+      for (i = commands.length; i--;) {
+        command = commands[i];
+        getEBI(command).disabled = !API['editor' + command.charAt(0).toUpperCase() + command.slice(1) + 'Enabled'](el, command);
+      }
+
+      for (i = commandsWithArguments.length; i--;) {
+        command = commandsWithArguments[i];
+        var enabled = API['editor' + command.charAt(0).toUpperCase() + command.slice(1) + 'Enabled'](el, command);
+        getEBI(command).disabled = !enabled;
+        var elText = getEBI(command + 'text');
+        if (elText) {
+          enableFormControl(elText, enabled);
+        }
+      }
+
+      for (i = fields.length; i--;) {
+        command = fields[i];
+        commandName = command.charAt(0).toUpperCase() + command.slice(1);
+
+        getEBI(command).disabled = !API['editor' + commandName + 'Enabled'](el, command);
+
+        value = API['editor' + commandName + 'Value'](el, command);
+
+        if (typeof value == 'string') {
+          getEBI(command).value = value;
+        } else {
+          getEBI(command).value = '';
+        }
+      }
+      updateTableFields(API.editorInserttableEnabled(el));
+    };
+
+    var commandListener = function() {
+       var value = getEBI(this.id + 'text').value;
+
+       // TODO: Move focus set to execCommand function
+       API.focusEditor(el);
+       API['editor' + this.id.charAt(0).toUpperCase() + this.id.slice(1)](el, false, value);
+       updateInterface();
+    };
+
+    var insertTable = function() {
+      var o = {}, elError;
+
+      for (var i = tableFieldSuffixes.length; i--;) {
+        var suffix = tableFieldSuffixes[i];
+        var elField = getEBI('inserttable' + suffix);
+        var value = elField.value.replace(/^\s+|\s+$/g, '');
+
+        if (value) {                  
+          var valueNumber = +value;
+
+          if (isNaN(value)) {
+            if (/^(height|width)$/.test(suffix) && value.slice(-1) == '%') {
+              o[tableFieldSuffixes[i]] = value;
+            } else {
+              elError = elField;
+            }
+          } else {
+            o[tableFieldSuffixes[i]] = valueNumber;
+          }
+        }
+      }
+
+      if (elError) {
+        window.alert('Invalid ' + elError.id.slice(11));
+        window.setTimeout(function() {
+          elError.focus();
+          elError.select();
+        }, 50);
+      } else {
+        API.focusEditor(el);
+        API.editorInserttable(el, false, o);
+        updateInterface();
+      }
+    };
+
+    if (API.enhanceEditor) {
+      el = getEBI('myeditor');
+      if (el) {
+        el = API.enhanceEditor(el, {
+          id: 'myeditorenhanced',
+          autoUpdate: true,
+          onupdateinterface: updateInterface
+        });
+        if (el) {
+          updateInterface();
+          for (i = commands.length; i--;) {
+            elControl = getEBI(commands[i]);
+            if (elControl) {
+              attachListener(elControl, 'click', function() {
+                API.focusEditor(el);
+                API['editor' + this.id.charAt(0).toUpperCase() + this.id.slice(1)](el);
+                updateInterface();
+              });
+            }
+          }
+          for (i = fields.length; i--;) {
+            elControl = getEBI(fields[i]);
+            if (elControl) {
+              enableFormControl(elControl);
+              attachListener(elControl, 'keyup', function(e) {
+                var key = API.getKeyboardKey(e);
+
+                if (key == 13) {
+                  API.focusEditor(el);
+                  API['editor' + this.id.charAt(0).toUpperCase() + this.id.slice(1)](el, false, this.value);
+                  updateInterface();
+                }
+              });
+            }
+          }
+          for (i = commandsWithArguments.length; i--;) {
+            elControl = getEBI(commandsWithArguments[i]);
+            if (elControl) {
+              attachListener(elControl, 'click', commandListener);
+              if (elControl.id != 'inserthtml') {
+                elControl = getEBI(elControl.id + 'text');
+                if (elControl) {
+                  attachListener(elControl, 'keyup', function(e) {
+                    var key = API.getKeyboardKey(e);
+
+                    if (key == 13) {
+                      commandListener.call(getEBI(this.id.substring(0, this.id.length - 4)));
+                    }
+                  });
+                }
+              }
+            }
+          }
+          elControl = getEBI('inserttable');
+          if (elControl) {
+            attachListener(elControl, 'click', insertTable);
+          }
+          for (i = tableFieldSuffixes.length; i--;) {
+            elControl = getEBI('inserttable' + tableFieldSuffixes[i]);
+            if (elControl) {
+              attachListener(elControl, 'keyup', function(e) {
+                var key = API.getKeyboardKey(e);
+
+                if (key == 13) {
+                  insertTable();
+                }
+              });
+            }
+          }
+          elControl = getEBI('viewsource');
+          if (elControl) {
+            elControl.disabled = false;
+            attachListener(elControl, 'click', function() {
+              var myEffects, effects = API.effects;
+              var show = this.value == 'View Source';
+
+              if (effects && effects.fade) {
+                myEffects = [effects.fade];
+              }
+              API.editorViewSource(el, show, { effects:myEffects, duration:700, ease:API.ease.sigmoid2, effectParams:{ side:'bottom' } });
+              this.value = (show ? 'Hide' : 'View') + ' Source';
+            });
+          }
+          elControl = null;
+        }
+      }
+    }
+  });
+}
+</script>
+<script type="text/javascript" src="mylib-domready.js"></script>
+</body> 
+</html>

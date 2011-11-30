@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Last-Modified" content="5 Sep 2010 22:29:00 GMT">
+<meta name="description" content="Keyboard example of My Library, a cross-browser scripting library, written in Javascript">
+<meta name="keywords" content="My Library, Javascript, library, project, repository, builder, browser scripting, Ajax, comp.lang.javascript, newsgroup, example, keyboard">
+<meta name="author" content="David Mark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>My Library Keyboard Add-on</title>
+<link rel="home" href="mylib.html" title="Home">
+<link rel="up" href="mylib-examples.html" title="Examples">
+<link rel="previous" href="mylib-editor.html" title="Editor">
+<link rel="next" href="mylib-touch.html" title="Touch">
+<link rel="bookmark" href="#content" title="Content">
+<link rel="stylesheet" type="text/css" href="style/mylib.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-handheld.css" media="handheld">
+<link rel="stylesheet" type="text/css" href="style/mylib-print.css" media="print">
+<style type="text/css" media="all">
+#log { color:inherit; background-color:#eee }
+#test6 { border:none; color:inherit; background-color:#fff; text-align:right; float:right }
+#test6.caution { color:inherit; color:#880000 }
+#test6.stop { color:inherit; color:#ff0000 }
+fieldset {
+	margin-bottom:1em
+}
+</style>
+</head>
+<body>
+<div id="sidebar">
+<a href="#content" id="skipnav">Skip Navigation</a>
+<h2>Resources</h2>
+<h3>Contents</h3>
+<ul><li><a href="mylib.html" accesskey="1" title="Home [1]">Home</a></li><li><a href="mylib-downloads.html">Downloads</a></li><li><a href="mylib-doc0.html">Documentation</a></li><li><a href="mylib-examples.html">Examples</a></li><li><a href="mylib-builder.asp">Builder</a></li><li><a href="mylib-test.asp?version=1.0&amp;requester=on&amp;array=on&amp;script=on&amp;mouseposition=on&amp;drag=on&amp;every=on&amp;cookie=on&amp;contextclick=on&amp;adjacent=on&amp;ajaxlink=on&amp;ajax=on&amp;event=on&amp;audio=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;filter=on&amp;dispatch=on&amp;help=on&amp;flash=on&amp;opacity=on&amp;maximize=on&amp;ashtml=on&amp;foreach=on&amp;query=on&amp;serialize=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;bookmark=on&amp;collections=on&amp;html=on&amp;offset=on&amp;size=on&amp;fx=on&amp;ajaxform=on&amp;overlay=on&amp;some=on&amp;crumb=on&amp;text=on&amp;dom0=on&amp;mousewheel=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;dom=on&amp;setattribute=on&amp;stylesheets=on&amp;style=on&amp;coverdocument=on&amp;dollar=on&amp;objects=on&amp;import=on&amp;rollover=on&amp;locationquery=on&amp;border=on&amp;updater=on&amp;form=on&amp;image=on&amp;plugin=on&amp;directx=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;gethtml=on&amp;mode=HTML" title="Test full build">Build Test</a></li><li><a href="mylib-testspeed.html" title="Compare the performance of the query feature to three popular libraries">Speed Tests</a></li><li><a href="mylib-sponsors.html" title="List of our benefactors">Sponsors</a></li></ul>
+<h3>Related Links</h3>
+<ul><li><a href="http://www.pledgie.com/campaigns/9768" title="Please make a donation today!">Donations</a></li><li><a href="http://groups.google.com/group/my-library-general-discussion/">Discussion</a></li><li><a href="http://code.google.com/p/ourlibrary/source/checkout">Repository</a></li></ul>
+<h3>Primers</h3>
+<ul><li><a href="attributes.html" title="A is for Attributes primer">Attributes</a></li><li><a href="host.html" title="H is for Host primer">Host</a></li><li><a href="keyboard.html" title="K is for Keyboard primer">Keyboard</a></li><li><a href="position.html" title="P is for Position primer">Position</a></li><li><a href="size.html" title="S is for Size primer">Size</a></li><li><a href="viewport.asp" title="V is for Viewport primer">Viewport</a></li></ul>
+<h3>Bookmark</h3>
+<ul><li><a title="Digg this" href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-downloads.html&amp;title=My%20Library&amp;bodytext=Build%20your%20own%20browser%20scripting%20library&amp;topic=programming">Digg This</a></li><li><a title="Add bookmark to deli.cio.us" href="http://del.icio.us/post?url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-downloads.html">Add to deli.cio.us</a></li></ul>
+<h3>Javascript Help</h3>
+<ul><li><a href="http://groups.google.com/group/comp.lang.javascript/topics" title="comp.lang.javascript newsgroup">Newsgroup</a></li><li><a href="http://jibbering.com/faq/index.html" title="comp.lang.javascript newsgroup FAQ">FAQ</a></li></ul>
+</div>
+<div>
+<a name="content"></a>
+<h1>My Library Keyboard Add-on</h1>
+<p>This is a test of the My Library Keyboard add-on.</p>
+<p>Documentation is at the top of the <a href="mylib-keyboard.js">source</a>. There are additional options that are not demonstrated here (e.g. <code>allowShiftCombinations</code> and <code>allowAltCombinations</code> options)</p>
+<script type="text/javascript">
+
+// Feature detect native apply and required host methods for creation and retrieval
+// If any are missing, skip writing test controls
+
+if (Function.prototype.apply && typeof this.document.write != 'undefined' && typeof this.document.getElementById != 'undefined') {
+	this.document.write('<h3>Tests<\/h3><p>Type into the text input or text area and observe the results in the log below.<\/p><p><strong>Note<\/strong> the default actions are not prevented for any events, which can lead to odd results (e.g. lost <code>keyup<\/code> events on blur).<\/p><fieldset><legend>Tests<\/legend><fieldset><legend>Control Keys Auto-repeat<\/legend><input id="test1" disabled><textarea id="test2" rows="5" cols="80" disabled><\/textarea><\/fieldset><fieldset><legend>Control Keys do <em>not<\/em> Auto-repeat<\/legend><input id="test3" disabled><textarea id="test4" rows="5" cols="80" disabled><\/textarea><\/fieldset><\/fieldset><h3>Demos<\/h3><p><strong>Note<\/strong> that the character counter is not meant as a practical example (so don\'t copy it verbatim). It\'s purpose is to demonstrate the ability of the monitoring script to differentiate between the various types of keys and key combinations (i.e. it does not update the status on <em>every<\/em> <code>keyup<\/code> event).<\/p><fieldset><legend>Character Counter<\/legend><textarea id="test5" disabled><\/textarea><input id="test6" tabindex="-1" readonly><\/fieldset><fieldset><legend>Number Spinner<\/legend><input id="test7" value="0"><\/fieldset>');
+}
+</script>
+</div>
+<script type="text/javascript" src="mylib-event-foreach-map-mouseposition-style-text-min.js"></script>
+<script type="text/javascript" src="mylib-keyboard-min.js"></script>
+<script type="text/javascript">
+var API, global = this;
+
+if (API && API.attachKeyboardListeners && Function.prototype.apply && typeof this.document.getElementById != 'undefined' && typeof this.document.write != 'undefined') {
+	(function() {
+
+	attachKeyboardListeners = API.attachKeyboardListeners;
+
+	// Event type is indicator
+
+	var keyListener = function(e, key, duration) {
+		global.document.getElementById('log').value += ('Key ' + ( e.type == 'keyup' ? 'up' : 'down' ) + ' at ' + this.id + ': ' + key + (e.type == 'keyup' ? ' duration: ' + duration : '') + '\n');
+	};
+
+	// NOTE: Event type is meaningless in charListener (usually keypress, sometimes keyup)
+
+	var charListener = function(e, charCode) {
+		global.document.getElementById('log').value += 'Character at ' + this.id + ': "' + String.fromCharCode(charCode) + '" (' + charCode + ')\n';
+	};
+
+	var shortcutCharListener = function(e, charCode) {
+		global.document.getElementById('log').value += ('Shortcut character at ' + this.id + ': "' + String.fromCharCode(charCode) + '"\n');
+	};
+
+	var beforeShortcutCharListener = function(e, charCode) {
+		global.document.getElementById('log').value += ('Before shortcut character at ' + this.id + ': "' + String.fromCharCode(charCode) + '"\n');
+	};
+
+	var missingElement, el, els = [], doc = global.document;
+
+	for (var i = 4; !missingElement && i--;) {
+		el = doc.getElementById('test' + (i + 1));
+
+		if (el) {
+			els[i] = el;			
+		} else {
+			missingElement = true;
+		}
+	}
+
+	if (!missingElement) {
+		for (i = 4; i--;) {
+			els[i].disabled = false;
+			attachKeyboardListeners(els[i], {
+				onchar: charListener,
+				onkey: keyListener,
+				onshortcutchar: shortcutCharListener,
+				onbeforeshortcutchar: beforeShortcutCharListener,
+				suppressControlKeyAutoRepeat: i > 1
+			});
+		}
+		doc.write('<fieldset><legend>Log<\/legend><textarea id="log" rows="20" cols="40" tabindex="-1" readonly><\/textarea><input value="Clear" type="button" onclick="window.document.getElementById(\'log\').value = \'\'"><\/fieldset>');
+	}
+
+	missingElement = false;
+
+	var attachClipboardListeners = function(el, listener) {
+		var deferredListener = function() {
+			window.setTimeout(listener, 1);
+		};
+
+		el.onpaste = deferredListener;
+		el.oncut = deferredListener;
+	};
+
+	var CharacterCounter = function(elContent, elCounter, maxCharacters) {
+		this.update = function() {
+			var characters = elContent.value.length, charactersLeft = maxCharacters - characters;
+
+			if (charactersLeft < 0) {
+				elCounter.className = 'stop';
+				elCounter.value = characters + ' (' + -charactersLeft + ' over)';
+			} else {
+				elCounter.className = (charactersLeft < 20) ? 'caution'  : '';
+				elCounter.value = characters + ' (' + charactersLeft + ' left)';
+			}
+		};
+
+		attachKeyboardListeners(elContent, {
+			onkey: this.onkey,
+			onchar: this.onchar,
+			onshortcutchar: this.onshortcutchar,
+			callbackContext: this
+		});
+
+		attachClipboardListeners(elContent, this.update);
+
+		this.update();
+	};
+
+	CharacterCounter.prototype.onkey = function(e, keyCode) {
+
+		// Backspace (8) is included for keydown auto-repeats, which do not
+            // fire keypress events in all browsers
+
+		if (keyCode == 45 || keyCode == 46 || keyCode == 127 || keyCode == 8) {
+			this.update();
+		}
+	};
+
+	CharacterCounter.prototype.onchar = function() {
+		var that = this;
+
+		window.setTimeout(function() {
+			that.update();
+		}, 1);
+	};
+
+	CharacterCounter.prototype.onshortcutchar = function(e, charCode) {
+		var that = this;
+
+		if (!charCode || charCode == 68 || charCode == 86 || (charCode > 87 && charCode < 91)) {
+
+			// Clipboard, undo/redo operations may not have completed yet
+
+			window.setTimeout(function() {
+				that.update();
+			}, 1);
+		}
+	};
+
+	for (i = 5; !missingElement && i < 7; i++) {
+		el = doc.getElementById('test' + i);
+		if (el) {
+			el.disabled = false;
+			els[i] = el;
+		} else {
+			missingElement = true;
+		}
+	}
+
+	if (!missingElement) {
+		new CharacterCounter(els[5], els[6], 100);
+	}
+
+	var NumberSpinner = function(el, options) {
+		var min = options.min || 0, max = options.max;
+		var step = options.step || 1, stepLarge = options.stepLarge;
+
+		if (options.fractions) {
+			this.onchar = function(e, charCode) {
+				if (charCode == 46) {
+					return el.value.indexOf('.') == -1;
+				}
+				return NumberSpinner.prototype.onchar.call(this, e, charCode);				
+			};
+		}
+
+		this.onnavkeypress = function(e, keyCode) {
+			return keyCode != 38 && keyCode != 40 && keyCode != 33 && keyCode != 34;
+		};
+
+		this.onkey = function(e, keyCode) {
+			var val = +(el.value || '0'), processed;
+
+			if (!isNaN(val) && e.type != 'keyup') {
+				if (keyCode == 38 || keyCode == 40) {					
+					val += (keyCode == 38 ? 1 : -1) * step;
+					processed = true;
+				} else if (stepLarge && (keyCode == 33 || keyCode == 34)) {
+					val += (keyCode == 33 ? 1 : -1) * stepLarge;
+					processed = true;
+				}
+
+				if (processed) {
+					val = Math.max(val, min);
+
+					if (max) {
+						val = Math.min(val, max);
+					}
+					el.value = '' + val;
+
+					if (el.select) {
+						el.select();
+					}
+					return false;
+				}
+			}
+		};
+
+		attachKeyboardListeners(el, {
+			onchar: this.onchar,
+			onkey: this.onkey,
+			onnavkeypress: this.onnavkeypress,
+			callbackContext: this
+		});
+	};
+
+	NumberSpinner.prototype.onchar = function(e, charCode) {
+		return (charCode > 47 && charCode < 58) || charCode == 8;
+	};	
+
+	el = doc.getElementById('test7');
+
+	if (el) {
+		new NumberSpinner(el, {
+			fractions: true,
+			max: 100,
+			stepLarge: 5
+		});
+	}
+
+	doc = els = el = null;
+
+	})();
+}
+</script>
+<div id="logo"><a href="mylib.html" title="Home"><img src="images/mylibrarylogo.jpg" height="108" width="260" alt="My Library" title="Home"></a></div>
+<p class="meta">Last Modified: 5 Sep 2010 22:58:00 GMT</p>
+<address>By <a title="Send email to David Mark" href="mailto:dmark@cinsoft.net">David Mark</a></address>
+<div class="legal">Copyright &copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a>. All Rights Reserved.</div></body>
+</html>

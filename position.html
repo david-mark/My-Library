@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>P is for Position</title>
+<link rel="home" href="mylib.html">
+<link rel="up" href="mylib.html">
+<link rel="previous" href="keyboard.html" title="K is for Keyboard">
+<link rel="next" href="size.html" title="S is for Size">
+<link rel="stylesheet" type="text/css" media="all" href="style/mylib.css">
+<link rel="stylesheet" type="text/css" media="all" href="style/tester.css">
+<style media="all" type="text/css">
+#firstone, #secondone { position:relative }
+#thirdone, #fourthone { position:absolute }
+#thirdone, #fourthone { top:0 }
+#firstone { left:2px; top:-10px }
+#secondone { right:2px; bottom:20px }
+#thirdone { left:300px }
+#fourthone { right:2px }
+</style>
+</head>
+<body>
+<h1>P is for Position</h1>
+<p>The fourth in a popular series of DOM scripting primers. This example demonstrates retrieving element style positions <em>without</em> computed styles.</p>
+<h2>A Defensible Position</h2>
+<p>This is useful for figuring the starting point for a move animation, drag operation or anything that must modify the position of the element relative to its current position. This is important as computed styles are sometimes unavailable or unusable (particularly in Internet Explorer).</p>
+<p>The very simple example script is inline and should need little explanation (though at least <em>some</em> will follow in the near future). The pivotal function is <code>getElementPositionStyles</code>.</p>
+<pre>
+o = getElementPositionStyles(el);
+</pre>
+<p>The function returns an object with <code>left</code>, <code>top</code>, <code>right</code> and <code>bottom</code> properties. Styles that are indeterminate will result in <code>null</code> properties. The examples cover both <code>relative</code> and <code>absolute</code> position styles and <code>fixed</code> was tested successfully during development.</p>
+<p><strong>Note</strong> that none of the test elements has inline styles. Pixel units are used to make the results easily verifiable, but any units can be used with this technique.</p>
+<p><strong>Note</strong> that this technique will <em>not</em> work when <em>both</em> sides (e.g. <code>left</code> and <code>right</code> or <code>top</code> and <code>bottom</code>) have specified styles.</p>
+<pre>
+#firstone, #secondone { position:relative }
+#thirdone, #fourthone { position:absolute }
+#thirdone, #fourthone { top:0 }
+#firstone { left:2px; top:-10px }
+#secondone { right:2px; bottom:20px }
+#thirdone { left:300px }
+#fourthone { right:2px }
+</pre>
+<p>For those who do not care to wade through the style declarations, the expected results are:</p>
+<ol>
+<li>Left: 2, Right: <code>null</code>, Top: -10, Bottom: <code>null</code></li>
+<li>Left: <code>null</code>, Right: 2, Top: <code>null</code>, Bottom: 20</li>
+<li>Left: 300, Right: <code>null</code>, Top: 0, Bottom: <code>null</code></li>
+<li>Left: <code>null</code>, Right: 2, Top: 0, Bottom: <code>null</code></li>
+</ol>
+<div>
+<img id="firstone" src="images/painting1.jpg" alt="" height="194" width="297">
+<img id="secondone" src="images/painting2.jpg" alt="" height="194" width="297">
+<img id="thirdone" src="images/sun.gif" alt="" height="48" width="48">
+<img id="fourthone" src="images/partlycloudy.gif" alt="" height="48" width="48">
+</div>
+<fieldset>
+<legend>Report</legend>
+<input type="button" id="testposition" value="Show Me" disabled>
+</fieldset>
+<script type="text/javascript">
+var global = this;
+(function() {
+var doc = global.document;
+
+if (doc && doc.documentElement && typeof doc.documentElement.style != 'undefined' && typeof doc.documentElement.offsetLeft == 'number' && typeof doc.documentElement.style.left == 'string' && typeof doc.getElementById != 'undefined') {
+  var getElementPositionStyles = (function() {
+    var result, sides = ['left', 'top', 'right', 'bottom'], inlineStyles = {};
+
+    var findPosition = function(el, sides) {
+      var i, offsetLeft, offsetTop;
+
+      offsetLeft = el.offsetLeft;
+      offsetTop = el.offsetTop;
+
+      el.style[sides[2]] = 'auto';
+      el.style[sides[3]] = 'auto';
+
+      if (offsetLeft != el.offsetLeft) {
+        result[sides[0]] = null;
+      }
+
+      if (offsetTop != el.offsetTop) {
+        result[sides[1]] = null;
+      }
+
+      offsetLeft = el.offsetLeft;
+      offsetTop = el.offsetTop;
+
+      el.style[sides[0]] = offsetLeft + 'px';
+      el.style[sides[1]] = offsetTop + 'px';
+
+      if (result[sides[0]] !== null && el.offsetLeft != offsetLeft) {
+        if (sides[0] == 'left') {
+          result[sides[0]] = offsetLeft - el.offsetLeft + offsetLeft;
+        } else {
+          result[sides[0]] = el.offsetLeft;
+        }
+      }
+
+      if (result[sides[1]] !== null && el.offsetTop != offsetTop) {
+        if (sides[1] == 'top') {
+          result[sides[1]] = offsetTop - el.offsetTop + offsetTop;
+        } else {
+          result[sides[1]] = el.offsetTop;
+        }
+      }
+      for (i = 4; i--;) {
+        el.style[sides[i]] = inlineStyles[sides[i]];
+      }
+    };
+
+    return function(el) {
+      var i, side, otherSide;
+
+      result = {};
+
+      for (i = 2; i--;) {
+        side = sides[i];
+        otherSide = sides[i + 2];
+        result[side] = result[otherSide] = el['offset' + side.charAt(0).toUpperCase() + side.substring(1)];
+      }
+
+      for (i = 4; i--;) {
+        side = sides[i];
+        inlineStyles[side] = el.style[side];
+      }
+
+      findPosition(el, sides);
+      findPosition(el, sides.slice(2).concat(sides.slice(0, 2)));
+
+      return result;
+    };
+  })();
+
+  var el = global.document.getElementById('testposition');
+  if (el) {
+    el.disabled = false;
+    el.onclick = function() {
+      var i, positions, result = '', ids = ['fourthone', 'thirdone', 'secondone', 'firstone'];
+
+      for (i = ids.length; i--;) {
+        el = global.document.getElementById(ids[i]);
+        if (el) {
+          result += (4 - i) + '. ';
+          positions = getElementPositionStyles(el);
+          result += 'Left: ' + positions.left + ', Right: ' + positions.right + ', Top: ' + positions.top + ', Bottom: ' + positions.bottom + '\n';
+        }
+      }
+      global.window.alert(result);
+    };
+    el = null;
+  }
+}
+doc = null;
+})();
+</script>
+<h2>Other Primers</h2>
+<ul><li><a href="attributes.html">A is for Attributes</a></li><li><a href="host.html">H is for Host</a></li><li><a rel="previous" href="keyboard.html">K is for Keyboard</a></li><li><a rel="next" href="size.html">S is for Size</a></li><li><a rel="next" href="viewport.asp">V is for Viewport</a></li></ul>
+<div id="legal">&copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a></div>
+<div><a href="mylib.html" id="home" title="Home"><img src="images/logo.gif" height="20" width="22" alt="Home"></a></div>
+<address><a href="mailto:dmark@cinsoft.net">dmark@cinsoft.net</a></address>
+</body>
+</html>

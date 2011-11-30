@@ -1,0 +1,454 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>H is for Host</title>
+<link rel="home" href="mylib.html">
+<link rel="up" href="mylib.html">
+<link rel="previous" href="attributes" title="A is for Attributes">
+<link rel="next" href="keyboard.html" title="K is for Keyboard">
+<link rel="stylesheet" type="text/css" media="all" href="style/mylib.css">
+<link rel="stylesheet" type="text/css" media="all" href="style/tester.css">
+<script type="text/javascript">
+var reFeaturedMethod = new RegExp('^(function|object)$', 'i');
+
+var isHostMethod = function(o, m) {
+  var t = typeof o[m];
+  return !!((reFeaturedMethod.test(t) && o[m]) || t == 'unknown');
+};
+
+var isHostObjectProperty = function(o, p) {
+  var t = typeof o[p];
+  return !!(reFeaturedMethod.test(t) && o[p]);
+};
+
+var testAddFavoriteBad = function() {
+  if (window.external && window.external.addFavorite) {
+    window.alert('Found it!');
+  } else {
+    window.alert('No such object or method');
+  }
+}
+
+var testAddFavoriteGood = function() {
+  if (isHostObjectProperty(window, 'external') && isHostMethod(window.external, 'addFavorite')) {
+
+    // Though the method exists, IE will never get here
+
+    window.alert('Found it!');
+  } else {
+    window.alert('No such object or method');
+  }
+}
+var prefixes = ['Moz', 'O', 'Webkit', 'Khtml', 'Ms'];
+
+var findProprietaryStyle = function(style, el) {
+  if (el && typeof el.style[style] == 'undefined') {
+    style = style.charAt(0).toUpperCase() + style.substring(1);
+    for (var i = prefixes.length; i--;) {
+      if (typeof el.style[prefixes[i] + style] != 'undefined') {
+        return prefixes[i] + style;
+      }
+    }
+    return null;
+  }
+  return style;
+};
+
+var supportedEvents = {};
+
+var isEventSupported = function(eventName, el) {
+  eventName = 'on' + eventName;
+  var eventKey = eventName + (el && el.tagName || '');
+
+  if (typeof supportedEvents[eventKey] == 'undefined') {
+    supportedEvents[eventKey] = true;
+    el = el || document.createElement('div');
+    if (el && isHostMethod(el, 'setAttribute')) {
+      if (typeof el[eventName] == 'undefined') {
+        el.setAttribute(eventName, 'window.alert(" ");');
+        supportedEvents[eventKey] = isHostMethod(el, eventName);
+      }
+    }
+  }
+  return supportedEvents[eventKey];
+};
+</script>
+</head>
+<body>
+<h1>H is for Host</h1>
+<p>Host objects have no rules. They are defined in the language specifications as implementation-dependant, meaning that they are allowed to do virtually anything.</p>
+<h2>Detecting Host Objects</h2>
+<p>A famous example of this specification allowance (taken to a perverse extreme) is the case of host objects in Internet Explorer that are implemented as ActiveX objects. Simply evaluating their methods (as well as some properties) will cause an <strong>exception</strong> to be thrown.</p>
+<pre>
+var el = document.createElement('div');
+var parent = el.offsetParent; // IE throws an exception here
+</pre>
+<pre>
+if (window.external && window.external.addFavorite) {
+
+  // Though the method exists, IE will never get here
+
+  window.alert('Found it!');
+} else {
+  window.alert('No such object or method');
+}
+</pre>
+<p>Fortunately, there are easy ways to sidestep these issues.</p>
+<h3 id="ishostmethod">Methods</h3>
+<p>Found at the heart of <a href="http://www.cinsoft.net/mylib.html">My Library</a>, the <code>isHostMethod</code> function tests if the specified host object property references an object. It is an extension of the <code>isMethodType</code> function promoted for many years by <a href="http://pointedears.de">Thomas Lahn</a>. The added bit allows for the safe detection of ActiveX methods, which have <code>unknown</code> types. This and related methods were later written about in a <a href="http://peter.michaux.ca/articles/feature-detection-state-of-the-art-browser-scripting">seminal blog post by Peter Michaux</a>.</p>
+<p>If the referenced object will not be called, use <a href="#ishostobjectproperty"><code>isHostObjectProperty</code></a>.</p>
+<p>Allowed properties may be of type <code>function</code> or <code>object</code> (IE and possibly others) or <code>unknown</code> (IE ActiveX methods). Object types exclude null.</p>
+<p>This test does <em>not</em> assert that an arbitrary property is callable. Pass only names of properties universally implemented as methods.</p>
+<p>This test does <em>not</em> support properties that are methods in some browsers but not others (e.g. <code>childNodes</code>). This test will not discriminate between such implementations and applications should never call such objects.</p>
+<pre>
+var reFeaturedMethod = new RegExp('^(function|object)$', 'i');
+
+var isHostMethod = function(o, m) {
+  var t = typeof o[m];
+  return !!((reFeaturedMethod.test(t) && o[m]) || t == 'unknown');
+};
+</pre>
+<h3 id="ishostobjectproperty">Properties</h3>
+<p>The <code>isHostObjectProperty</code> function tests if the specified host object property references an object that is safe to evaluate. ActiveX methods and other properties of type <code>unknown</code> are excluded.</p>
+<p>If the referenced object will be called, use <a href="#ishostmethod"><code>isHostMethod</code></a>.</p>
+<p>Allowed properties may be of type <code>function</code>, <code>object</code> (IE and possibly others). Object types exclude null.</p>
+<pre>
+var reFeaturedMethod = new RegExp('^(function|object)$', 'i');
+
+var isHostObjectProperty = function(o, p) {
+  var t = typeof o[p];
+  return !!(reFeaturedMethod.test(t) && o[p]);
+};
+</pre>
+<fieldset>
+<legend>Detect addFavorite Method</legend>
+<input id="testaddfavoritebad" type="button" value="Unsafe Test" disabled>
+<input id="testaddfavoritegood" type="button" value="Safe Test" disabled>
+</fieldset>
+<h2>Detecting Style Support</h2>
+<p>Not necessarily <a href="#renderablestyles">what you can see</a>, but what you can script. Avoids host object augmentation.</p>
+<h3>What Can Be Scripted</h3>
+<p>Browsers may support styles without allowing them to be changed programmatically. A common example is the <code>display</code> property.</p>
+<pre>
+if (typeof document.documentElement.style.display == 'string') {
+  window.alert('Can script the display style.');
+}
+</pre>
+<fieldset>
+<legend>Detect Scriptable Styles</legend>
+<input id="testdisplaystyle" type="button" value="Display Test" disabled>
+<input id="testopacitystyle" type="button" value="Opacity Test" disabled>
+</fieldset>
+<p><strong>Note</strong> that in some older browsers, certain style properties (e.g. <code>left</code>, <code>top</code>, <code>height</code> and <code>width</code>) may reference numbers rather than strings. Furthermore, some newly implemented style properties may reference objects (e.g. <code>transform</code>).</p>
+<p><strong>Note</strong> that some styles that are defined in the DOM specifications (or drafts of specifications), but not yet widely implemented (or implemented properly) may have <a href="#proprietarystyles">proprietary prefixes</a>. This was the case with the <code>opacity</code> style in browsers past.</p>
+<h3 id="renderablestyles">What Can Be Seen</h3>
+<p>There is no guarantee that styles changed through scripting will have any effect on the rendering. In many cases, this is not a concern (e.g. effects like opacity), but in others it can be critical (e.g. positioning). An easily demonstable case occurs when styling is disabled (or overriden) by the user.</p>
+<h4>Absolute Positioning</h4>
+<pre>
+var top, el = document.createElement('div');
+document.body.appendChild(el);
+top = el.offsetTop;
+if (top) {
+  el.style.position = 'absolute';
+  el.style.top = '0';
+}
+window.alert(top != el.offsetTop);
+</pre>
+<h4>Fixed Positioning</h4>
+<pre>
+var top, el = document.createElement('div');
+document.body.appendChild(el);
+top = el.offsetTop;
+if (top) {
+  try {
+    el.style.position = 'fixed';
+    el.style.top = '0';
+    window.alert(top != el.offsetTop);
+  } catch(e) {
+    window.alert(false);
+  }
+} else {
+   window.alert('Could not tell');
+}
+</pre>
+<fieldset>
+<legend>Detect Renderable Styles</legend>
+<input id="testabsoluteposition" type="button" value="Absolute Position" disabled>
+<input id="testfixedposition" type="button" value="Fixed Position" disabled>
+</fieldset>
+<h3 id="proprietarystyles">Detecting Proprietary Styles</h3>
+<p>The basic pattern was <a href="http://groups.google.com/group/comp.lang.javascript/msg/4763865f827f7605">first published by the author</a> in early Fall of 2007 and has since become a staple of cross-browser scripting.</p>
+<pre>
+var prefixes = ['Moz', 'O', 'Webkit', 'Khtml', 'Ms'];
+
+var findProprietaryStyle = function(style, el) {
+  if (el && typeof el.style[style] == 'undefined') {
+    style = style.charAt(0).toUpperCase() + style.substring(1);
+    for (var i = prefixes.length; i--;) {
+      if (typeof el.style[prefixes[i] + style] != 'undefined') {
+        return prefixes[i] + style;
+      }
+    }
+    return null;
+  }
+  return style;
+};
+
+window.alert(findProprietaryStyle('opacity', document.documentElement) || 'Not featured');
+window.alert(findProprietaryStyle('transform', document.documentElement) || 'Not featured');
+</pre>
+<fieldset>
+<legend>Detect Proprietary Styles</legend>
+<input id="testproprietaryopacitystyle" type="button" value="Opacity" disabled>
+<input id="testproprietarytransformstyle" type="button" value="Transform" disabled>
+</fieldset>
+<h2>Detecting Event Support</h2>
+<p><a href="http://groups.google.com/group/comp.lang.javascript/browse_thread/thread/b9812e0878c7c67c/6641a9bce1e18d7d?#6641a9bce1e18d7d">First proposed by the author here</a>, also mentioned <a href="http://groups.google.com/group/comp.lang.javascript/msg/d216c4b1c2b3c7ec">mentioned here</a> and later written about in the <a href="http://perfectionkills.com/detecting-event-support-without-browser-sniffing/">seminal blog post by Juriy Zaytsev (Kangax)</a>, this test infers specific event support by checking the reflection of DOM0 event handler attributes.</p>
+<pre>
+var supportedEvents = {};
+
+var isEventSupported = function(eventName, el) {
+  eventName = 'on' + eventName;
+  var eventKey = eventName + (el && el.tagName || '');
+
+  if (typeof supportedEvents[eventKey] == 'undefined') {
+    supportedEvents[eventKey] = true;
+    el = el || document.createElement('div');
+    if (el && isHostMethod(el, 'setAttribute')) {
+      if (typeof el[eventName] == 'undefined') {
+        el.setAttribute(eventName, 'window.alert(" ");');
+        supportedEvents[eventKey] = isHostMethod(el, eventName);
+      }
+    }
+  }
+  return supportedEvents[eventKey];
+};
+
+window.alert(isEventSupported('mouseover'));
+window.alert(isEventSupported('touchstart'));
+</pre>
+<fieldset>
+<legend>Detect Event Support</legend>
+<input id="testmouseoverevent" type="button" value="Mouse Over" disabled>
+<input id="testtouchstartevent" type="button" value="Touch Start" disabled>
+</fieldset>
+<script type="text/javascript">
+
+var doc = this.document;
+if (isHostMethod(doc, 'getElementById')) {
+  var el = doc.getElementById('testaddfavoritebad');
+  if (el) {
+    el.disabled = false;
+    el.onclick = testAddFavoriteBad;
+  }
+  el = doc.getElementById('testaddfavoritegood');
+  if (el) {
+    el.disabled = false;
+    el.onclick = testAddFavoriteGood;
+  }
+
+  if (isHostMethod(doc, 'createElement') && isHostObjectProperty(doc, 'documentElement') && typeof doc.documentElement.offsetTop == 'number') {
+    window.onload = function() {
+      el = doc.getElementById('testabsoluteposition');
+      if (el) {
+        el.disabled = false;
+        el.onclick = function() {
+          var top, el = document.createElement('div');
+          doc.body.appendChild(el);
+          top = el.offsetTop;
+          if (top) {
+            el.style.position = 'absolute';
+            el.style.top = '0';
+            window.alert(top != el.offsetTop);
+          } else {
+            window.alert('Could not tell');
+          }
+        };
+      }
+      el = doc.getElementById('testfixedposition');
+      if (el) {
+        el.disabled = false;
+        el.onclick = function() {
+          var top, el = document.createElement('div');
+          doc.body.appendChild(el);
+          top = el.offsetTop;
+          if (top) {
+            try {
+              el.style.position = 'fixed';
+              el.style.top = '0';
+              window.alert(top != el.offsetTop);
+            } catch(e) {
+              window.alert(false);
+            }
+          } else {
+            window.alert('Could not tell');
+          }
+        };
+      }
+    };
+  }
+  if (isHostObjectProperty(doc, 'documentElement')) {
+    el = doc.getElementById('testdisplaystyle');
+    if (el) {
+      el.disabled = false;
+      el.onclick = function() {
+        window.alert(typeof doc.documentElement.style.display == 'string');
+      };
+    }
+    el = doc.getElementById('testopacitystyle');
+    if (el) {
+      el.disabled = false;
+      el.onclick = function() {
+        window.alert(typeof doc.documentElement.style.opacity == 'string');
+      };
+    }
+    el = doc.getElementById('testproprietaryopacitystyle');
+    if (el) {
+      el.disabled = false;
+      el.onclick = function() {
+        window.alert(findProprietaryStyle('opacity', document.documentElement) || 'Not featured');
+      };
+    }
+    el = doc.getElementById('testproprietarytransformstyle');
+    if (el) {
+      el.disabled = false;
+      el.onclick = function() {
+        window.alert(findProprietaryStyle('transform', document.documentElement) || 'Not featured');
+      };
+    }
+    el = doc.getElementById('testmouseoverevent');
+    if (el) {
+      el.disabled = false;
+      el.onclick = function() {
+        window.alert(isEventSupported('mouseover'));
+      };
+    }
+    el = doc.getElementById('testtouchstartevent');
+    if (el) {
+      el.disabled = false;
+      el.onclick = function() {
+        window.alert(isEventSupported('touchstart'));
+      };
+    }
+  }
+}
+</script>
+<h2>Feature Testing</h2>
+<p>
+Among professionals, feature testing has been the accepted best practice for dealing with DOM inconsistencies since approximately 2003. Unfortunately, the Ajax craze attracted mostly amateurs who proceeded to trumpet the execrable practice of <a href="http://www.jibbering.com/faq/faq_notes/not_browser_detect.html">browser sniffing</a> almost to <em>the exclusion of anything else</em>.
+This is evidenced by this <a href="http://groups.google.com/group/comp.lang.javascript/browse_thread/thread/415949d1bcce6e6a/03c4d326340e7f7d?#03c4d326340e7f7d">knock-down, drag-out discussion between the author, John Resig and other jQuery proponents</a>. It is certainly no coincidence that <a href="http://docs.jquery.com/Release:jQuery_1.3"><em>attempts</em> at feature testing showed up in jQuery a little over a year later</a>. <a href="http://groups.google.com/group/comp.lang.javascript/msg/8ee3b684baaa0baa">Richard Cornford had some insightful comments</a> about this development.
+</p>
+<h3>Offset Includes Border</h3>
+<p>This example from <a href="mylib.html">My Library</a> determines whether <code>offsetLeft/Top</code> properties include border dimensions (typically reflected by the <code>clientLeft/Top</code> properties). It was first demonstrated in this <a href="http://code.google.com/p/nicemenus/">menu example from September of 2007</a>.</p>
+<pre>
+var divOuter = createElement('div');
+var divInner = createElement('div');
+
+offsetIncludesBorder = (function() {
+  setStyles(divOuter, {position:'absolute', visibility:'hidden', left:'0', top:'0', padding:'0', border:'solid 1px'});
+  setStyles(divInner, {position:'absolute', left:'0', top:'0', margin:'0'});
+  divOuter.appendChild(divInner);
+  body.appendChild(divOuter);
+  b = divInner.offsetLeft == 1;
+  body.removeChild(divOuter);
+  divOuter.removeChild(divInner);
+  return b;
+})();
+</pre>
+<p>It is interesting to note that this pattern showed up all over jQuery about a year later. It is now becoming standard practice for libraries to detect DOM quirks.</p>
+<pre>
+jQuery(function(){
+  var div = document.createElement("div");
+  div.style.width = div.style.paddingLeft = "1px";
+
+  document.body.appendChild( div );
+  jQuery.boxModel = jQuery.support.boxModel = div.offsetWidth === 2;
+  document.body.removeChild( div ).style.display = 'none';
+  div = null;
+});
+</pre>
+<h3>Script Injection</h3>
+<p>This abridged example, also from <a href="mylib.html">My Library</a>, demonstrates how to determine the viability of dynamic script injection. It attempts to inject a snippet of script in two different ways, testing each in turn. If neither succeeds, the <code>addScript</code> function is not created (which signals the calling application that the functionality is unavailable in the current environment).</p>
+<pre>
+if (getHeadElement) {
+  head = getHeadElement();
+}
+if (head && isHostMethod(head, 'appendChild') && createElement) {
+  methods = [];
+  s = createElement('script');
+  if (s) {
+    add = function(method, t, docNode) {
+      method(s, t, docNode);
+    };
+
+    if (isHostMethod(global.document, 'createTextNode') && elementCanHaveChildren(s)) {
+      methods[methods.length] = function(s, t, docNode) {
+        s.appendChild((docNode || global.document).createTextNode(t));
+      };
+    }
+
+    if (typeof s.text == 'string') {
+      methods[methods.length] = function(s, t) {
+        s.text = t;
+      };
+    }
+
+    iMethod = methods.length;
+    while (!API._testscriptinsertion && iMethod--) {
+      head.appendChild(s);
+      add(methods[iMethod], 'this.API._testscriptinsertion = true;');
+      head.removeChild(s);
+    }
+    if (API._testscriptinsertion) {
+      addScript = API.addScript = function(t, docNode) {
+        head = getHeadElement(docNode);
+        s = createElement('script');
+        if (s && head) {
+          head.appendChild(s);
+          add(methods[iMethod], t, docNode);
+          head.removeChild(s);
+          s = null;
+          head = null;
+        }
+      };
+      delete API._testscriptinsertion;
+    }
+    s = null;
+  }
+}
+head = null;
+</pre>
+<p>Here is the jQuery take on this. Note that this is a very <strong>bad</strong> example. It attempts to append a child to a <code>script</code> element, which will indeed cause an exception to be thrown in IE. The subsequent assumption that the text property exists and will result in a script evaluation is a very poor and ill-advised inference (particularly as it is crucial to know if an injected script will evaluate or not).</p>
+<p>The comment about IE is the telltale sign of a multi-browser <a href="http://www.jibbering.com/faq/faq_notes/not_browser_detect.html#bdOI">object inference</a> that results in code that can only be expected to work in environments where it has been <em>demonstrated</em> to work (and this example can <em>definitely</em> be demonstrated to fail in several older browsers). This is programming by observation of specific browsers (rather than by understanding the underlying abstractions), which is quite the paradox for browser scripting, particularly for scripts that ostensibly save time by abstracting away the chore of keeping up with ever-changing browsers (today's observations are sure to become tomorrow's rewrites).</p>
+<pre class="poison">
+script.type = "text/javascript";
+try {
+  script.appendChild( document.createTextNode( "window." + id + "=1;" ) );
+} catch(e){}
+
+root.insertBefore( script, root.firstChild );
+
+// Make sure that the execution of code works by injecting a script
+// tag with appendChild/createTextNode
+// (IE doesn't support this, fails, and uses .text instead)
+if ( window[ id ] ) {
+  jQuery.support.scriptEval = true;
+  delete window[ id ];
+}
+
+if ( jQuery.support.scriptEval ) {
+  script.appendChild( document.createTextNode( data ) );
+} else {
+  script.text = data;
+}
+</pre>
+
+<h2>Other Primers</h2>
+<ul><li><a rel="previous" href="attributes.html">A is for Attributes</a></li><li><a rel="next" href="keyboard.html">K is for Keyboard</a></li><li><a href="position.html">P is for Position</a></li><li><a href="size.html">S is for Size</a></li><li><a rel="next" href="viewport.asp">V is for Viewport</a></li></ul>
+<div id="legal">&copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a></div>
+<div><a href="mylib.html" id="home" title="home"><img src="images/logo.gif" height="20" width="22" alt="Home"></a></div>
+<address><a href="mailto:dmark@cinsoft.net">dmark@cinsoft.net</a></address>
+</body>
+</html>

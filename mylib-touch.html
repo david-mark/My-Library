@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Last-Modified" content="20 Jul 2010 22:29:00 GMT">
+<meta name="description" content="Examples of My Library, a cross-browser scripting library, written in Javascript">
+<meta name="keywords" content="My Library, Javascript, library, project, repository, builder, browser scripting, Ajax, comp.lang.javascript, newsgroup, touch">
+<meta name="author" content="David Mark">
+<title>My Library Touch</title>
+<link rel="home" href="mylib.html" title="Home">
+<link rel="bookmark" href="#content" title="Content">
+<link rel="stylesheet" type="text/css" href="style/mylib.css" media="all">
+<link rel="stylesheet" type="text/css" href="style/mylib-handheld.css" media="handheld">
+<link rel="stylesheet" type="text/css" href="style/mylib-print.css" media="print">
+<style type="text/css" media="all">
+.test {
+  color: inherit;
+  background-color: #fff;
+  border: solid .25em #000;
+  width: 10em;
+  padding: 1em;
+  text-align:center;
+  margin-bottom: 1em;
+  border-radius:1em;
+  -khtml-border-radius:1em;
+  -moz-border-radius:1em;
+  -webkit-border-radius:1em;
+  box-shadow: .25em .25em 0 #CCCC99;
+  -moz-box-shadow: .25em .25em 0 #CCCC99;
+  -webkit-box-shadow: .25em .25em 0 #CCCC99
+}
+
+.animated {
+  transition-property:transform;
+  -webkit-transition-property:-webkit-transform;
+  -moz-transition-property:-moz-transform;
+  -o-transition-property:o-transform;
+  transition-duration:.4s;
+  -webkit-transition-duration:.4s;
+  -moz-transition-duration:.4s;
+  -o-transition-duration:.4s
+}
+
+#taptest.test { border-color: #ff0000 }
+#taptest.tapped {
+  border-color: #ee0000;
+  color: inherit;
+  background-color: #eee
+}
+</style>
+<script type="text/javascript">
+var API = { deferAudio:true };
+</script>
+</head>
+<body>
+<div id="sidebar">
+<a href="#content" id="skipnav">Skip Navigation</a>
+<h2>Resources</h2>
+<h3>Contents</h3>
+<ul><li><a href="mylib.html" accesskey="1" title="Home [1]">Home</a></li><li><a href="mylib-downloads.html">Downloads</a></li><li><a href="mylib-doc0.html">Documentation</a></li><li><span id="current">Examples</span></li><li><a href="mylib-builder.asp">Builder</a></li><li><a href="mylib-test.asp?version=1.0&amp;requester=on&amp;array=on&amp;script=on&amp;mouseposition=on&amp;drag=on&amp;every=on&amp;cookie=on&amp;contextclick=on&amp;adjacent=on&amp;ajaxlink=on&amp;ajax=on&amp;event=on&amp;audio=on&amp;statusbar=on&amp;position=on&amp;scrollfx=on&amp;filter=on&amp;dispatch=on&amp;help=on&amp;flash=on&amp;opacity=on&amp;maximize=on&amp;ashtml=on&amp;foreach=on&amp;query=on&amp;serialize=on&amp;region=on&amp;class=on&amp;show=on&amp;map=on&amp;bookmark=on&amp;collections=on&amp;html=on&amp;offset=on&amp;size=on&amp;fx=on&amp;ajaxform=on&amp;overlay=on&amp;some=on&amp;crumb=on&amp;text=on&amp;dom0=on&amp;mousewheel=on&amp;preload=on&amp;margin=on&amp;ease=on&amp;dom=on&amp;setattribute=on&amp;stylesheets=on&amp;style=on&amp;coverdocument=on&amp;dollar=on&amp;objects=on&amp;import=on&amp;rollover=on&amp;locationquery=on&amp;border=on&amp;updater=on&amp;form=on&amp;image=on&amp;plugin=on&amp;directx=on&amp;present=on&amp;viewport=on&amp;fullscreen=on&amp;scroll=on&amp;center=on&amp;gethtml=on&amp;mode=HTML" title="Test full build">Build Test</a></li><li><a href="mylib-testspeed.html" title="Compare the performance of the query feature to three popular libraries">Speed Tests</a></li><li><a href="mylib-sponsors.html" title="List of our benefactors">Sponsors</a></li></ul>
+<h3>Related Links</h3>
+<ul><li><a href="http://www.pledgie.com/campaigns/9768" title="Please make a donation today!">Donations</a></li><li><a href="http://groups.google.com/group/my-library-general-discussion/">Discussion</a></li><li><a href="http://code.google.com/p/ourlibrary/source/checkout">Repository</a></li></ul>
+<h3>Primers</h3>
+<ul><li><a href="attributes.html" title="A is for Attributes primer">Attributes</a></li><li><a href="host.html" title="H is for Host primer">Host</a></li><li><a href="keyboard.html" title="K is for Keyboard primer">Keyboard</a></li><li><a href="position.html" title="P is for Position primer">Position</a></li><li><a href="size.html" title="S is for Size primer">Size</a></li><li><a href="viewport.asp" title="V is for Viewport primer">Viewport</a></li></ul>
+<h3>Bookmark</h3>
+<ul><li><a title="Digg this" href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-downloads.html&amp;title=My%20Library&amp;bodytext=Build%20your%20own%20browser%20scripting%20library&amp;topic=programming">Digg This</a></li><li><a title="Add bookmark to deli.cio.us" href="http://del.icio.us/post?url=http%3A%2F%2Fwww.cinsoft.net%2Fmylib-downloads.html">Add to deli.cio.us</a></li></ul>
+<h3>Javascript Help</h3>
+<ul><li><a href="http://groups.google.com/group/comp.lang.javascript/topics" title="comp.lang.javascript newsgroup">Newsgroup</a></li><li><a href="http://jibbering.com/faq/index.html" title="comp.lang.javascript newsgroup FAQ">FAQ</a></li></ul>
+<script type="text/javascript">
+google_ad_client = "pub-0919891272636534";
+google_ad_slot = "6037707224";
+google_ad_width = 120;
+google_ad_height = 90;
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<div>
+<a name="content"></a>
+<h1><span class="redundant">My Library </span> Touch</h1>
+<p>This is a test of the My Library Touch add-on.<p>
+<p><strong>Note</strong> that this is a work in progress. This initial version only supports <em>single finger</em> touches (and provide equivalent mouse listeners for non-touch browsers).</p>
+<p><strong>Note</strong> that at the time of posting, this version is has been tested only on one iPhone.</p>
+<p><strong>Note</strong> the tap test is using an element that is not tappable on the iPhone, so it falls back to using the click event. A proper test will follow.</p>
+<div id="touchtest">
+</div>
+<div id="taptest">
+</div>
+</div>
+<div id="logo"><a href="mylib.html" title="Home"><img src="images/mylibrarylogo.jpg" height="108" width="260" alt="My Library" title="Home"></a></div>
+<p class="meta">Last Modified: 20 Jul 2010 22:58:00 GMT</p>
+<address>By <a title="Send email to David Mark" href="mailto:dmark@cinsoft.net">David Mark</a></address>
+<div class="legal">Copyright &copy; 2007-2010 by <a href="mailto:dmark@cinsoft.net">David Mark</a>. All Rights Reserved.</div>
+<script type="text/javascript" src="mylib-event-foreach-map-mouseposition-style-text-min.js"></script>
+<script type="text/javascript" src="mylib-touch-min.js"></script>
+<script type="text/javascript" src="mylib-transform-min.js"></script>
+
+<script type="text/javascript">
+var API, global = this;
+
+if (API && API.areFeatures && API.areFeatures('attachDocumentReadyListener', 'attachTouchListeners', 'getEBI', 'setElementText')) {
+  API.attachDocumentReadyListener(function() {    
+    var setElementText = API.setElementText, cancelDefault = API.cancelDefault;
+    var setElementTransform = API.setElementTransform;
+    var startPosition, el = API.getEBI('touchtest');
+
+    var fnStart = function(e, el, pos) {
+      startPosition = pos;
+      setElementText(this, 'Touching');
+      cancelDefault(e);
+    };
+
+    var fnMove = function(e, el, pos) {
+      var deltaX, deltaY;
+      if (startPosition) {
+        deltaY = pos[0] - startPosition[0];
+        deltaX = pos[1] - startPosition[1];
+      }
+      setElementText(this, 'Moving');
+      if (setElementTransform) {
+        setElementTransform(this, {
+          skewX: Math.min(deltaX, 45),
+          skewY: Math.min(deltaY, 45)
+        });
+      }
+      cancelDefault(e);
+    };
+
+    var fnEnd = function(e) {
+      startPosition = null;
+      setElementText(this, 'Touch me again!');
+      if (setElementTransform) {
+        setElementTransform(this, {
+          skewX: 0,
+          skewY: 0
+        });
+      };
+      cancelDefault(e);
+    };
+
+    var fnTap = function() {
+      setElementText(this, 'Tapped!');
+
+      if (setElementTransform) {
+        setElementTransform(this, {
+          scale: 1.1
+        });
+      }
+
+      var that = this;
+
+      this.className = 'test animated tapped';
+      window.setTimeout(function() {
+        if (setElementTransform) {
+          setElementTransform(that, {
+            scale: 1
+          });        }
+        that.className = 'test animated';
+        setElementText(that, 'Tap me again!');
+      }, 200);
+    };
+
+    if (el) {
+      el.className = 'test';
+      API.attachTouchListeners(el, fnStart, fnMove, fnEnd);
+      API.setElementText(el, 'Touch Me!');
+
+      el = API.getEBI('taptest');
+      if (el) {
+        el.className = 'test';
+        API.attachTapListener(el, fnTap);
+        API.setElementText(el, 'Tap Me!');
+      }
+
+      el = null;
+    }
+  });
+}
+</script>
+<script type="text/javascript" src="mylib-domready.js"></script>
+</body> 
+</html>

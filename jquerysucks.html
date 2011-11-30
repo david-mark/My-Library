@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>jQuery Sucks</title>
+<script type="text/javascript" src="jquery-1.4a1.js"></script>
+<style type="text/css">
+img {
+	padding:10px;
+	border:solid 10px
+}
+#testimage2 {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	height:72px;
+	width:72px
+}
+#testimage3 {
+	padding:1em;
+	border:none 1em
+}
+</style>
+</head>
+<body>
+<h1>jQuery Sucks</h1>
+<div>
+<h2>Height Identity</h2>
+<p>Gets and then puts back image height.  Images should not be squished or vanished as a result.  The second image uses the border-box model, which is the <em>only</em> possibility in IE quirks mode (and available to all with CSS3).  The third has an odd, but valid border rule.</p>
+<img id="testimage" src="images/cinsoft.gif" height="32" width="32" ismap="ismap" alt="">
+<img id="testimage2" src="images/cinsoft.gif" height="32" width="32" alt="">
+<img id="testimage3" src="images/cinsoft.gif" height="32" width="32" alt="">
+<h2>Query Compatibility</h2>
+<p>Queries should filter user input (or not) consistently.  If not filtered, the query engine is incompatible with QSA and XPath implementations.  Check/uncheck and select and then refresh the document to see the results (most UA's preserve user input).</p>
+<input id="testinput" type="checkbox" checked>
+<select><option>Not selected</option><option selected>Selected by default</option></select>
+<h2>Can it Find a Single Image Map?</h2>
+<p>Apparently not in several versions (and modes) of IE.</p>
+<h2>Can it Find the One Link with a Specified Tab Index?</h2>
+<p>Not consistently, not even in IE8 (click the compatibility mode button).</p>
+<a href="mylib.html" tabindex="0">Has explicit tab index</a>
+<a href="mylib.html">Has no explicit tab index</a>
+</div>
+<script type="text/javascript">
+document.write('<h2>Log<\/h2>');
+document.write('attr height #1 = ' + $('#testimage').attr('height') + '<br>');
+$('#testimage').attr('height', $('#testimage').attr('height'));
+document.write('attr height #1 after put back = ' + $('#testimage').attr('height') + '<br>');
+
+document.write('attr height #2 = ' + $('#testimage2').attr('height') + '<br>');
+$('#testimage2').attr('height', $('#testimage2').attr('height'));
+document.write('attr height #2 after put back = ' + $('#testimage2').attr('height') + '<br>');
+
+document.write('attr height #3 = ' + $('#testimage3').attr('height') + '<br>');
+$('#testimage3').attr('height', $('#testimage3').attr('height'));
+document.write('attr height #3 after put back = ' + $('#testimage3').attr('height') + '<br>');
+
+document.write('Checked input: ' + $('input:checked')[0] + '<br>');
+
+document.write('Selected option: ' + $('option:selected')[0].text + '<br>');
+document.write('Image map (right way) : ' + $('img[ismap=ismap]')[0] + '<br>');
+document.write('Image map (wrong way) : ' + $('img[ismap=true]')[0] + '<br>');
+
+document.write($('a[tabindex=0]').length + ' link(s) found');
+
+</script>
+</body>
+</html>
