@@ -12,141 +12,144 @@
 var API;
 
 if (API && API.attachListener && Function.prototype.call) {
-	(function() {
-		var attachListener = API.attachListener, detachListener = API.detachListener;
-		var touchEventType, tapEventType, timeStamps = {};
+    (function () {
+        var attachListener = API.attachListener, detachListener = API.detachListener;
+        var touchEventType, initialTarget, tapEventType, timeStamps = {};
 
-		var attachTouchListeners = function(el, fnStart, fnMove, fnEnd, thisObject) {
-			var listeners = {
-				touchstart: fnStart,
-				touchmove: fnMove,
-				touchend: fnEnd
-			};
+        var attachTouchListeners = function (el, fnStart, fnMove, fnEnd, thisObject) {
+            var listeners = {
+                touchstart: fnStart,
+                touchmove: fnMove,
+                touchend: fnEnd
+            };
 
-			var fnWrapped = function(e) {
+            var fnWrapped = function (e) {
 
-				// TODO: Make sure this is the right touch (store and check identifier)
+                // TODO: Make sure this is the right touch (store and check identifier)
 
-				var touch = e.changedTouches[0], pos = [touch.pageY, touch.pageX], type = e.type;
+                var touch = e.changedTouches[0], pos = [touch.pageY, touch.pageX], type = e.type;
+                if (type == 'touchstart') {
+                    initialTarget = API.getEventTarget(e);
+                }
+                if (type == 'touchmove') {
+                    timeStamps.previousMove = timeStamps.touchmove;
+                }
 
-				if (type == 'touchmove') {
-					timeStamps.previousMove = timeStamps.touchmove;
-				}
+                timeStamps[type] = +(new Date());
 
-				timeStamps[type] = +(new Date());
+                listeners[type].call(thisObject || el, e, el, pos, timeStamps, initialTarget);
 
-				listeners[type].call(thisObject || el, e, el, pos, timeStamps);
+                if (type == 'touchend') {
+                    delete timeStamps.touchstart;
+                    delete timeStamps.touchmove;
+                }
+            };
 
-				if (type == 'touchend') {
-					delete timeStamps.touchstart;
-					delete timeStamps.touchmove;
-				}
-			};
+            attachListener(el, 'touchstart', fnWrapped, thisObject);
+            attachListener(el, 'touchmove', fnWrapped, thisObject);
+            attachListener(el, 'touchend', fnWrapped, thisObject);
+        };
 
-			attachListener(el, 'touchstart', fnWrapped, thisObject);
-			attachListener(el, 'touchmove', fnWrapped, thisObject);
-			attachListener(el, 'touchend', fnWrapped, thisObject);
-		};
+        var attachMouseListeners = function (el, fnStart, fnMove, fnEnd, thisObject, touched) {
+            var doc = API.getElementDocument(el);
 
-		var attachMouseListeners = function(el, fnStart, fnMove, fnEnd, thisObject, touched) {
-			var doc = API.getElementDocument(el);
+            var fnStartWrapped = function (e) {
+                touched = true;
+                initialTarget = API.getEventTarget(e);
+                delete timeStamps.touchend;
+                timeStamps.touchstart = +(new Date());
+                fnStart.call(thisObject || el, e, el, API.getMousePosition(e), timeStamps, initialTarget);
+            };
 
-			var fnStartWrapped = function(e) {
-				touched = true;	
-				delete timeStamps.touchend;
-				timeStamps.touchstart = +(new Date());
-				fnStart.call(thisObject || el, e, el, API.getMousePosition(e), timeStamps);
-			};
+            var fnMoveWrapped = function (e) {
+                if (touched) {
+                    delete timeStamps.touchstart;
+                    timeStamps.previousMove = timeStamps.touchmove;
+                    timeStamps.touchmove = +(new Date());
+                    fnMove.call(thisObject || el, e, el, API.getMousePosition(e), timeStamps, initialTarget);
+                }
+            };
 
-			var fnMoveWrapped = function(e) {
-				if (touched) {
-					delete timeStamps.touchstart;
-					timeStamps.previousMove = timeStamps.touchmove;
-					timeStamps.touchmove = +(new Date());
-					fnMove.call(thisObject || el, e, el, API.getMousePosition(e), timeStamps);
-				}
-			};
+            var fnEndWrapped = function (e) {
+                if (touched) {
+                    timeStamps.touchend = +(new Date());
+                    delete timeStamps.touchstart;
+                    delete timeStamps.touchmove;
+                    touched = false;
+                    fnEnd.call(thisObject || el, e, el, API.getMousePosition(e), timeStamps, initialTarget);
+                }
+            };
 
-			var fnEndWrapped = function(e) {
-				if (touched) {
-					timeStamps.touchend = +(new Date());
-					delete timeStamps.touchstart;
-					delete timeStamps.touchmove;
-					touched = false;
-					fnEnd.call(thisObject || el, e, el, API.getMousePosition(e), timeStamps);
-				}
-			};
+            // TODO: Use one pair of mousemove/up listeners for all
 
-			// TODO: Use one pair of mousemove/up listeners for all
-			
-			attachListener(el, 'mousedown', fnStartWrapped, thisObject);
-			attachListener(doc, 'mousemove', fnMoveWrapped, thisObject);
-			attachListener(doc, 'mouseup', fnEndWrapped, thisObject);
-		};
+            attachListener(el, 'mousedown', fnStartWrapped, thisObject);
+            attachListener(doc, 'mousemove', fnMoveWrapped, thisObject);
+            attachListener(doc, 'mouseup', fnEndWrapped, thisObject);
+        };
 
-		var touchDownListener = function(el, fnStart, fnMove, fnEnd, thisObject) {
-			var fnWrapped;
+        var touchDownListener = function (el, fnStart, fnMove, fnEnd, thisObject) {
+            var fnWrapped;
 
-			return (fnWrapped = function(e) {
-				var type = e.type;
-				
-				detachListener(el, 'touchstart', fnWrapped);
-				detachListener(el, 'mousedown', fnWrapped);
-				delete timeStamps.touchend;
-				timeStamps.touchstart = +(new Date());
-				fnStart.call(thisObject || el, e, el, API.getMousePosition(e), timeStamps);
+            return (fnWrapped = function (e) {
+                var type = e.type;
+                initialTarget = API.getEventTarget(e);
+                detachListener(el, 'touchstart', fnWrapped);
+                detachListener(el, 'mousedown', fnWrapped);
+                delete timeStamps.touchend;
+                timeStamps.touchstart = +(new Date());
+                fnStart.call(thisObject || el, e, el, API.getMousePosition(e), timeStamps, initialTarget);
 
-				if (!type.indexOf('mouse')) {
-					touchEventType = 'mouse';
-					attachTouchListeners = attachMouseListeners;
-				} else {
-					touchEventType = 'touch';
-				}
-				attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject, true);
-			});
-		};
+                if (!type.indexOf('mouse')) {
+                    touchEventType = 'mouse';
+                    attachTouchListeners = attachMouseListeners;
+                } else {
+                    touchEventType = 'touch';
+                }
+                attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject, true);
+            });
+        };
 
-		API.attachTouchListeners = function(el, fnStart, fnMove, fnEnd, thisObject) {
-			var fnWrapped;
-			if (typeof touchEventType == 'undefined') {
-				fnWrapped = touchDownListener(el, fnStart, fnMove, fnEnd, thisObject);
-				attachListener(el, 'touchstart', fnWrapped, thisObject);
-				attachListener(el, 'mousedown', fnWrapped, thisObject);
-			} else {
-				attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject);
-			}
-		};
+        API.attachTouchListeners = function (el, fnStart, fnMove, fnEnd, thisObject) {
+            var fnWrapped;
+            if (typeof touchEventType == 'undefined') {
+                fnWrapped = touchDownListener(el, fnStart, fnMove, fnEnd, thisObject);
+                attachListener(el, 'touchstart', fnWrapped, thisObject);
+                attachListener(el, 'mousedown', fnWrapped, thisObject);
+            } else {
+                attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject);
+            }
+        };
 
-		var tapListener = function(el, fn, thisObject) {
-			var fnWrapped;
+        var tapListener = function (el, fn, thisObject) {
+            var fnWrapped;
 
-			return (fnWrapped = function(e) {
-				var type = e.type;				
-				detachListener(el, 'tap', fnWrapped);
-				detachListener(el, 'click', fnWrapped);
+            return (fnWrapped = function (e) {
+                var type = e.type;
+                detachListener(el, 'tap', fnWrapped);
+                detachListener(el, 'click', fnWrapped);
 
-				fn.call(thisObject || el, e);
+                fn.call(thisObject || el, e);
 
-				if (!type.indexOf('tap')) {
-					tapEventType = 'tap';
-				} else {
-					tapEventType = 'click';
-				}
+                if (!type.indexOf('tap')) {
+                    tapEventType = 'tap';
+                } else {
+                    tapEventType = 'click';
+                }
 
-				attachListener(el, tapEventType, fn);
-			});
-		};
+                attachListener(el, tapEventType, fn);
+            });
+        };
 
 
-		API.attachTapListener = function(el, fn, thisObject) {
-			var fnWrapped;	
-			if (typeof tapEventType == 'undefined') {
-				fnWrapped = tapListener(el, fn, thisObject);
-				attachListener(el, 'tap', fnWrapped, thisObject);
-				attachListener(el, 'click', fnWrapped, thisObject);
-			} else {
-				attachListener(el, tapEventType, fn, thisObject);
-			}
-		};
-	})();
+        API.attachTapListener = function (el, fn, thisObject) {
+            var fnWrapped;
+            if (typeof tapEventType == 'undefined') {
+                fnWrapped = tapListener(el, fn, thisObject);
+                attachListener(el, 'tap', fnWrapped, thisObject);
+                attachListener(el, 'click', fnWrapped, thisObject);
+            } else {
+                attachListener(el, tapEventType, fn, thisObject);
+            }
+        };
+    })();
 }
