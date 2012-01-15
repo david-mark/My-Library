@@ -90,26 +90,5 @@ if (typeof API != 'undefined' && API.attachListener && Function.prototype.call) 
 				attachTouchListeners(el, fnStart, fnMove, fnEnd, thisObject);
 			}
 		};
-
-		var tapListener = function(el, fn, thisObject) {
-			var fnWrapped;
-
-			return (fnWrapped = function(e) {
-				var type = e.type;
-
-				detachListener(el, 'tap', fnWrapped);
-				detachListener(el, 'click', fnWrapped);
-
-				fn.call(thisObject || el, e);
-
-				if (!type.indexOf('tap')) {
-					tapEventType = 'tap';
-				} else {
-					tapEventType = 'click';
-				}
-
-				attachListener(el, tapEventType, fn);
-			});
-		};
 	})();
 }
