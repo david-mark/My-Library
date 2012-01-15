@@ -1,5 +1,5 @@
 // My Library (http://www.cinsoft.net/mylib.html)
-// Copyright (c) 2007-2010 by David Mark. All Rights Reserved.
+// Copyright (c) 2007-2012 by David Mark. All Rights Reserved.
 var API, global = this;
 API = API || {};
 <%If bDollar Then%>
