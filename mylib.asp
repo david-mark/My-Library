@@ -1749,8 +1749,8 @@ var Q, E, D, F, W, I, C;
 
     if (html) {
       getElementText = (function() {
-        if (typeof html.innerText == 'string') { return function(el) { return el.innerText; }; }
         if (typeof html.textContent == 'string') { return function(el) { return el.textContent; }; }
+        if (typeof html.innerText == 'string') { return function(el) { return el.innerText; }; }
         if (isRealObjectProperty(html, 'firstChild')) {
           return function(el) {
             var text = [];
