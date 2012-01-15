@@ -81,7 +81,7 @@ var Q, E, D, F, W, I, C;
     bindDeferred = function(fn, context, delay) {
       var timeout;
 
-      fn = bind.apply(this, [fn, context].concat(Array.prototype.slice(arguments, 3)));
+      fn = bind.apply(this, [fn, context].concat(Array.prototype.slice.call(arguments, 3)));
       return function() {
         if (timeout) {
           global.clearTimeout(timeout);
@@ -5445,7 +5445,6 @@ className && !hasClass(el, className))) {
         API.importNode = importNode;
 
         setElementNodes = function(el, elNewNodes) {
-          elNewNodes = importNode(elNewNodes, true, getElementDocument(el));
           if (elNewNodes) {
             //if (typeof purgeListeners == 'function') { purgeListeners(el, true, true); } // Purge children only
             while (el.firstChild) {
@@ -7848,6 +7847,7 @@ className && !hasClass(el, className))) {
         // Import is not part of required combination (DOM + HTML + Requester)
         // Combination should be (DOM + (HTML | Import) + Requester)
         if (typeof addElementNodes == 'function') {
+          result = importNode(result, true, getElementDocument(result));
           method = (bAppend)?addElementNodes:setElementNodes;
         }
       }
