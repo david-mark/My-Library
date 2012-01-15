@@ -5394,13 +5394,16 @@ className && !hasClass(el, className))) {
 
       if (html && createElement && getAttribute && setAttribute && isHostMethod(global.document, 'createTextNode') && isHostMethod(global.document, 'childNodes') && isHostMethod(html, 'appendChild') && typeof html.nodeType == 'number') {
         importNode = function(node, bImportChildren, docNode) {
-          var i, name, nodeNew, nodeChild, value;
+          var i, l, name, nodeNew, nodeChild, value;
 
           docNode = docNode || global.document;
           switch (node.nodeType) {
           case 1:
             nodeNew = createElement(getElementNodeName(node), docNode);
             if (nodeNew) {
+
+              // FIXME: make sure to do TYPE attribute first
+
               if (node.attributes && node.attributes.length) {
                 i = node.attributes.length;
                 while (i--) {
@@ -5412,8 +5415,8 @@ className && !hasClass(el, className))) {
                 }
               }
               if (bImportChildren && node.childNodes && node.childNodes.length) {
-                i = node.childNodes.length;						
-                while (i--) {
+                l = node.childNodes.length;						
+                for (i = 0; i < l; i++) {
                   nodeChild = importNode(node.childNodes[i], bImportChildren, docNode);
                   if (nodeChild) {
                     if (nodeChild.nodeType != 1) {
