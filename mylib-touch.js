@@ -111,18 +111,5 @@ if (typeof API != 'undefined' && API.attachListener && Function.prototype.call) 
 				attachListener(el, tapEventType, fn);
 			});
 		};
-
-
-		API.attachTapListener = function(el, fn, thisObject) {
-			var fnWrapped;
-
-			if (typeof tapEventType == 'undefined') {
-				fnWrapped = tapListener(el, fn, thisObject);
-				attachListener(el, 'tap', fnWrapped, thisObject);
-				attachListener(el, 'click', fnWrapped, thisObject);
-			} else {
-				attachListener(el, tapEventType, fn, thisObject);
-			}
-		};
 	})();
 }
