@@ -18,7 +18,7 @@ if (API && API.getAnElement) {
     if (!el) { el = getAnElement(); }
     if (el && typeof el.style[style] != 'string') {
       style = style.charAt(0).toUpperCase() + style.substring(1);
-      var prefixes = ['Moz', 'O', 'Webkit', 'Khtml'];
+      var prefixes = ['Moz', 'O', 'Webkit', 'Khtml', 'ms'];
       for (var i = prefixes.length; i--;) {
         if (typeof el.style[prefixes[i] + style] != 'undefined') {
           return prefixes[i] + style;
