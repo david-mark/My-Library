@@ -8,7 +8,7 @@ var $;
 <%If bObjects Then%>
 var Q, E, D, F, W, I, C;
 <%End If%>
-(function() {
+(function(undefined) {
   var doc, html;
 
   // Feature testing support
@@ -32,7 +32,7 @@ var Q, E, D, F, W, I, C;
 
   var isHostObjectProperty = function(o, p) {
     var t = typeof o[p];
-    return !!(reFeaturedMethod.test(t) && o[p]);
+    return !!(reFeaturedMethod.test(t) && o[p] !== undefined);
   };
 
   API.isHostObjectProperty = isHostObjectProperty;
